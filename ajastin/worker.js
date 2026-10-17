@@ -14,7 +14,7 @@ async function kaynnista(env) {
   });
   const teksti = r.status === 204 ? "" : (await r.text()).slice(0, 300);
   console.log("GitHub vastasi", r.status, teksti);
-  return { status: r.status, teksti, avain: env.GITHUB_TOKEN ? "on (" + String(env.GITHUB_TOKEN).trim().slice(0, 11) + "…)" : "PUUTTUU" };
+  return { status: r.status, teksti, avain: env.GITHUB_TOKEN ? "on" : "PUUTTUU" };
 }
 export default {
   async scheduled(event, env, ctx) {
