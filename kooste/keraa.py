@@ -215,6 +215,17 @@ details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
 .mm{font-weight:750;color:var(--acct)}
 a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
+.jaa{flex:none;width:30px;height:30px;margin:-6px -6px -6px auto;padding:0;border:0;border-radius:8px;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
+.jaa::before{content:"";width:17px;height:17px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat}
+.jaa:hover,.jaa:focus-visible{color:var(--fg);background:var(--chip)}
+.st-top .jaa{margin:-6px -6px -6px auto}
+#jako{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}
+#jako[hidden]{display:none}
+.jako-in{background:var(--card);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));border:1px solid var(--line)}
+.jako-in p{margin:0 0 12px;font-weight:700;font-size:14.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.jako-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.jako-g a,.jako-g button{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--chip);color:var(--fg);border:0;border-radius:12px;padding:12px 6px;font:650 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.jako-x{width:100%;margin-top:10px}
 .tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
 .oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
 .asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden]{display:none}
@@ -261,6 +272,23 @@ var H=document.getElementById("haku"),I=document.getElementById("hakuIn"),T=docu
 try{var OA=JSON.parse(localStorage.getItem("uv_alue")||"null");if(OA){var pt=document.getElementById("paikTile");if(pt){pt.href=pt.dataset.base+OA[0]+"/";document.getElementById("paikTc").textContent="Oma alueesi: "+OA[1]+" →"}
  var oa=document.getElementById("omaAlue");if(oa){oa.href=OA[0]+"/";oa.textContent="Oma alueesi: "+OA[1]+" →";oa.hidden=false}}}catch(e){}
 var CC=document.querySelector(".chips a[aria-current]");if(CC){var CP=CC.parentNode;CP.scrollLeft=CC.offsetLeft-CP.clientWidth/2+CC.clientWidth/2}
+function jaa(u,o){
+ if(navigator.share){navigator.share({title:o,text:o,url:u}).catch(function(){});return}
+ var J=document.getElementById("jako");
+ if(!J){J=document.createElement("div");J.id="jako";J.hidden=true;document.body.appendChild(J);J.addEventListener("click",function(e){if(e.target===J||e.target.classList.contains("jako-x"))J.hidden=true})}
+ var e=encodeURIComponent,uu=e(u),oo=e(o);
+ J.innerHTML='<div class="jako-in" role="dialog" aria-label="Jaa uutinen"><p>'+esc(o)+'</p><div class="jako-g">'
+  +'<a target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
+  +'<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
+  +'<a target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
+  +'<a target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
+  +'<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
+  +'<button type="button" id="jakoKop">Kopioi linkki</button></div><button type="button" class="sec jako-x">Sulje</button></div>';
+ J.hidden=false;
+ document.getElementById("jakoKop").onclick=function(){var b=this;try{navigator.clipboard.writeText(u).then(function(){b.textContent="Kopioitu ✓"},function(){b.textContent=u})}catch(x){b.textContent=u}};
+}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".jaa");if(b){e.preventDefault();jaa(b.dataset.u,b.dataset.o)}});
+document.addEventListener("keydown",function(e){var J=document.getElementById("jako");if(e.key==="Escape"&&J&&!J.hidden)J.hidden=true});
 var M=document.querySelector('link[rel=manifest]');
 if(M&&"serviceWorker" in navigator){try{navigator.serviceWorker.register(M.href.replace("manifest.webmanifest","sw.js"))}catch(e){}}
 var A=document.getElementById("asenna"),ip=null;
@@ -270,7 +298,7 @@ if(!H)return;
 function hae(){if(!data)return;var q=I.value.toLowerCase().trim();
  if(q.length<2){T.innerHTML='<p class="lead">Hae kaikista uutisista kahden viikon ajalta. Esim. <b>kokoomus maahanmuutto</b> tai <b>sähkön hinta</b>.</p>';return}
  var w=q.split(/\s+/),r=[];for(var i=0;i<data.length&&r.length<120;i++){var u=data[i],t=(u.o+" "+u.k+" "+u.s).toLowerCase();if(w.every(function(x){return t.indexOf(x)>=0}))r.push(u)}
- T.innerHTML='<p class="lead">'+(r.length>=120?"Yli 120":r.length)+' osumaa</p>'+(r.length?'<div class="rows">'+r.map(function(u){var d=new Date(u.a);return'<article class="row"><time>'+d.getDate()+"."+(d.getMonth()+1)+'.</time><div><a class="ot" href="'+esc(u.l)+'" target="_blank" rel="noopener">'+esc(u.o)+'</a><div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span></div></div></article>'}).join("")+'</div>':"")}
+ T.innerHTML='<p class="lead">'+(r.length>=120?"Yli 120":r.length)+' osumaa</p>'+(r.length?'<div class="rows">'+r.map(function(u){var d=new Date(u.a);return'<article class="row"><time>'+d.getDate()+"."+(d.getMonth()+1)+'.</time><div><a class="ot" href="'+esc(u.l)+'" target="_blank" rel="noopener">'+esc(u.o)+'</a><div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span><button class="jaa" type="button" data-u="'+esc(u.l)+'" data-o="'+esc(u.o)+'" aria-label="Jaa uutinen"></button></div></div></article>'}).join("")+'</div>':"")}
 function avaa(){H.hidden=false;document.body.style.overflow="hidden";setTimeout(function(){I.focus()},30);
  if(!data){T.innerHTML='<p class="lead">Ladataan…</p>';fetch(H.dataset.feed).then(function(r){return r.json()}).then(function(d){data=d.u;hae()}).catch(function(){T.innerHTML='<p class="lead">Haku ei juuri nyt toimi. Yritä hetken päästä uudelleen.</p>'})}}
 function sulje(){H.hidden=true;document.body.style.overflow=""}
@@ -332,6 +360,9 @@ def kesk(u, r):
 RYHMA_N = {}     # uutisen tunnus -> montako mediaa samassa ryhmässä
 TANAAN = ""
 
+def jaa_nappi(u):
+    return f'<button class="jaa" type="button" data-u="{esc(u["l"])}" data-o="{esc(u["o"])}" aria-label="Jaa uutinen"></button>'
+
 def rivi(u, r, kuv=True):
     t = hki(u["a"], "%H.%M") if hki(u["a"], "%Y-%m-%d") == TANAAN else hki(u["a"], "%-d.%-m.")
     k = f'<div class="kuv">{esc(u["k"][:220])}</div>' if kuv and u["k"] and u["k"] != u["o"] else ""
@@ -339,7 +370,7 @@ def rivi(u, r, kuv=True):
     mm = f'<span class="mm">{n} mediaa</span>' if n > 1 else ""
     return (f'<article class="row" data-a="{u["a"]}"><time datetime="{u["a"]}">{t}</time><div>'
             f'<a class="ot" href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a>{k}'
-            f'<div class="mt">{lahde(u["s"])}{mm}{kesk(u, r)}</div></div></article>')
+            f'<div class="mt">{lahde(u["s"])}{mm}{kesk(u, r)}{jaa_nappi(u)}</div></div></article>')
 
 def lista_html(items, ryhmittele=True, r="./", kuv=True):
     if not items:
@@ -376,7 +407,7 @@ def tarina_html(g, r, iso=False):
         ens = '<span class="ensin">Ensin</span>' if not rivit else ""
         rivit.append(f'<li><div class="mt">{lahde(u["s"])}<span>{hki(u["a"], "%-d.%-m. klo %H.%M")}</span>{ens}</div><a href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a></li>')
     return (f'<article class="story{" iso" if iso else ""}"><div class="st-top"><span class="hot">{len(md)} mediaa</span>'
-            f'<span data-rel="{uusin}">{hki(uusin, "klo %H.%M")}</span></div>'
+            f'<span data-rel="{uusin}">{hki(uusin, "klo %H.%M")}</span>{jaa_nappi(dict(paa, o=puhdas_otsikko(paa["o"])))}</div>'
             f'<a class="ot" href="{esc(paa["l"])}" rel="noopener" target="_blank">{esc(puhdas_otsikko(paa["o"]))}</a>'
             f'<div class="srcs">{chips}</div>'
             f'<details class="vrt"><summary>Näin mediat otsikoivat ({len(rivit)})</summary><ol>{"".join(rivit)}</ol></details></article>')
@@ -528,7 +559,7 @@ function piirraSyote(){{
   if(p!==pv){{out+=(pv?'</div>':'')+'<div class="paiva">'+p+'</div><div class="rows">';pv=p}}
   const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,220))+'</div>':"";
   const t=new Date(u.a).toLocaleTimeString("fi-FI",{{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"}});
-  out+='<article class="row" data-a="'+u.a+'"><time>'+t+'</time><div><a class="ot" href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span>'+(window.KOOSTE&&KOOSTE.on&&u.i?'<a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'</div></div></article>';}}
+  out+='<article class="row" data-a="'+u.a+'"><time>'+t+'</time><div><a class="ot" href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span>'+(window.KOOSTE&&KOOSTE.on&&u.i?'<a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'<button class="jaa" type="button" data-u="'+esc(u.l)+'" data-o="'+esc(u.o)+'" aria-label="Jaa uutinen"></button></div></div></article>';}}
  $("syote").innerHTML=out+(pv?'</div>':'');if(window.KOOSTE)KOOSTE.maarat();}}
 $("kaikki").onclick=()=>{{Object.entries(PUU).forEach(([p,v])=>Object.keys(v.ala).forEach(a=>valitut.add(p+"/"+a)));muutos()}};
 $("tyhjenna").onclick=()=>{{valitut.clear();muutos()}};
