@@ -697,6 +697,13 @@ def main():
     uniq = uniq[:MAX_ITEMS]
     pv = nyt.isoformat()
     rakenna(uniq, pv)
+    # lähteiden tila -sivu (ei hakukoneisiin)
+    rivit = "".join(f'<tr><td>{esc(n)}</td><td>{h}</td><td>{l}</td><td>{"✓" if st == "ok" else esc(st)}</td></tr>' for n, h, l, st in tila)
+    okt = sum(1 for t in tila if t[3] == "ok")
+    kirjoita("tila/index.html", sivu(f"Lähteiden tila | {SITE}", "Uutislähteiden hakutilanne.", "tila/", 1,
+        f'<h1>Lähteiden tila</h1><p class="lead">Viimeisin ajo {hki(pv, "%-d.%-m. klo %H.%M")} · {okt}/{len(tila)} lähdettä ok · {len(uniq)} uutista tallessa</p>'
+        f'<div class="rows" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">'
+        f'<tr style="text-align:left;color:var(--mute)"><th>Lähde</th><th>Haettu</th><th>Uusia</th><th>Tila</th></tr>{rivit}</table></div>', noindex=True))
     json.dump({"p": pv, "tila": tila, "u": uniq}, open(os.path.join(DIR, "data.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     for t in tila:
         print(t)
