@@ -1,0 +1,58 @@
+name: Kerää ja julkaise
+# Kerää uutiset 10 minuutin välein ja julkaisee sivuston suoraan GitHub Pagesiin.
+# Kerätty data EI tallennu repoon (repo ei paisu). Edellinen tila haetaan julkaistulta sivulta.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  julkaise:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hae edellinen tila julkaistulta sivulta
+        env:
+          OMA_URL: ${{ vars.UUTISVAHTI_URL || 'https://miksu900.github.io/uutisvahti' }}
+          KOOSTE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
+        run: |
+          hae() {
+            if curl -fsSL --retry 3 "$1" -o /tmp/tila.json && python3 -c "import json,sys; json.load(open('/tmp/tila.json'))"; then
+              mv /tmp/tila.json "$2"; echo "tila haettu: $1"
+            else
+              echo "tilaa ei saatu ($1), käytetään repon kopiota"
+            fi
+          }
+          hae "$OMA_URL/data.json" data.json
+          hae "$KOOSTE_URL/data.json" kooste/data.json
+      - name: Oma uutisvahti
+        run: python3 keraa.py
+      - name: Laaja kooste
+        run: |
+          # Googlen aihehaut kerran tunnissa (ja käsin ajettaessa), median omat virrat joka kerta
+          if [ "$(date -u +%M)" -lt 10 ] || [ "${{ github.event_name }}" != "schedule" ]; then export KOOSTE_GOOGLE=1; else export KOOSTE_GOOGLE=0; fi
+          python3 kooste/keraa.py
+        env:
+          BASE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
+          SITE_NAME: ${{ vars.KOOSTE_NIMI || 'Uutiskooste' }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          KOOSTE_YLLAPITAJA: ${{ vars.KOOSTE_YLLAPITAJA }}
+          KOOSTE_YHTEYS: ${{ vars.KOOSTE_YHTEYS }}
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4

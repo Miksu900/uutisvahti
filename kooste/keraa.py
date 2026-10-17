@@ -66,6 +66,14 @@ def aika(s):
 def puhdista(s):
     return html.unescape(re.sub(r"<[^>]+>", " ", s or "")).replace("\xa0", " ").replace("­", "").strip()
 
+# WordPress-syötteiden ja muiden lähteiden lisäämä roskateksti ingressin perässä
+ROSKA = [re.compile(r"\s*The post\s.*$", re.S), re.compile(r"\s*(Continue reading|Lue lisää|Lue koko juttu)\b.*$", re.S | re.I),
+         re.compile(r"\s*\[(…|\.\.\.|&#8230;)\]\s*$")]
+def siivoa(k):
+    for rx in ROSKA:
+        k = rx.sub("", k or "")
+    return re.sub(r"\s{2,}", " ", k).strip()
+
 def parse(data, oletus):
     root = ET.fromstring(data)
     A = "{http://www.w3.org/2005/Atom}"
@@ -76,7 +84,7 @@ def parse(data, oletus):
         if not link:
             l = it.find(A + "link")
             link = l.get("href") if l is not None else ""
-        k = puhdista(txt(it, "description", A + "summary"))
+        k = siivoa(puhdista(txt(it, "description", A + "summary")))
         p = aika(txt(it, "pubDate", A + "updated", A + "published"))
         lahde, host = oletus, ""
         s = it.find("source")
@@ -97,11 +105,23 @@ def sana_re(sanat):
     return re.compile(r"(?<![a-zäöå0-9])(" + "|".join(re.escape(s) for s in sanat) + ")", re.I)
 LUOK = {f"{p}/{a}": sana_re(v["sanat"]) for p, pv in AIHEET.items() for a, v in pv["ala"].items()}
 
+# Sanat, jotka alkavat hakusanalla mutta tarkoittavat muuta (esim. "tilanne sähköistyy" ei ole energiauutinen)
+POIS = ("sähköist", "sähköinen", "sähköise", "sähköpost", "automaat", "autoritaar", "autenti", "matkalla", "matkaan",
+        "oikeusvaltio", "tähtää", "tähtäi", "kurssil", "sarjamurha", "vrt")
+SANA_LOPPU = re.compile(r"[a-zäöå0-9-]*", re.I)
+def osumat(rx, teksti):
+    out = set()
+    for m in rx.finditer(teksti or ""):
+        koko = (m.group(0) + SANA_LOPPU.match(teksti, m.end()).group(0)).lower()
+        if not koko.startswith(POIS):
+            out.add(m.group(0).lower())
+    return out
+
 def luokittele(it):
     t = []
     for k, rx in LUOK.items():
-        otsikko_osumat = {m.lower() for m in rx.findall(it["o"])}
-        kuv_osumat = {m.lower() for m in rx.findall(it["k"])}
+        otsikko_osumat = osumat(rx, it["o"])
+        kuv_osumat = osumat(rx, it["k"])
         if otsikko_osumat or len(kuv_osumat) >= 2:
             t.append(k)
     return t
@@ -319,6 +339,8 @@ def main():
     except Exception:
         vanha = {}
     uutiset = {u["l"]: u for u in (vanha.values() if isinstance(vanha, dict) else vanha)}
+    for u in uutiset.values():
+        u["k"] = siivoa(u.get("k", ""))
     tila = []
     if TESTI:
         for i in range(30):
@@ -327,6 +349,8 @@ def main():
     else:
         haut = [(n, u, None) for n, u in SUORAT]
         for p, pv in AIHEET.items():
+            if os.environ.get("KOOSTE_GOOGLE", "1") != "1":
+                break  # Googlen aihehaut ajetaan harvemmin (ks. työnkulku), median omat virrat joka kerta
             for a, av in pv["ala"].items():
                 url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(f"({av['haku']}) when:7d") + "&hl=fi&gl=FI&ceid=FI:fi"
                 haut.append((f"Google: {p}/{a}", url, f"{p}/{a}"))
