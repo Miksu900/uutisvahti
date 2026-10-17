@@ -360,6 +360,7 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, no
 </main>
 <footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot yhteen paikkaan noin 10 minuutin välein. Saman tapahtuman uutiset eri medioista ryhmitellään automaattisesti, jotta näet yhdellä silmäyksellä, mistä puhutaan ja miten eri mediat asian otsikoivat. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen; jutut luetaan lähteen omalla sivulla. Aiheet ja ryhmät tunnistetaan automaattisesti, joten ne voivat joskus olla epätarkkoja.</p><p><a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
 {JS}
+<!-- Cloudflare Web Analytics (evästeetön) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "6b71f4e21fa24282bc0932cdcb3c1b51"}}'></script>
 </body></html>"""
 
 def kesk(u, r):
