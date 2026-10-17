@@ -379,6 +379,9 @@ def kesk(u, r):
         return ""
     return f'<a class="kesk" data-id="{u["i"]}" href="{r}keskustelu/?i={u["i"]}">Keskustele</a>'
 
+EDUSKUNTA_LAATIKKO = ('<a class="tile laaja" href="https://eduskuntaseuranta.fi/aanestykset/" rel="noopener" style="margin:0 0 14px">'
+    '<b>Miten kansanedustajat äänestivät?</b><span class="th">Jokainen eduskunnan äänestys, edustaja ja puolue avoimesta datasta: eduskuntaseuranta.fi</span></a>')
+
 RYHMA_N = {}     # uutisen tunnus -> montako mediaa samassa ryhmässä
 TANAAN = ""
 
@@ -519,6 +522,8 @@ def rakenna(items, paivitetty):
         chips = "".join(f'<a href="{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
         h = kuumat(lambda g: any(t.startswith(p + "/") for u in g for t in u["t"]), 48, 3)
         runko = f'<h1>{esc(pv["nimi"])}</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>'
+        if p == "politiikka":
+            runko += EDUSKUNTA_LAATIKKO
         if p == "paikalliset":
             runko += '<a class="btn oma-alue" id="omaAlue" data-base="" href="#" hidden></a>'
         if h:
