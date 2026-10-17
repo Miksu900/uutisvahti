@@ -67,7 +67,7 @@ def parse(data, oletus_lahde):
         if not link:
             l = it.find("{http://www.w3.org/2005/Atom}link")
             link = l.get("href") if l is not None else ""
-        kuv = puhdista(teksti(it, "description", "{http://www.w3.org/2005/Atom}summary"))
+        kuv = re.sub(r"\s*The post\s.*$", "", puhdista(teksti(it, "description", "{http://www.w3.org/2005/Atom}summary")), flags=re.S).strip()
         pvm = aika(teksti(it, "pubDate", "{http://www.w3.org/2005/Atom}updated", "{http://www.w3.org/2005/Atom}published"))
         lahde = oletus_lahde
         s = it.find("source")
