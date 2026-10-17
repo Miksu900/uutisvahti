@@ -70,6 +70,13 @@ def puhdista(s):
 # WordPress-syötteiden ja muiden lähteiden lisäämä roskateksti ingressin perässä
 ROSKA = [re.compile(r"\s*The post\s.*$", re.S), re.compile(r"\s*(Continue reading|Lue lisää|Lue koko juttu)\b.*$", re.S | re.I),
          re.compile(r"\s*\[(…|\.\.\.|&#8230;)\]\s*$")]
+INGRESSI_MAX = 100   # lehtikustantajan oikeus: vain hyvin lyhyt ote julkaistaan
+def lyhyt(k, n=INGRESSI_MAX):
+    k = (k or "").strip()
+    if len(k) <= n:
+        return k
+    return k[:n].rsplit(" ", 1)[0].rstrip(" ,.;:–-") + "…"
+
 def siivoa(k):
     for rx in ROSKA:
         k = rx.sub("", k or "")
@@ -376,7 +383,7 @@ def jaa_nappi(u):
 
 def rivi(u, r, kuv=True):
     t = hki(u["a"], "%H.%M") if hki(u["a"], "%Y-%m-%d") == TANAAN else hki(u["a"], "%-d.%-m.")
-    k = f'<div class="kuv">{esc(u["k"][:220])}</div>' if kuv and u["k"] and u["k"] != u["o"] else ""
+    k = f'<div class="kuv">{esc(lyhyt(u["k"]))}</div>' if kuv and u["k"] and u["k"] != u["o"] else ""
     n = RYHMA_N.get(u.get("i"), 1)
     mm = f'<span class="mm">{n} mediaa</span>' if n > 1 else ""
     return (f'<article class="row" data-a="{u["a"]}"><time datetime="{u["a"]}">{t}</time><div>'
@@ -568,7 +575,7 @@ function piirraSyote(){{
  for(const u of lista){{
   const p=new Date(u.a).toLocaleDateString("fi-FI",{{timeZone:"Europe/Helsinki",day:"numeric",month:"numeric",year:"numeric"}});
   if(p!==pv){{out+=(pv?'</div>':'')+'<div class="paiva">'+p+'</div><div class="rows">';pv=p}}
-  const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,220))+'</div>':"";
+  const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k)+'</div>':"";
   const t=new Date(u.a).toLocaleTimeString("fi-FI",{{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"}});
   out+='<article class="row" data-a="'+u.a+'"><time>'+t+'</time><div><a class="ot" href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span>'+(window.KOOSTE&&KOOSTE.on&&u.i?'<a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'<button class="jaa" type="button" data-u="'+esc(u.l)+'" data-o="'+esc(u.o)+'" aria-label="Jaa uutinen"></button></div></div></article>';}}
  $("syote").innerHTML=out+(pv?'</div>':'');if(window.KOOSTE)KOOSTE.maarat();}}
@@ -690,6 +697,8 @@ def main():
                     google_esto = True   # Google rajoittaa: ei jatketa tällä ajolla
             time.sleep(1.5 if kiinteä else 0.3)
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
+    for u in uutiset.values():   # luokittelu tehty koko ingressillä, julkaistaan vain lyhyt ote
+        u["k"] = lyhyt(u.get("k", ""))
     items = [u for u in uutiset.values() if (u["a"] or "") >= raja]
     # sama otsikko eri virroista: yhdistä aiheet, pidä yksi (suosi median omaa virtaa)
     items.sort(key=lambda v: (avain(v), "news.google" in v["l"], v["a"]))
