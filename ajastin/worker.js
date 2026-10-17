@@ -17,3 +17,5 @@ export default {
     return new Response("Nytpuhutaan.fi ajastin toimii");
   }
 };
+
+// Julkaistaan Cloudflareen automaattisesti, kun tämä kansio muuttuu (Workers Builds).
