@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Laaja uutiskooste: pääaiheet ja alaaiheet, vain suomalaiset (.fi) lähteet.
 Hakee RSS-virrat ja Google Uutisten aihehaut, luokittelee uutiset, rakentaa staattiset aihesivut, Oma syöte -sivun, sitemapin ja robotsin."""
-import os, sys, re, json, time, html, urllib.request, urllib.parse
+import os, sys, re, json, time, html, hashlib, urllib.request, urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
@@ -16,6 +16,14 @@ SITE = os.environ.get("SITE_NAME", "Uutiskooste")
 TESTI = os.environ.get("KOOSTE_TESTI") == "1"
 UA = "Mozilla/5.0 (compatible; uutiskooste/1.0; oma uutiskooste)"
 SAILYTYS_PV, MAX_ITEMS = 14, 3500
+SB_URL = os.environ.get("SUPABASE_URL", "").strip().rstrip("/")
+SB_KEY = os.environ.get("SUPABASE_ANON_KEY", "").strip()
+KESKUSTELU = bool(SB_URL and SB_KEY)
+YLLAPITAJA = os.environ.get("KOOSTE_YLLAPITAJA", "").strip() or "[täydennä: ylläpitäjän nimi tai yritys]"
+YHTEYS = os.environ.get("KOOSTE_YHTEYS", "").strip() or "[täydennä: sähköpostiosoite]"
+
+def tunnus(link):
+    return hashlib.sha1(link.encode("utf-8")).hexdigest()[:16]
 HKI = ZoneInfo("Europe/Helsinki")
 
 SUORAT = [
@@ -127,6 +135,9 @@ h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margi
 .chips a[aria-current]{background:var(--acc);color:#14161a}
 .item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
 .item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
+.item a.kesk{display:inline;font:600 13px/1.3 system-ui,sans-serif;color:var(--acc);margin-left:8px}
+button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
+textarea,input[type=email]{font-family:inherit}
 .kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
 .meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
 .paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
@@ -142,7 +153,7 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
 def rel(d):
     return "../" * d if d else "./"
 
-def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None):
+def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, noindex=False):
     r = rel(syvyys)
     nav = "".join(f'<a href="{r}{p}/"{" aria-current=page" if p == aktiivinen else ""}>{esc(v["nimi"])}</a>' for p, v in AIHEET.items())
     kanon = f"{BASE}/{polku}" if polku else f"{BASE}/"
@@ -153,15 +164,20 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None):
 <meta name="description" content="{esc(kuvaus)}">
 <link rel="canonical" href="{kanon}">
 <meta property="og:title" content="{esc(otsikko)}"><meta property="og:description" content="{esc(kuvaus)}"><meta property="og:type" content="website"><meta property="og:locale" content="fi_FI"><meta property="og:url" content="{kanon}">
-<meta name="robots" content="index,follow,max-snippet:-1">
-{ld}<style>{CSS}</style></head><body><main>
+<meta name="robots" content="{"noindex,nofollow" if noindex else "index,follow,max-snippet:-1"}">
+{ld}<style>{CSS}</style><script src="{r}config.js"></script><script src="{r}tuki.js"></script></head><body><main>
 <header class="top"><a class="logo" href="{r}">{esc(SITE)}</a><a class="btn sec" href="{r}oma/">Oma syöte</a></header>
 <nav class="paa" aria-label="Pääaiheet">{nav}</nav>
 {runko}
-<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p></footer>
+<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p><p><a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
 </main></body></html>"""
 
-def lista_html(items, ryhmittele=True):
+def kesk(u, r):
+    if not KESKUSTELU:
+        return ""
+    return f' · <a class="kesk" data-id="{u["i"]}" href="{r}keskustelu/?i={u["i"]}">Keskustele</a>'
+
+def lista_html(items, ryhmittele=True, r="./"):
     out, pv = [], ""
     for u in items:
         if ryhmittele:
@@ -170,7 +186,7 @@ def lista_html(items, ryhmittele=True):
                 out.append(f'<div class="paiva">{p}</div>')
                 pv = p
         k = f'<div class="kuv">{esc(u["k"][:170])}{"…" if len(u["k"]) > 170 else ""}</div>' if u["k"] and u["k"] != u["o"] else ""
-        out.append(f'<article class="item"><a href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a>{k}<div class="meta">{esc(u["s"])} · {hki(u["a"], "%-d.%-m. klo %H.%M")}</div></article>')
+        out.append(f'<article class="item"><a href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a>{k}<div class="meta">{esc(u["s"])} · {hki(u["a"], "%-d.%-m. klo %H.%M")}{kesk(u, r)}</div></article>')
     return "\n".join(out) or '<p class="lead">Ei uutisia vielä. Sivu päivittyy tunnin välein.</p>'
 
 def itemlist_ld(nimi, items, polku):
@@ -183,6 +199,8 @@ def kirjoita(polku, sisalto):
     open(p, "w", encoding="utf-8").write(sisalto)
 
 def rakenna(items, paivitetty):
+    for u in items:
+        u["i"] = tunnus(u["l"])
     por = {}
     for u in items:
         for t in u["t"]:
@@ -193,19 +211,19 @@ def rakenna(items, paivitetty):
     for p, pv in AIHEET.items():
         yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])][:5]
         chips = "".join(f'<a href="{p}/{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
-        runko += f'<h2><a href="{p}/" style="color:inherit">{esc(pv["nimi"])}</a></h2><div class="chips">{chips}</div>{lista_html(yl, False)}'
+        runko += f'<h2><a href="{p}/" style="color:inherit">{esc(pv["nimi"])}</a></h2><div class="chips">{chips}</div>{lista_html(yl, False, "./")}'
     kirjoita("index.html", sivu(f"{SITE}: Suomen uutiset aiheittain", "Suomalaisten medioiden uutiset aiheittain: politiikka, talous, yhteiskunta, lifestyle, teknologia, urheilu, viihde ja liikenne. Valitse omat aiheesi.", "", 0, runko, {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": BASE + "/", "inLanguage": "fi"}))
     for p, pv in AIHEET.items():
         yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])][:80]
         chips = "".join(f'<a href="{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
-        runko = f'<h1>{esc(pv["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>{lista_html(yl)}'
+        runko = f'<h1>{esc(pv["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>{lista_html(yl, True, "../")}'
         kirjoita(f"{p}/index.html", sivu(f"{pv['nimi']}: uusimmat uutiset | {SITE}", pv["kuvaus"], f"{p}/", 1, runko, itemlist_ld(pv["nimi"], yl, f"{p}/"), p))
         urls.append((f"{p}/", paivitetty))
         for a, av in pv["ala"].items():
             yl = por.get(f"{p}/{a}", [])[:80]
             chips = "".join(f'<a href="../{b}/"{" aria-current=page" if b == a else ""}>{esc(bv["nimi"])}</a>' for b, bv in pv["ala"].items())
             kuv = f'{av["nimi"]}: uusimmat suomalaiset uutiset yhdessä paikassa. {pv["nimi"]}.'
-            runko = f'<h1>{esc(av["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["nimi"])} · {len(yl)} uutista viimeisen {SAILYTYS_PV} päivän ajalta.</p><div class="chips">{chips}</div>{lista_html(yl)}'
+            runko = f'<h1>{esc(av["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["nimi"])} · {len(yl)} uutista viimeisen {SAILYTYS_PV} päivän ajalta.</p><div class="chips">{chips}</div>{lista_html(yl, True, "../../")}'
             kirjoita(f"{p}/{a}/index.html", sivu(f"{av['nimi']}: uusimmat uutiset | {SITE}", kuv, f"{p}/{a}/", 2, runko, itemlist_ld(av["nimi"], yl, f"{p}/{a}/"), p))
             urls.append((f"{p}/{a}/", paivitetty))
     # Oma syöte
@@ -247,8 +265,8 @@ function piirraSyote(){{
   if(p!==pv){{out+='<div class="paiva">'+p+'</div>';pv=p}}
   const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,170))+(u.k.length>170?"…":"")+'</div>':"";
   const t=new Date(u.a).toLocaleTimeString("fi-FI",{{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"}});
-  out+='<article class="item"><a href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="meta">'+esc(u.s)+' · '+t+'</div></article>';}}
- $("syote").innerHTML=out;}}
+  out+='<article class="item"><a href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="meta">'+esc(u.s)+' · '+t+(window.KOOSTE&&KOOSTE.on&&u.i?' · <a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'</div></article>';}}
+ $("syote").innerHTML=out;if(window.KOOSTE)KOOSTE.maarat();}}
 $("kaikki").onclick=()=>{{Object.entries(PUU).forEach(([p,v])=>Object.keys(v.ala).forEach(a=>valitut.add(p+"/"+a)));muutos()}};
 $("tyhjenna").onclick=()=>{{valitut.clear();muutos()}};
 $("jaa").onclick=()=>{{const u=location.href.split("#")[0]+"#a="+[...valitut].join(",");try{{navigator.clipboard.writeText(u);$("tila").textContent="Linkki kopioitu."}}catch(e){{$("tila").textContent=u}}}};
@@ -257,7 +275,39 @@ fetch("../feed.json").then(r=>r.json()).then(d=>{{data=d.u;piirraSyote()}}).catc
 </script>"""
     kirjoita("oma/index.html", sivu(f"Oma syöte: valitse itse aiheet | {SITE}", "Rakenna oma uutissyöte: valitse politiikka-, talous-, lifestyle- ja muista aiheista ne alaaiheet, jotka kiinnostavat sinua.", "oma/", 1, oma))
     urls.append(("oma/", paivitetty))
-    kirjoita("feed.json", json.dumps({"p": paivitetty, "u": [{"o": u["o"], "l": u["l"], "s": u["s"], "a": u["a"], "k": u["k"], "t": u["t"]} for u in items[:2500]]}, ensure_ascii=False, separators=(",", ":")))
+    # Keskustelu: config, keskustelu- ja moderointisivu, säännöt, tietosuoja
+    kirjoita("config.js", "window.KOOSTE_CONF=" + (json.dumps({"url": SB_URL, "key": SB_KEY}) if KESKUSTELU else "{}") + ";\n")
+    kirjoita("keskustelu/index.html", sivu(f"Keskustelu | {SITE}", "Keskustele uutisesta.", "keskustelu/", 1, '<div id="app"><p class="lead">Ladataan…</p></div><script src="../keskustelu.js"></script>', noindex=True))
+    kirjoita("moderointi/index.html", sivu(f"Moderointi | {SITE}", "Ylläpitäjän näkymä.", "moderointi/", 1, '<h1>Moderointi</h1><div id="app"><p class="lead">Ladataan…</p></div><script src="../moderointi.js"></script>', noindex=True))
+    saannot = f"""<h1>Keskustelusäännöt</h1>
+<p class="lead">Nämä säännöt koskevat kaikkia {esc(SITE)}-palvelun kommentteja.</p>
+<h2>Perusasiat</h2>
+<p>Kommentit voi lukea ilman kirjautumista. Kommentointi vaatii kirjautumisen sähköpostilinkillä ja nimimerkin. Kommentit julkaistaan heti ilman etukäteistarkastusta. Jokainen vastaa itse kirjoittamastaan.</p>
+<h2>Mitä ei saa kirjoittaa</h2>
+<p>Kommentteja, jotka ovat selvästi laittomia, poistetaan. Tällaisia ovat esimerkiksi kunnianloukkaus, uhkaukset, kiihottaminen kansanryhmää vastaan, toisen henkilötietojen paljastaminen ja rikoksiin yllyttäminen. Myös roskaposti ja mainonta poistetaan.</p>
+<h2>Ilmianna kommentti</h2>
+<p>Jokaisen kommentin vieressä on Ilmianna-nappi. Ilmoitukset menevät ylläpitäjälle, joka tarkistaa ne ja poistaa selvästi laittomat kommentit. Mielipide, josta olet eri mieltä, ei ole sellaisenaan syy poistoon.</p>
+<h2>Oma kommentti</h2>
+<p>Voit poistaa oman kommenttisi milloin tahansa. Kommenttia ei voi muokata, mutta sen voi poistaa ja kirjoittaa uudelleen.</p>
+<h2>Ylläpito</h2>
+<p>{esc(YLLAPITAJA)}. Yhteys: {esc(YHTEYS)}</p>"""
+    kirjoita("saannot/index.html", sivu(f"Keskustelusäännöt | {SITE}", "Keskustelun säännöt, kommenttien poisto ja ilmiannot.", "saannot/", 1, saannot))
+    tieto = f"""<h1>Tietosuojaseloste</h1>
+<p class="lead">Luonnos. Täydennä ylläpitäjän tiedot ja tarkistuta tarvittaessa asiantuntijalla ennen julkaisua.</p>
+<h2>Rekisterinpitäjä</h2><p>{esc(YLLAPITAJA)}. Yhteys: {esc(YHTEYS)}</p>
+<h2>Mitä tietoja kerätään</h2>
+<p>Uutisten lukeminen ei vaadi kirjautumista, eikä silloin kerätä henkilötietoja. Kun kirjaudut keskustelemaan, tallennamme sähköpostiosoitteesi (kirjautumista varten), valitsemasi nimimerkin ja kirjoittamasi kommentit aikaleimoineen. Ilmiannoista tallennetaan ilmiantajan tunniste ja kirjoittamasi syy.</p>
+<h2>Mihin tietoja käytetään</h2>
+<p>Sähköpostiosoitetta käytetään vain kirjautumiseen ja palvelun turvallisuuteen. Nimimerkki ja kommentit näkyvät julkisesti. Sähköpostiosoitettasi ei näytetä muille eikä luovuteta eteenpäin.</p>
+<h2>Käsittelyn peruste ja säilytys</h2>
+<p>Käsittely perustuu suostumukseesi, kun kirjaudut palveluun. Tietoja säilytetään, kunnes poistat kommenttisi tai pyydät tilisi poistamista. Voit pyytää tietojesi tarkastamista tai poistamista ottamalla yhteyttä ylläpitäjään.</p>
+<h2>Tietojen sijainti</h2>
+<p>Käyttäjätiedot ja kommentit tallennetaan Supabase-palveluun. Sivusto on julkaistu GitHub Pagesissa. Palveluntarjoajat voivat käsitellä tietoja EU:n ulkopuolella, mikä perustuu niiden omiin sopimusehtoihin.</p>
+<h2>Evästeet ja selaimen tallennus</h2>
+<p>Palvelu tallentaa selaimeesi kirjautumistiedon ja Oma syöte -valinnat. Mainos- tai seurantaevästeitä ei käytetä.</p>"""
+    kirjoita("tietosuoja/index.html", sivu(f"Tietosuojaseloste | {SITE}", "Mitä tietoja palvelu kerää ja miten niitä käytetään.", "tietosuoja/", 1, tieto))
+    urls.append(("saannot/", paivitetty)); urls.append(("tietosuoja/", paivitetty))
+    kirjoita("feed.json", json.dumps({"p": paivitetty, "u": [{"i": u["i"], "o": u["o"], "l": u["l"], "s": u["s"], "a": u["a"], "k": u["k"], "t": u["t"]} for u in items[:2500]]}, ensure_ascii=False, separators=(",", ":")))
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}/{p}</loc><lastmod>{m[:10]}</lastmod></url>\n" for p, m in urls) + "</urlset>\n"
     kirjoita("sitemap.xml", sm)
     kirjoita("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")

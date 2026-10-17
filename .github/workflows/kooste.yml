@@ -17,6 +17,10 @@ jobs:
         env:
           BASE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
           SITE_NAME: ${{ vars.KOOSTE_NIMI || 'Uutiskooste' }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          KOOSTE_YLLAPITAJA: ${{ vars.KOOSTE_YLLAPITAJA }}
+          KOOSTE_YHTEYS: ${{ vars.KOOSTE_YHTEYS }}
       - name: Tallenna
         run: |
           git config user.name "uutiskooste"
