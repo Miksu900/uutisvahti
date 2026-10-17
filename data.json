@@ -1,5 +1,5 @@
 {
- "paivitetty": "2026-10-17T06:52:44.834399+00:00",
+ "paivitetty": "2026-10-17T11:33:47.036882+00:00",
  "tila": [
   [
    "Yle",
@@ -9,7 +9,7 @@
   ],
   [
    "Helsingin Sanomat",
-   98,
+   99,
    4,
    "ok"
   ],
@@ -22,7 +22,7 @@
   [
    "Iltalehti",
    20,
-   1,
+   0,
    "ok"
   ],
   [
@@ -34,7 +34,7 @@
   [
    "Verkkouutiset",
    100,
-   7,
+   6,
    "ok"
   ],
   [
@@ -51,14 +51,14 @@
   ],
   [
    "Google: islam",
-   5,
+   4,
    2,
    "ok"
   ],
   [
    "Google: muslimi",
-   3,
-   3,
+   4,
+   4,
    "ok"
   ],
   [
@@ -69,13 +69,13 @@
   ],
   [
    "Google: maahanmuutto",
-   30,
-   18,
+   31,
+   19,
    "ok"
   ],
   [
    "Google: turvapaikanhakija",
-   2,
+   1,
    0,
    "ok"
   ],
@@ -143,6 +143,32 @@
     ]
    },
    "haettu": "2026-10-17T06:52:44.834399+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PdmhRVHFWUTRLajJKU1M3WE9UOWphMnE5U1ZlaDZxT2VYUXlFVkJCaHFKdVVBai1hODNERVNIUWRRd3ZNYmNSMTZsM2RoUlF0cmRlSER4N0NjamxM?oc=5": {
+   "otsikko": "Maahanmuutto | Lapsena Elias Gebremedhin ihmetteli, miksi hän on joukkueensa ainoa maahanmuuttaja",
+   "linkki": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9PdmhRVHFWUTRLajJKU1M3WE9UOWphMnE5U1ZlaDZxT2VYUXlFVkJCaHFKdVVBai1hODNERVNIUWRRd3ZNYmNSMTZsM2RoUlF0cmRlSER4N0NjamxM?oc=5",
+   "kuvaus": "",
+   "lahde": "Helsingin Sanomat",
+   "aika": "2026-10-17T05:30:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T11:33:47.036882+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMimAFBVV95cUxPcDltZm5aVzJVMGpZUnFOdzVlWDVEcjdiMldYVGZWNlh2bFp0eGpSUmE3TVA2bVY4LUtEdjFvcWdaYUlZVWZ1RVp6TG9rMmFyWGZJWEZXajlPSnhDZjlybXRiNnE5ei13MmE5S1BqTHZRMWt4UU9nQzhZeFpNNExfdl9LTTR3bGVEQW16a2lwVE5RT2M1MUhwMQ?oc=5": {
+   "otsikko": "FIFA rankaisee Espanjaa islamofobisista huudoista Egyptin ottelussa",
+   "linkki": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPcDltZm5aVzJVMGpZUnFOdzVlWDVEcjdiMldYVGZWNlh2bFp0eGpSUmE3TVA2bVY4LUtEdjFvcWdaYUlZVWZ1RVp6TG9rMmFyWGZJWEZXajlPSnhDZjlybXRiNnE5ei13MmE5S1BqTHZRMWt4UU9nQzhZeFpNNExfdl9LTTR3bGVEQW16a2lwVE5RT2M1MUhwMQ?oc=5",
+   "kuvaus": "",
+   "lahde": "Insajderi",
+   "aika": "2026-10-16T22:18:17+00:00",
+   "aiheet": {
+    "Islam": [
+     "islam"
+    ]
+   },
+   "haettu": "2026-10-17T11:33:47.036882+00:00"
   },
   "https://www.hs.fi/politiikka/art-2000012348679.html": {
    "otsikko": "Maahan­muutto | Orpo: Kiintiö­pakolaisen valinta sopeutumis­kyvyn perusteella ”ihan luonnollinen peruste”",
@@ -365,6 +391,19 @@
     ]
    },
    "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiQkFVX3lxTE9oUDNLSlVmdGZYMktBR0JHZFlIbkNXY3ppUFpIT0k3b3pCQ3lfXzBuUVJzckFUQ3NTZEk0OUw3RFRVQQ?oc=5": {
+   "otsikko": "Kokoomus kiristäisi maahanmuuttopolitiikkaa tuntuvasti – vihreät tyrmistyi: ”Kylmäävä paperi”",
+   "linkki": "https://news.google.com/rss/articles/CBMiQkFVX3lxTE9oUDNLSlVmdGZYMktBR0JHZFlIbkNXY3ppUFpIT0k3b3pCQ3lfXzBuUVJzckFUQ3NTZEk0OUw3RFRVQQ?oc=5",
+   "kuvaus": "",
+   "lahde": "Yle",
+   "aika": "2026-10-16T07:39:16+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T11:33:47.036882+00:00"
   },
   "https://www.verkkouutiset.fi/a/kokoomus-haluaa-valikoivaa-maahanmuuttoa-tyonteko-ja-kotoutuminen-ehtojen-ytimeen/": {
    "otsikko": "Kokoomus haluaa valikoivaa maahanmuuttoa: Työnteko ja kotoutuminen ehtojen ytimeen",
