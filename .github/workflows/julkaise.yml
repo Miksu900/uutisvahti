@@ -37,11 +37,13 @@ jobs:
           hae "$OMA_URL/data.json" data.json
           hae "$KOOSTE_URL/data.json" kooste/data.json
       - name: Oma uutisvahti
-        run: python3 keraa.py
+        run: |
+          if [ $(( 10#$(date -u +%M) )) -lt 10 ]; then export OMA_GOOGLE=1; else export OMA_GOOGLE=0; fi
+          python3 keraa.py
       - name: Laaja kooste
         run: |
-          # Googlen aihehaut kerran tunnissa (ja käsin ajettaessa), median omat virrat joka kerta
-          if [ "$(date -u +%M)" -lt 10 ] || [ "${{ github.event_name }}" != "schedule" ]; then export KOOSTE_GOOGLE=1; else export KOOSTE_GOOGLE=0; fi
+          # Googlen aihehaut jaetaan kuuteen osaan: tämä ajo tekee osan (minuutti / 10), median omat virrat joka kerta
+          export KOOSTE_GOOGLE_OSA=$(( 10#$(date -u +%M) / 10 ))
           python3 kooste/keraa.py
         env:
           BASE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}

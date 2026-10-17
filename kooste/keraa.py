@@ -597,13 +597,23 @@ def main():
             uutiset[f"https://example.fi/{i}"] = {"o": f"Testiuutinen {i} {k}", "l": f"https://example.fi/{i}", "s": "Testi", "h": "example.fi", "a": (nyt - timedelta(hours=i)).isoformat(), "k": "ingressi", "t": [k]}
     else:
         haut = [(n, u, None) for n, u in SUORAT]
+        # Googlen aihehaut jaetaan kuuteen osaan: jokainen 10 min ajo tekee yhden osan, joten jokainen haku
+        # ajetaan kerran tunnissa eikä Googlea kuormiteta kerralla (muuten se vastaa 503).
+        osa = os.environ.get("KOOSTE_GOOGLE_OSA", "").strip()
+        gi = 0
         for p, pv in AIHEET.items():
             if os.environ.get("KOOSTE_GOOGLE", "1") != "1":
-                break  # Googlen aihehaut ajetaan harvemmin (ks. työnkulku), median omat virrat joka kerta
+                break
             for a, av in pv["ala"].items():
-                url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(f"({av['haku']}) when:7d") + "&hl=fi&gl=FI&ceid=FI:fi"
-                haut.append((f"Google: {p}/{a}", url, f"{p}/{a}"))
+                if not osa or gi % 6 == int(osa) % 6:
+                    url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(f"({av['haku']}) when:7d") + "&hl=fi&gl=FI&ceid=FI:fi"
+                    haut.append((f"Google: {p}/{a}", url, f"{p}/{a}"))
+                gi += 1
+        google_esto = False
         for nimi, url, kiinteä in haut:
+            if kiinteä and google_esto:
+                tila.append([nimi, 0, 0, "ohitettu: Google rajoitti"])
+                continue
             try:
                 lista = parse(hae(url), nimi)
                 lisatty = 0
@@ -630,7 +640,9 @@ def main():
                 tila.append([nimi, len(lista), lisatty, "ok"])
             except Exception as e:
                 tila.append([nimi, 0, 0, "VIRHE " + str(e)[:80]])
-            time.sleep(0.4)
+                if kiinteä and ("503" in str(e) or "429" in str(e)):
+                    google_esto = True   # Google rajoittaa: ei jatketa tällä ajolla
+            time.sleep(1.5 if kiinteä else 0.3)
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
     items = [u for u in uutiset.values() if (u["a"] or "") >= raja]
     # sama otsikko eri virroista: yhdistä aiheet, pidä yksi (suosi median omaa virtaa)

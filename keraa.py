@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Hakee suomalaisten medioiden RSS-virrat, suodattaa islam- ja maahanmuuttouutiset ja rakentaa index.html."""
-import json, re, sys, urllib.request, urllib.parse, html
+import os, time, json, re, sys, urllib.request, urllib.parse, html
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
@@ -100,7 +100,8 @@ def main():
     tila = []
     uusia = 0
     nyt = datetime.now(timezone.utc)
-    for nimi, url in SUORAT + GOOGLE:
+    # Google-haut kerran tunnissa (työnkulku asettaa OMA_GOOGLE), median omat virrat joka ajolla
+    for nimi, url in SUORAT + (GOOGLE if os.environ.get("OMA_GOOGLE", "1") == "1" else []):
         try:
             lista = parse(hae(url), nimi)
             osumia = 0
@@ -116,6 +117,8 @@ def main():
                     if not it["aika"]:
                         it["aika"] = nyt.isoformat()
                     uutiset[it["linkki"]] = it
+            if "google" in url:
+                time.sleep(1.5)
             tila.append([nimi if "google" not in url else "Google: " + urllib.parse.parse_qs(urllib.parse.urlparse(url).query)["q"][0].replace(" when:7d", ""), len(lista), osumia, "ok"])
         except Exception as e:
             tila.append([nimi, 0, 0, "VIRHE " + str(e)[:80]])
