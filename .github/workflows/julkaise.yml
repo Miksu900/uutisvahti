@@ -30,8 +30,8 @@ jobs:
           restore-keys: tila-
       - name: Ota tila käyttöön
         env:
-          OMA_URL: ${{ vars.UUTISVAHTI_URL || 'https://miksu900.github.io/uutisvahti' }}
-          KOOSTE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
+          OMA_URL: ${{ vars.UUTISVAHTI_URL || 'https://nytpuhutaan.fi/vahti' }}
+          KOOSTE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://nytpuhutaan.fi' }}
         run: |
           # 1) välimuisti (aina edellisen ajon tulos), 2) julkaistu sivu, 3) repon kopio
           ota() {
@@ -55,8 +55,8 @@ jobs:
           export KOOSTE_GOOGLE_OSA=$(( 10#$(date -u +%M) / 10 ))
           python3 kooste/keraa.py
         env:
-          BASE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
-          SITE_NAME: ${{ vars.KOOSTE_NIMI || 'Uutiskooste' }}
+          BASE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://nytpuhutaan.fi' }}
+          SITE_NAME: ${{ vars.KOOSTE_NIMI || 'Nytpuhutaan.fi' }}
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
           KOOSTE_YLLAPITAJA: ${{ vars.KOOSTE_YLLAPITAJA }}
@@ -68,9 +68,16 @@ jobs:
         with:
           path: .tila
           key: tila-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Kokoa julkaistava sivusto
+        run: |
+          # nytpuhutaan.fi: laaja kooste juureen, oma uutisvahti alipolkuun /vahti/
+          rm -rf _site && mkdir -p _site/vahti
+          cp -r kooste/. _site/
+          cp index.html data.json _site/vahti/
+          cp kooste/404.html _site/404.html 2>/dev/null || true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deploy
         uses: actions/deploy-pages@v4

@@ -12,8 +12,8 @@ from aiheet import AIHEET
 from ryhmat import ryhmittele, mediat, puhdas_otsikko, muissa_medioissa
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-BASE = os.environ.get("BASE_URL", "https://miksu900.github.io/uutisvahti/kooste").rstrip("/")
-SITE = os.environ.get("SITE_NAME", "Uutiskooste")
+BASE = os.environ.get("BASE_URL", "https://nytpuhutaan.fi").rstrip("/")
+SITE = os.environ.get("SITE_NAME", "Nytpuhutaan.fi")
 TESTI = os.environ.get("KOOSTE_TESTI") == "1"
 UA = "Mozilla/5.0 (compatible; uutiskooste/1.0; oma uutiskooste)"
 SAILYTYS_PV, MAX_ITEMS = 14, 3500
@@ -614,11 +614,15 @@ fetch("../feed.json").then(r=>r.json()).then(d=>{{data=d.u;piirraSyote()}}).catc
     kirjoita("feed.json", json.dumps({"p": paivitetty, "u": [{"i": u["i"], "o": u["o"], "l": u["l"], "s": u["s"], "a": u["a"], "k": u["k"], "t": u["t"]} for u in items[:2500]]}, ensure_ascii=False, separators=(",", ":")))
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}/{p}</loc><lastmod>{m[:10]}</lastmod></url>\n" for p, m in urls) + "</urlset>\n"
     kirjoita("sitemap.xml", sm)
-    kirjoita("manifest.webmanifest", json.dumps({"name": SITE, "short_name": SITE[:12], "description": "Suomen uutiset yhdessä paikassa: mistä nyt puhutaan ja miten eri mediat sen otsikoivat.",
+    kirjoita("manifest.webmanifest", json.dumps({"name": SITE, "short_name": "Nyt puhutaan", "description": "Suomen uutiset yhdessä paikassa: mistä nyt puhutaan ja miten eri mediat sen otsikoivat.",
         "lang": "fi", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#0d1117", "theme_color": "#0d1117",
         "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
                   {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}, ensure_ascii=False, indent=1))
-    kirjoita("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
+    kirjoita("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /vahti/\nDisallow: /tila/\n\nSitemap: {BASE}/sitemap.xml\n")
+    # vanhat osoitteet (miksu900.github.io/uutisvahti/kooste/...) ohjautuvat uuteen polkuun
+    kirjoita("404.html", '<!doctype html><html lang="fi"><head><meta charset="utf-8"><title>Sivua ei löytynyt</title><meta name="robots" content="noindex">'
+        '<script>var p=location.pathname;if(/^\\/(uutisvahti\\/)?kooste(\\/|$)/.test(p)){location.replace(p.replace(/^\\/(uutisvahti\\/)?kooste/,"")||"/")}</script></head>'
+        '<body style="font-family:system-ui;background:#0d1117;color:#e8edf3;text-align:center;padding:60px 16px"><h1>Sivua ei löytynyt</h1><p><a style="color:#ffc93c" href="/">Etusivulle</a></p></body></html>')
 
 def main():
     nyt = datetime.now(timezone.utc)
