@@ -369,7 +369,7 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, no
 <main>
 {runko}
 </main>
-<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot yhteen paikkaan noin 10 minuutin välein. Saman tapahtuman uutiset eri medioista ryhmitellään automaattisesti, jotta näet yhdellä silmäyksellä, mistä puhutaan ja miten eri mediat asian otsikoivat. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen; jutut luetaan lähteen omalla sivulla. Aiheet ja ryhmät tunnistetaan automaattisesti, joten ne voivat joskus olla epätarkkoja.</p><p><a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
+<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot yhteen paikkaan noin 10 minuutin välein. Saman tapahtuman uutiset eri medioista ryhmitellään automaattisesti, jotta näet yhdellä silmäyksellä, mistä puhutaan ja miten eri mediat asian otsikoivat. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen; jutut luetaan lähteen omalla sivulla. Aiheet ja ryhmät tunnistetaan automaattisesti, joten ne voivat joskus olla epätarkkoja.</p><p><a href="https://eduskuntaseuranta.fi/" rel="noopener">Eduskuntaseuranta</a> · <a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
 {JS}
 <!-- Cloudflare Web Analytics (evästeetön) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "6b71f4e21fa24282bc0932cdcb3c1b51"}}'></script>
 </body></html>"""
@@ -513,6 +513,8 @@ def rakenna(items, paivitetty):
                      f'<span class="tc" id="paikTc">{len(pv["ala"])} maakuntaa · valitse oma alueesi</span><span class="th">{th}</span></a>') + tiles
             continue
         tiles += f'<a class="tile" href="{p}/"><b>{esc(pv["nimi"])}</b><span class="tc">{n24} uutista tänään</span><span class="th">{th}</span></a>'
+    tiles += ('<a class="tile laaja" href="https://eduskuntaseuranta.fi/" rel="noopener"><b>Eduskuntaseuranta: miten päättäjät äänestivät?</b>'
+              '<span class="th">Äänestykset, viranomaisten tiedotteet ja hankinnat. Tilaa ilmainen hälytys omasta aiheestasi sähköpostiin.</span></a>')
     runko += f'<div class="sec-h" id="aiheet"><h2>Aiheet</h2><span class="sm"><a href="oma/">Rakenna oma syöte →</a></span></div><div class="tiles">{tiles}</div>'
     kirjoita("index.html", sivu(f"{SITE}: Suomen uutiset yhdessä paikassa", "Suomalaisten medioiden uutiset yhdessä paikassa: näe mistä nyt puhutaan, miten eri mediat otsikoivat saman uutisen ja mitkä uutiset vain yksi media kertoi. Päivittyy 10 minuutin välein.", "", 0, runko, {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": BASE + "/", "inLanguage": "fi"}, "etusivu"))
 
