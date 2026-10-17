@@ -9,7 +9,7 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aiheet import AIHEET
-from ryhmat import ryhmittele, mediat, puhdas_otsikko
+from ryhmat import ryhmittele, mediat, puhdas_otsikko, muissa_medioissa
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get("BASE_URL", "https://miksu900.github.io/uutisvahti/kooste").rstrip("/")
@@ -208,6 +208,7 @@ details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
 .mm{font-weight:750;color:var(--acct)}
 a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
+.asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden]{display:none}
 .more{display:block;text-align:center;padding:13px;font-weight:750;font-size:14px;color:var(--acct);text-decoration:none;border-top:1px solid var(--line)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-decoration:none;display:flex;flex-direction:column;gap:4px;min-height:120px}
@@ -248,6 +249,11 @@ setTimeout(function(){try{localStorage.setItem(K,String(nyt))}catch(e){}},5000);
 function vari(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return"hsl("+h+" 70% 55%)"}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var H=document.getElementById("haku"),I=document.getElementById("hakuIn"),T=document.getElementById("hakuTulos"),data=null;
+var M=document.querySelector('link[rel=manifest]');
+if(M&&"serviceWorker" in navigator){try{navigator.serviceWorker.register(M.href.replace("manifest.webmanifest","sw.js"))}catch(e){}}
+var A=document.getElementById("asenna"),ip=null;
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;if(A)A.hidden=false});
+if(A)A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){A.hidden=true;ip=null})};
 if(!H)return;
 function hae(){if(!data)return;var q=I.value.toLowerCase().trim();
  if(q.length<2){T.innerHTML='<p class="lead">Hae kaikista uutisista kahden viikon ajalta. Esim. <b>kokoomus maahanmuutto</b> tai <b>sähkön hinta</b>.</p>';return}
@@ -292,6 +298,7 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, no
 <meta name="description" content="{esc(kuvaus)}">
 <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="{kanon}">
+<link rel="manifest" href="{r}manifest.webmanifest"><link rel="icon" type="image/png" href="{r}favicon.png"><link rel="apple-touch-icon" href="{r}apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="{esc(SITE)}">
 <meta property="og:title" content="{esc(otsikko)}"><meta property="og:description" content="{esc(kuvaus)}"><meta property="og:type" content="website"><meta property="og:locale" content="fi_FI"><meta property="og:url" content="{kanon}">
 <meta name="robots" content="{"noindex,nofollow" if noindex else "index,follow,max-snippet:-1"}">
 {ld}<style>{CSS}</style><script src="{r}config.js"></script><script src="{r}tuki.js"></script></head><body>
@@ -415,13 +422,15 @@ def rakenna(items, paivitetty):
     vrk = [u for u in items if ika_h(u["a"]) <= 24]
     hot = kuumat()
     runko = (f'<h1>Suomen uutiset yhdessä paikassa</h1>'
-             f'<div class="stats"><span><b>{len(vrk)}</b> uutista vuorokaudessa</span><span><b>{len({u["s"] for u in vrk})}</b> mediaa</span><span>päivittyy <b>10 min</b> välein</span></div>')
+             f'<div class="stats"><span><b>{len(vrk)}</b> uutista vuorokaudessa</span><span><b>{len({u["s"] for u in vrk})}</b> mediaa</span><span>päivittyy <b>10 min</b> välein</span></div>'
+             '<button class="btn asenna" id="asenna" type="button" hidden>Asenna sovellukseksi puhelimeen</button>')
     if hot:
         runko += '<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2><span class="sm">Sama uutinen monessa mediassa</span></div>'
         runko += "".join(tarina_html(g, "./", iso=(i == 0)) for i, g in enumerate(hot))
     runko += '<div class="sec-h"><h2>Tuoreimmat</h2><span class="sm"><a href="#aiheet">Aiheittain ↓</a></span></div>'
     runko += lista_html(tuoreimmat(items, 30), False, "./", kuv=False)
-    yksi = [u for u in vrk if RYHMA_N.get(u["i"], 1) == 1 and any(t.startswith(("politiikka/", "yhteiskunta/")) for t in u["t"])][:8]
+    muualla = muissa_medioissa(tuore)
+    yksi = [u for u in vrk if RYHMA_N.get(u["i"], 1) == 1 and u["i"] not in muualla and any(t.startswith(("politiikka/", "yhteiskunta/")) for t in u["t"])][:8]
     if yksi:
         runko += '<div class="sec-h"><h2>Vain yksi media kertoi</h2><span class="sm">Politiikka ja yhteiskunta, 24 h</span></div>'
         runko += '<p class="lead">Uutisia, joista vain yksi media on kirjoittanut viimeisen vuorokauden aikana. Täältä löytyy se, mikä muualla jää huomaamatta.</p>'
@@ -544,6 +553,10 @@ fetch("../feed.json").then(r=>r.json()).then(d=>{{data=d.u;piirraSyote()}}).catc
     kirjoita("feed.json", json.dumps({"p": paivitetty, "u": [{"i": u["i"], "o": u["o"], "l": u["l"], "s": u["s"], "a": u["a"], "k": u["k"], "t": u["t"]} for u in items[:2500]]}, ensure_ascii=False, separators=(",", ":")))
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}/{p}</loc><lastmod>{m[:10]}</lastmod></url>\n" for p, m in urls) + "</urlset>\n"
     kirjoita("sitemap.xml", sm)
+    kirjoita("manifest.webmanifest", json.dumps({"name": SITE, "short_name": SITE[:12], "description": "Suomen uutiset yhdessä paikassa: mistä nyt puhutaan ja miten eri mediat sen otsikoivat.",
+        "lang": "fi", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#0d1117", "theme_color": "#0d1117",
+        "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+                  {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}, ensure_ascii=False, indent=1))
     kirjoita("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
 
 def main():
