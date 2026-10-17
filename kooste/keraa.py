@@ -215,10 +215,11 @@ details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
 .mm{font-weight:750;color:var(--acct)}
 a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
-.jaa{flex:none;width:30px;height:30px;margin:-6px -6px -6px auto;padding:0;border:0;border-radius:8px;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
-.jaa::before{content:"";width:17px;height:17px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat}
-.jaa:hover,.jaa:focus-visible{color:var(--fg);background:var(--chip)}
-.st-top .jaa{margin:-6px -6px -6px auto}
+.jaa{flex:none;display:inline-flex;align-items:center;gap:5px;margin:-4px 0 -4px auto;padding:5px 11px 5px 9px;border:0;border-radius:999px;background:var(--chip);color:var(--fg);cursor:pointer;font:700 12.5px system-ui,sans-serif}
+.jaa::after{content:"Jaa"}
+.jaa::before{content:"";width:15px;height:15px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat}
+.jaa:hover,.jaa:focus-visible{background:var(--acc);color:#111}
+.st-top .jaa{margin:-4px 0 -4px auto}
 #jako{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}
 #jako[hidden]{display:none}
 .jako-in{background:var(--card);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));border:1px solid var(--line)}
