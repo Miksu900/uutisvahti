@@ -24,6 +24,7 @@ AIHEET = {
     "Islam": ["islam", "muslimi", "moskeija", "imaami", "šaria", "sharia", "jihad", "džihad", "hijab", "burka", "nikab", "kalifaatti", "koraani", "ramadan"],
     "Maahanmuutto": ["maahanmuut", "turvapaikka", "pakolai", "ulkomaalaislaki", "ulkomaalaisl", "kotoutu", "kotouttami", "kansalaisuuslaki", "oleskelulup", "karkotu", "maahantulo", "rajaturva", "vieraskielis", "monikulttuur"],
 }
+NIMET = {"HS.fi": "Helsingin Sanomat", "Hs.fi": "Helsingin Sanomat", "Yle Uutiset": "Yle", "yle.fi": "Yle", "Is.fi": "Ilta-Sanomat", "IS.fi": "Ilta-Sanomat"}
 SAILYTYS_PV = 90
 MAX = 3000
 
@@ -74,6 +75,9 @@ def parse(data, oletus_lahde):
             lahde = s.text.strip()
             if otsikko.endswith(" - " + lahde):
                 otsikko = otsikko[: -len(lahde) - 3]
+        lahde = NIMET.get(lahde, lahde)
+        if kuv.lower().startswith(otsikko.lower()[:40]):
+            kuv = ""
         if otsikko and link:
             out.append({"otsikko": otsikko, "linkki": link.strip(), "kuvaus": kuv[:300], "lahde": lahde, "aika": pvm.isoformat() if pvm else None})
     return out
@@ -119,13 +123,18 @@ def main():
     uutiset = {k: v for k, v in uutiset.items() if (v["aika"] or "") >= raja}
     jarj = sorted(uutiset.values(), key=lambda v: v["aika"] or "", reverse=True)[:MAX]
     # deduplikoi sama otsikko+lähde
+    # sama uutinen eri virroista: pidä yksi, suosi median omaa virtaa Googlen sijaan
+    def avain(v):
+        return re.sub(r"[^a-z0-9äöå]+", "", v["otsikko"].lower())
+    jarj.sort(key=lambda v: (avain(v), "news.google" in v["linkki"], v["aika"] or ""))
     nahty, uniikit = set(), []
     for v in jarj:
-        k = (v["lahde"], v["otsikko"].lower())
+        k = avain(v)
         if k in nahty:
             continue
         nahty.add(k)
         uniikit.append(v)
+    uniikit.sort(key=lambda v: v["aika"] or "", reverse=True)
     out = {"paivitetty": nyt.isoformat(), "tila": tila, "uutiset": {v["linkki"]: v for v in uniikit}}
     json.dump(out, open("data.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     sivu = open("pohja.html", encoding="utf-8").read().replace("__DATA__", json.dumps(
