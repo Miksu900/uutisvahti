@@ -215,10 +215,11 @@ details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
 .mm{font-weight:750;color:var(--acct)}
 a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
-.jaa{flex:none;width:30px;height:30px;margin:-6px -6px -6px auto;padding:0;border:0;border-radius:8px;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
-.jaa::before{content:"";width:17px;height:17px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat}
-.jaa:hover,.jaa:focus-visible{color:var(--fg);background:var(--chip)}
-.st-top .jaa{margin:-6px -6px -6px auto}
+.jaa{flex:none;display:inline-flex;align-items:center;gap:5px;margin:-4px 0 -4px auto;padding:5px 11px 5px 9px;border:0;border-radius:999px;background:var(--chip);color:var(--fg);cursor:pointer;font:700 12.5px system-ui,sans-serif}
+.jaa::after{content:"Jaa"}
+.jaa::before{content:"";width:15px;height:15px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='m7 8 5-5 5 5'/%3E%3Cpath d='M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6'/%3E%3C/svg%3E") center/contain no-repeat}
+.jaa:hover,.jaa:focus-visible{background:var(--acc);color:#111}
+.st-top .jaa{margin:-4px 0 -4px auto}
 #jako{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}
 #jako[hidden]{display:none}
 .jako-in{background:var(--card);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));border:1px solid var(--line)}
@@ -226,6 +227,8 @@ a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .jako-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .jako-g a,.jako-g button{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--chip);color:var(--fg);border:0;border-radius:12px;padding:12px 6px;font:650 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}
 .jako-x{width:100%;margin-top:10px}
+.jako-g .j-x{background:#000;color:#fff;border:1px solid #333}.jako-g .j-fb{background:#1877f2;color:#fff}.jako-g .j-wa{background:#25d366;color:#06321a}.jako-g .j-tg{background:#2aabee;color:#fff}.jako-g .j-li{background:#0a66c2;color:#fff}
+.jako-g a,.jako-g button{font-weight:800}
 .jako-kop{display:block;width:100%;margin:0 0 8px;padding:14px;font-size:15.5px}
 .tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
 .oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
@@ -283,11 +286,11 @@ function jaa(u,o){
  var e=encodeURIComponent,uu=e(u),oo=e(o);
  J.innerHTML='<div class="jako-in" role="dialog" aria-label="Jaa uutinen"><p>'+esc(o)+'</p>'
   +'<button type="button" class="jako-kop" id="jakoKop">Kopioi linkki</button><div class="jako-g">'
-  +'<a target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
-  +'<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
-  +'<a target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
-  +'<a target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
-  +'<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
+  +'<a class="j-x" target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
+  +'<a class="j-fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
+  +'<a class="j-wa" target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
+  +'<a class="j-tg" target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
+  +'<a class="j-li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
   +(navigator.share?'<button type="button" id="jakoMuu">Muut sovellukset…</button>':'<a href="mailto:?subject='+oo+'&body='+e(o+"\n"+u)+'">Sähköposti</a>')
   +'</div><button type="button" class="sec jako-x">Sulje</button></div>';
  J.hidden=false;
