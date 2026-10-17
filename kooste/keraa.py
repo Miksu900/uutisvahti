@@ -34,7 +34,6 @@ SUORAT = [
     ("Ilta-Sanomat", "https://www.is.fi/rss/tuoreimmat.xml"),
     ("Iltalehti", "https://www.iltalehti.fi/rss/uutiset.xml"),
     ("MTV Uutiset", "https://www.mtvuutiset.fi/api/feed/rss/uutiset_uusimmat"),
-    ("Verkkouutiset", "https://www.verkkouutiset.fi/feed/"),
     ("Suomen Uutiset", "https://www.suomenuutiset.fi/feed/"),
 ]
 NIMET = {"HS.fi": "Helsingin Sanomat", "Hs.fi": "Helsingin Sanomat", "Yle Uutiset": "Yle", "yle.fi": "Yle", "Is.fi": "Ilta-Sanomat", "IS.fi": "Ilta-Sanomat", "mtvuutiset.fi": "MTV Uutiset", "Mtvuutiset.fi": "MTV Uutiset"}
@@ -140,6 +139,11 @@ def maakuntalehden_oma(it):
     if "Uutissuomalainen" in it["o"] or "STT" in it.get("k", "")[:40]:
         return False
     return not any(x.startswith(("politiikka/", "talous/", "teknologia/")) for x in luokittele(it))
+
+# Lähteet, joiden käyttöehdot kieltävät automaattisen keräyksen: ei koskaan mukaan (myöskään Googlen kautta)
+ESTETYT = ("verkkouutiset",)
+def estetty(it):
+    return any(e in (it.get("s", "") + " " + it.get("h", "") + " " + it.get("l", "")).lower() for e in ESTETYT)
 
 def suomalainen(it):
     h = it.get("h", "")
@@ -697,6 +701,7 @@ def main():
                     google_esto = True   # Google rajoittaa: ei jatketa tällä ajolla
             time.sleep(1.5 if kiinteä else 0.3)
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
+    uutiset = {k: u for k, u in uutiset.items() if not estetty(u)}
     for u in uutiset.values():   # luokittelu tehty koko ingressillä, julkaistaan vain lyhyt ote
         u["k"] = lyhyt(u.get("k", ""))
     items = [u for u in uutiset.values() if (u["a"] or "") >= raja]

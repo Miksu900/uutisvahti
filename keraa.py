@@ -13,7 +13,6 @@ SUORAT = [
     ("Ilta-Sanomat", "https://www.is.fi/rss/tuoreimmat.xml"),
     ("Iltalehti", "https://www.iltalehti.fi/rss/uutiset.xml"),
     ("MTV Uutiset", "https://www.mtvuutiset.fi/api/feed/rss/uutiset_uusimmat"),
-    ("Verkkouutiset", "https://www.verkkouutiset.fi/feed/"),
     ("Suomen Uutiset", "https://www.suomenuutiset.fi/feed/"),
     ("Kansalainen", "https://kansalainen.fi/feed/"),
 ]
@@ -123,7 +122,7 @@ def main():
         except Exception as e:
             tila.append([nimi, 0, 0, "VIRHE " + str(e)[:80]])
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
-    uutiset = {k: v for k, v in uutiset.items() if (v["aika"] or "") >= raja}
+    uutiset = {k: v for k, v in uutiset.items() if (v["aika"] or "") >= raja and "verkkouutiset" not in (v.get("lahde", "") + v.get("linkki", "")).lower()}
     for v in uutiset.values():   # julkaistaan vain hyvin lyhyt ote (lehtikustantajan oikeus)
         kv = (v.get("kuvaus") or "").strip()
         if len(kv) > 100:
