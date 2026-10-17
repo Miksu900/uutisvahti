@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oma syöte: valitse itse aiheet | Uutiskooste</title>
+<meta name="description" content="Rakenna oma uutissyöte: valitse politiikka-, talous-, lifestyle- ja muista aiheista ne alaaiheet, jotka kiinnostavat sinua.">
+<link rel="canonical" href="https://miksu900.github.io/uutisvahti/kooste/oma/">
+<meta property="og:title" content="Oma syöte: valitse itse aiheet | Uutiskooste"><meta property="og:description" content="Rakenna oma uutissyöte: valitse politiikka-, talous-, lifestyle- ja muista aiheista ne alaaiheet, jotka kiinnostavat sinua."><meta property="og:type" content="website"><meta property="og:locale" content="fi_FI"><meta property="og:url" content="https://miksu900.github.io/uutisvahti/kooste/oma/">
+<meta name="robots" content="index,follow,max-snippet:-1">
+<style>:root{--bg:#14161a;--fg:#e8e6e1;--mute:#9aa0a8;--line:#2a2e35;--card:#1b1e23;--acc:#e0b04a;--chip:#232830}
+@media (prefers-color-scheme:light){:root{--bg:#f6f4ef;--fg:#1d1f23;--mute:#6a707a;--line:#dedbd2;--card:#fff;--acc:#9a6b00;--chip:#ece9e0}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Georgia,"Times New Roman",serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.logo{font-size:1.4rem;font-weight:700;color:var(--fg);text-decoration:none}
+nav.paa{display:flex;flex-wrap:wrap;gap:6px 14px;font:14px/1.3 system-ui,sans-serif;margin:8px 0 14px}
+nav.paa a{color:var(--mute);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+nav.paa a[aria-current],nav.paa a:hover{color:var(--fg);border-bottom-color:var(--acc)}
+h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margin:26px 0 8px}
+.lead{color:var(--mute);font:14px/1.5 system-ui,sans-serif;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;font:14px/1.2 system-ui,sans-serif}
+.chips a{background:var(--chip);color:var(--fg);text-decoration:none;border-radius:999px;padding:7px 12px}
+.chips a[aria-current]{background:var(--acc);color:#14161a}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
+.item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
+.kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
+.meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
+.paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
+footer{font:12px/1.6 system-ui,sans-serif;color:var(--mute);margin:30px 0 40px}
+.btn,button{background:var(--acc);color:#14161a;border:0;border-radius:8px;padding:10px 14px;font:600 15px system-ui,sans-serif;cursor:pointer}
+.sec{background:var(--chip);color:var(--fg)}
+fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px}
+legend{font:600 15px system-ui,sans-serif;padding:0 6px}
+label{display:flex;gap:8px;align-items:center;font:15px/1.3 system-ui,sans-serif;padding:6px 0}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style></head><body><main>
+<header class="top"><a class="logo" href="../">Uutiskooste</a><a class="btn sec" href="../oma/">Oma syöte</a></header>
+<nav class="paa" aria-label="Pääaiheet"><a href="../politiikka/">Politiikka</a><a href="../talous/">Talous</a><a href="../yhteiskunta/">Yhteiskunta</a><a href="../lifestyle/">Lifestyle</a><a href="../teknologia/">Teknologia</a><a href="../urheilu/">Urheilu</a><a href="../viihde/">Viihde</a><a href="../liikenne/">Liikenne ja autot</a></nav>
+<h1>Oma syöte</h1><p class="lead">Valitse aiheet, joista haluat uutisia. Valinta tallentuu tähän selaimeen, ja voit jakaa sen linkkinä.</p>
+<div id="valinta"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px"><button type="button" id="kaikki" class="sec">Valitse kaikki</button><button type="button" id="tyhjenna" class="sec">Tyhjennä</button><button type="button" id="jaa">Kopioi linkki valintaan</button></div>
+<p class="lead" id="tila"></p>
+<div id="syote"></div>
+<noscript><p>Oma syöte vaatii JavaScriptin. Aihesivut toimivat ilman: valitse aihe yläpalkista.</p></noscript>
+<script>
+const PUU={"politiikka": {"nimi": "Politiikka", "ala": {"eduskunta-ja-hallitus": "Eduskunta ja hallitus", "maahanmuutto": "Maahanmuutto", "islam": "Islam", "vaalit-ja-puolueet": "Vaalit ja puolueet", "ulkopolitiikka": "Ulkopolitiikka ja turvallisuus", "verot-ja-budjetti": "Verot ja budjetti"}}, "talous": {"nimi": "Talous", "ala": {"tyo-ja-tyollisyys": "Työ ja työllisyys", "asuminen": "Asuminen ja korot", "porssi-ja-sijoittaminen": "Pörssi ja sijoittaminen", "energia": "Energia ja sähkö", "yritykset": "Yritykset"}}, "yhteiskunta": {"nimi": "Yhteiskunta", "ala": {"rikokset-ja-oikeus": "Rikokset ja oikeus", "terveys-ja-sote": "Terveys ja sote", "koulutus": "Koulutus", "sosiaaliturva": "Sosiaaliturva ja Kela"}}, "lifestyle": {"nimi": "Lifestyle", "ala": {"ruoka": "Ruoka ja juoma", "matkailu": "Matkailu", "hyvinvointi": "Hyvinvointi ja liikunta", "koti-ja-puutarha": "Koti ja puutarha", "perhe-ja-suhteet": "Perhe ja suhteet"}}, "teknologia": {"nimi": "Teknologia", "ala": {"tekoaly": "Tekoäly", "tietoturva": "Tietoturva", "puhelimet-ja-sovellukset": "Puhelimet ja sovellukset"}}, "urheilu": {"nimi": "Urheilu", "ala": {"jaakiekko": "Jääkiekko", "jalkapallo": "Jalkapallo", "moottoriurheilu": "Moottoriurheilu"}}, "viihde": {"nimi": "Viihde", "ala": {"julkkikset": "Julkkikset", "tv-ja-elokuvat": "TV ja elokuvat", "musiikki": "Musiikki"}}, "liikenne": {"nimi": "Liikenne ja autot", "ala": {"taksi": "Taksi", "autot": "Autot ja sähköautot", "joukkoliikenne": "Joukkoliikenne"}}};
+const KEY="uutiskooste_valinnat";
+const $=i=>document.getElementById(i);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function lue(){
+ const h=location.hash.replace(/^#a=/,"");if(location.hash.startsWith("#a=")&&h)return h.split(",").filter(Boolean);
+ try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function tallenna(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
+let valitut=new Set(lue()),data=null;
+function piirraValinta(){
+ $("valinta").innerHTML=Object.entries(PUU).map(([p,v])=>'<fieldset><legend>'+esc(v.nimi)+'</legend><label><input type="checkbox" data-paa="'+p+'"> Koko aihe</label>'+Object.entries(v.ala).map(([a,n])=>'<label><input type="checkbox" data-ala="'+p+'/'+a+'"> '+esc(n)+'</label>').join("")+'</fieldset>').join("");
+ paivitaValinta();
+ document.querySelectorAll("input[data-ala]").forEach(i=>i.addEventListener("change",()=>{i.checked?valitut.add(i.dataset.ala):valitut.delete(i.dataset.ala);muutos()}));
+ document.querySelectorAll("input[data-paa]").forEach(i=>i.addEventListener("change",()=>{Object.keys(PUU[i.dataset.paa].ala).forEach(a=>{const k=i.dataset.paa+"/"+a;i.checked?valitut.add(k):valitut.delete(k)});muutos()}));
+}
+function paivitaValinta(){
+ document.querySelectorAll("input[data-ala]").forEach(i=>i.checked=valitut.has(i.dataset.ala));
+ document.querySelectorAll("input[data-paa]").forEach(i=>i.checked=Object.keys(PUU[i.dataset.paa].ala).every(a=>valitut.has(i.dataset.paa+"/"+a)));}
+function muutos(){tallenna([...valitut]);paivitaValinta();piirraSyote()}
+function piirraSyote(){
+ if(!data){return}
+ if(!valitut.size){$("syote").innerHTML="";$("tila").textContent="Valitse vähintään yksi aihe, niin syöte ilmestyy tähän.";return}
+ const lista=data.filter(u=>u.t.some(t=>valitut.has(t))).slice(0,150);
+ $("tila").textContent=lista.length+" uutista valituista aiheista";
+ let out="",pv="";
+ for(const u of lista){
+  const p=new Date(u.a).toLocaleDateString("fi-FI",{timeZone:"Europe/Helsinki",day:"numeric",month:"numeric",year:"numeric"});
+  if(p!==pv){out+='<div class="paiva">'+p+'</div>';pv=p}
+  const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,170))+(u.k.length>170?"…":"")+'</div>':"";
+  const t=new Date(u.a).toLocaleTimeString("fi-FI",{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"});
+  out+='<article class="item"><a href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="meta">'+esc(u.s)+' · '+t+'</div></article>';}
+ $("syote").innerHTML=out;}
+$("kaikki").onclick=()=>{Object.entries(PUU).forEach(([p,v])=>Object.keys(v.ala).forEach(a=>valitut.add(p+"/"+a)));muutos()};
+$("tyhjenna").onclick=()=>{valitut.clear();muutos()};
+$("jaa").onclick=()=>{const u=location.href.split("#")[0]+"#a="+[...valitut].join(",");try{navigator.clipboard.writeText(u);$("tila").textContent="Linkki kopioitu."}catch(e){$("tila").textContent=u}};
+piirraValinta();
+fetch("../feed.json").then(r=>r.json()).then(d=>{data=d.u;piirraSyote()}).catch(()=>{$("tila").textContent="Uutisten lataus epäonnistui. Yritä hetken kuluttua uudelleen."});
+</script>
+<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p></footer>
+</main></body></html>

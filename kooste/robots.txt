@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://miksu900.github.io/uutisvahti/kooste/sitemap.xml
