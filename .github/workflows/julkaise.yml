@@ -22,20 +22,29 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Hae edellinen tila julkaistulta sivulta
+      - name: Palauta edellinen tila (GitHubin välimuisti)
+        uses: actions/cache/restore@v4
+        with:
+          path: .tila
+          key: tila-${{ github.run_id }}
+          restore-keys: tila-
+      - name: Ota tila käyttöön
         env:
           OMA_URL: ${{ vars.UUTISVAHTI_URL || 'https://miksu900.github.io/uutisvahti' }}
           KOOSTE_URL: ${{ vars.KOOSTE_BASE_URL || 'https://miksu900.github.io/uutisvahti/kooste' }}
         run: |
-          hae() {
-            if curl -fsSL --retry 3 "$1" -o /tmp/tila.json && python3 -c "import json,sys; json.load(open('/tmp/tila.json'))"; then
-              mv /tmp/tila.json "$2"; echo "tila haettu: $1"
+          # 1) välimuisti (aina edellisen ajon tulos), 2) julkaistu sivu, 3) repon kopio
+          ota() {
+            if [ -s ".tila/$1" ] && python3 -c "import json; json.load(open('.tila/$1'))"; then
+              cp ".tila/$1" "$3"; echo "tila välimuistista: $1"
+            elif curl -fsSL --retry 3 "$2?t=$(date +%s)" -o /tmp/tila.json && python3 -c "import json; json.load(open('/tmp/tila.json'))"; then
+              mv /tmp/tila.json "$3"; echo "tila sivulta: $2"
             else
-              echo "tilaa ei saatu ($1), käytetään repon kopiota"
+              echo "tilaa ei saatu, käytetään repon kopiota: $3"
             fi
           }
-          hae "$OMA_URL/data.json" data.json
-          hae "$KOOSTE_URL/data.json" kooste/data.json
+          ota oma.json "$OMA_URL/data.json" data.json
+          ota kooste.json "$KOOSTE_URL/data.json" kooste/data.json
       - name: Oma uutisvahti
         run: |
           if [ $(( 10#$(date -u +%M) )) -lt 10 ]; then export OMA_GOOGLE=1; else export OMA_GOOGLE=0; fi
@@ -52,6 +61,13 @@ jobs:
           SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
           KOOSTE_YLLAPITAJA: ${{ vars.KOOSTE_YLLAPITAJA }}
           KOOSTE_YHTEYS: ${{ vars.KOOSTE_YHTEYS }}
+      - name: Tallenna tila seuraavaa ajoa varten
+        run: |
+          mkdir -p .tila && cp data.json .tila/oma.json && cp kooste/data.json .tila/kooste.json
+      - uses: actions/cache/save@v4
+        with:
+          path: .tila
+          key: tila-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
