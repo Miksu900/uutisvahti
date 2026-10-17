@@ -21,6 +21,9 @@ h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margi
 .chips a[aria-current]{background:var(--acc);color:#14161a}
 .item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
 .item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
+.item a.kesk{display:inline;font:600 13px/1.3 system-ui,sans-serif;color:var(--acc);margin-left:8px}
+button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
+textarea,input[type=email]{font-family:inherit}
 .kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
 .meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
 .paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
@@ -31,7 +34,7 @@ fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding
 legend{font:600 15px system-ui,sans-serif;padding:0 6px}
 label{display:flex;gap:8px;align-items:center;font:15px/1.3 system-ui,sans-serif;padding:6px 0}
 input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style></head><body><main>
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style><script src="../config.js"></script><script src="../tuki.js"></script></head><body><main>
 <header class="top"><a class="logo" href="../">Uutiskooste</a><a class="btn sec" href="../oma/">Oma syöte</a></header>
 <nav class="paa" aria-label="Pääaiheet"><a href="../politiikka/">Politiikka</a><a href="../talous/">Talous</a><a href="../yhteiskunta/" aria-current=page>Yhteiskunta</a><a href="../lifestyle/">Lifestyle</a><a href="../teknologia/">Teknologia</a><a href="../urheilu/">Urheilu</a><a href="../viihde/">Viihde</a><a href="../liikenne/">Liikenne ja autot</a></nav>
 <h1>Yhteiskunta: uusimmat uutiset</h1><p class="lead">Rikokset, terveys, koulutus ja sosiaaliturva: yhteiskunnan uutiset Suomesta.</p><div class="chips"><a href="rikokset-ja-oikeus/">Rikokset ja oikeus</a><a href="terveys-ja-sote/">Terveys ja sote</a><a href="koulutus/">Koulutus</a><a href="sosiaaliturva/">Sosiaaliturva ja Kela</a></div><div class="paiva">17.10.2026</div>
@@ -120,5 +123,5 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
 <article class="item"><a href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBocDVJZTR4eVBuWEQ5aEVpUFcwanZKUFhzMy1FTkowWFZRTUhZR0NjRHhwVzRkYWRsaW91NmJtWV9oNTVkN3FlMTE1Qm1Jc0hXRE1HelNtTDFSTkt1OU8yN1EzTnJGcU55dTY4NTVqSkE?oc=5" rel="noopener" target="_blank">Koulut | Kahdessa koulussa sisäilmaongelmia – vain toiseen suunnitellaan miljoonaremonttia</a><div class="meta">Satakunnan Kansa · 15.10. klo 15.00</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxPY3lMRGdkNTdlU0VmcFN4bmtjZlVFa05OUFc4RmNPMWFIR2JwVGFKVE5GWVNtSVpLRjVIVGdncjRET01wTkdIRHR3QzFnYngtam9KV1RYcGFYQ20tSFR4N0ZteUlzT3ZZM3VIODNPWEJCRlU2enFKV3RxTVpnakd4RHliQmFBSm1JS2dtcjZrcGhqci12YXNPWE9EeEoyUUo0d3Z4RkkzcUtOR01iNXhRSzl6Rng2bDRETERIYXZWemd2a2xKNGpMRnAwUWJmbENMYXhncDln?oc=5" rel="noopener" target="_blank">Kela maksoi noin 23 000 euroa matkakorvauksia hoitokäynneistä Jyväskylässä - Syytteet törkeistä rikoksista kaatuivat</a><div class="meta">Tilannemedia · 15.10. klo 14.20</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQLWpBSGNtOXFHYVZrYVliVlc0cEozV3pRZ2h1NERNdWNucmg3TVlvR3FQU1VqTThIYVU3dFBRc2NGS3lLRDI3UzVsempCc3ZJbmJOTGpxenF1T0hPRGRtaWtIcE9GUFNMT193c09EVzNDT2dMNWg0MDdYZ2xBb09nMEdYVFhfVjJWbmxwWHRhN0VqZy1pWWdvdFRUbTgxMEU?oc=5" rel="noopener" target="_blank">Kela vahvisti tukien korotukset – takuueläke nousee yli 1 000 euron</a><div class="meta">Stara.fi · 15.10. klo 14.03</div></article>
-<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p></footer>
+<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p><p><a href="../saannot/">Keskustelusäännöt</a> · <a href="../tietosuoja/">Tietosuoja</a></p></footer>
 </main></body></html>

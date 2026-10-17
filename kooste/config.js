@@ -1,0 +1,1 @@
+window.KOOSTE_CONF={};

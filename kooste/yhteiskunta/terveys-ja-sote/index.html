@@ -21,6 +21,9 @@ h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margi
 .chips a[aria-current]{background:var(--acc);color:#14161a}
 .item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
 .item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
+.item a.kesk{display:inline;font:600 13px/1.3 system-ui,sans-serif;color:var(--acc);margin-left:8px}
+button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
+textarea,input[type=email]{font-family:inherit}
 .kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
 .meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
 .paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
@@ -31,7 +34,7 @@ fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding
 legend{font:600 15px system-ui,sans-serif;padding:0 6px}
 label{display:flex;gap:8px;align-items:center;font:15px/1.3 system-ui,sans-serif;padding:6px 0}
 input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style></head><body><main>
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style><script src="../../config.js"></script><script src="../../tuki.js"></script></head><body><main>
 <header class="top"><a class="logo" href="../../">Uutiskooste</a><a class="btn sec" href="../../oma/">Oma syöte</a></header>
 <nav class="paa" aria-label="Pääaiheet"><a href="../../politiikka/">Politiikka</a><a href="../../talous/">Talous</a><a href="../../yhteiskunta/" aria-current=page>Yhteiskunta</a><a href="../../lifestyle/">Lifestyle</a><a href="../../teknologia/">Teknologia</a><a href="../../urheilu/">Urheilu</a><a href="../../viihde/">Viihde</a><a href="../../liikenne/">Liikenne ja autot</a></nav>
 <h1>Terveys ja sote: uusimmat uutiset</h1><p class="lead">Yhteiskunta · 42 uutista viimeisen 14 päivän ajalta.</p><div class="chips"><a href="../rikokset-ja-oikeus/">Rikokset ja oikeus</a><a href="../terveys-ja-sote/" aria-current=page>Terveys ja sote</a><a href="../koulutus/">Koulutus</a><a href="../sosiaaliturva/">Sosiaaliturva ja Kela</a></div><div class="paiva">16.10.2026</div>
@@ -81,5 +84,5 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
 <article class="item"><a href="https://news.google.com/rss/articles/CBMi0AFBVV95cUxQLWp0bGZMbXZvT3U3cFVrR1NlTnBmX01YblFMQUxTSnBvN2RiX01VUEdpS0dHR2NaUXgyejdGQVNySndzbS0xRUFWVWRqdjJHejFfRmdMd1RLZGFjNzQzSnJoamJfSEFlOUZnVG1mcDE3U0VfcUpoWS1DS1lvdmo5WkJxZ0tDOVBmazlsakI5dWNNNGNYRXNzWHBQRE5paVVCWWRBOGM3bkM0cnBkUDdJSzRKeGZScmo1OXpEeXJZaWlFalpQSHhBTFFzWm5udnls?oc=5" rel="noopener" target="_blank">Päijät-Hämeen hyvinvointialue: Luonto tukee odottajien hyvinvointia</a><div class="meta">STT Info · 12.10. klo 08.58</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTE5aaFlqdEVIVTg2MkY4MXRJNTlKQUlPbXM3T1ZWMkJjZ09ka0lQZjZfSWNaMGpHV3paQzV5bnVhME9jRFNrZDZ2aFdKMFBmSUMyZ3BKVnBsX3ZJSWM?oc=5" rel="noopener" target="_blank">Hyvinvointialue nostaa loppuvuodesta 70 miljoonaa euroa lainaa – näihin investointeihin summa kuluu</a><div class="meta">Savon Sanomat · 12.10. klo 00.00</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE9RV1lYajVTMnpRYkd3M1ROVkVBcG1tamphUnVyTWNkb2djUi1JSGJZZXhLbzRGT2VqTGhJa2d6ZVhmMWV5blJVSnpnd0xRemRpRWg0d29n?oc=5" rel="noopener" target="_blank">Satakunnan hyvinvointialue käynnistää yt-​neuvottelut, arvio vähennyksestä 400 tehtävää</a><div class="meta">Etelä-Suomen Sanomat · 12.10. klo 00.00</div></article>
-<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p></footer>
+<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p><p><a href="../../saannot/">Keskustelusäännöt</a> · <a href="../../tietosuoja/">Tietosuoja</a></p></footer>
 </main></body></html>

@@ -21,6 +21,9 @@ h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margi
 .chips a[aria-current]{background:var(--acc);color:#14161a}
 .item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
 .item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
+.item a.kesk{display:inline;font:600 13px/1.3 system-ui,sans-serif;color:var(--acc);margin-left:8px}
+button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
+textarea,input[type=email]{font-family:inherit}
 .kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
 .meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
 .paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
@@ -31,7 +34,7 @@ fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding
 legend{font:600 15px system-ui,sans-serif;padding:0 6px}
 label{display:flex;gap:8px;align-items:center;font:15px/1.3 system-ui,sans-serif;padding:6px 0}
 input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style></head><body><main>
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}</style><script src="../../config.js"></script><script src="../../tuki.js"></script></head><body><main>
 <header class="top"><a class="logo" href="../../">Uutiskooste</a><a class="btn sec" href="../../oma/">Oma syöte</a></header>
 <nav class="paa" aria-label="Pääaiheet"><a href="../../politiikka/">Politiikka</a><a href="../../talous/">Talous</a><a href="../../yhteiskunta/">Yhteiskunta</a><a href="../../lifestyle/" aria-current=page>Lifestyle</a><a href="../../teknologia/">Teknologia</a><a href="../../urheilu/">Urheilu</a><a href="../../viihde/">Viihde</a><a href="../../liikenne/">Liikenne ja autot</a></nav>
 <h1>Ruoka ja juoma: uusimmat uutiset</h1><p class="lead">Lifestyle · 57 uutista viimeisen 14 päivän ajalta.</p><div class="chips"><a href="../ruoka/" aria-current=page>Ruoka ja juoma</a><a href="../matkailu/">Matkailu</a><a href="../hyvinvointi/">Hyvinvointi ja liikunta</a><a href="../koti-ja-puutarha/">Koti ja puutarha</a><a href="../perhe-ja-suhteet/">Perhe ja suhteet</a></div><div class="paiva">17.10.2026</div>
@@ -99,5 +102,5 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
 <article class="item"><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxPakMzSjViTDExMlBuWlVwd00ydmJJTTYyeVdxNDFVMFlRMGw3UVZYOGNDU0JEcTk1U0FnaDVfdV9wcDhja1J4UmFicGRaaHVneDVxX1Y3ZHFIWWdySjlDa0VkR0EzOHFxdENCcnZGeTh0ckJFWUxqZVVpUUhOUE56VWNtLXVmTFgzY0p3VHZDX2JYSGwybmc?oc=5" rel="noopener" target="_blank">Mistä pikaruokien liha tulee? – Vain yksi ravintola käyttää täysin suomalaista lihaa</a><div class="meta">Ilkka-Pohjalainen · 10.10. klo 13.00</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFAzbUJzSklvNkw5d3dtRkV3YS14eG1memM5SUZ1UUpTT3ppZDktLVZ5cFpBR3Fnb1VuSjJDSVY0TWMyNC1SVnRGcWJ5SjBEOV9MckE3cXg5OXJtdw?oc=5" rel="noopener" target="_blank">T24 | Nämä ovat Tallinnan lapsiystävällisimmät ravintolat</a><div class="meta">Helsingin Uutiset · 10.10. klo 10.05</div></article>
 <article class="item"><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxNamtlcjB3VGhhX1RIb1M1TEtmSjNuMTV1by1YV1pwRFpZODdsRFprVmZhX1FDdHRuc0tONWxxNW5zVDg1M3ZrcUdrNTN1WG1aS25hQ2s5c3ZGbnZTOWJDaGt2MzA5MFEtYlBNakVLVjh5RjFvNWstOGpDNnlMZ1hCYXRNbFA?oc=5" rel="noopener" target="_blank">Brittien ruokakaupoissa on yksi tuote, jolle Suomesta ei löydy vertaa – voisivatko kaupat ottaa siitä mallia?</a><div class="meta">Maaseudun Tulevaisuus · 10.10. klo 09.04</div></article>
-<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p></footer>
+<footer><p>Uutiskooste kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p><p><a href="../../saannot/">Keskustelusäännöt</a> · <a href="../../tietosuoja/">Tietosuoja</a></p></footer>
 </main></body></html>
