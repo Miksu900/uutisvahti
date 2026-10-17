@@ -1,0 +1,568 @@
+{
+ "paivitetty": "2026-10-17T01:45:22.133172+00:00",
+ "tila": [
+  [
+   "Yle",
+   20,
+   0,
+   "ok"
+  ],
+  [
+   "Helsingin Sanomat",
+   99,
+   3,
+   "ok"
+  ],
+  [
+   "Ilta-Sanomat",
+   100,
+   1,
+   "ok"
+  ],
+  [
+   "Iltalehti",
+   20,
+   1,
+   "ok"
+  ],
+  [
+   "MTV Uutiset",
+   20,
+   2,
+   "ok"
+  ],
+  [
+   "Verkkouutiset",
+   100,
+   6,
+   "ok"
+  ],
+  [
+   "Suomen Uutiset",
+   5,
+   3,
+   "ok"
+  ],
+  [
+   "Kansalainen",
+   0,
+   0,
+   "VIRHE HTTP Error 522: <none>"
+  ],
+  [
+   "Google: islam",
+   4,
+   2,
+   "ok"
+  ],
+  [
+   "Google: muslimi",
+   2,
+   2,
+   "ok"
+  ],
+  [
+   "Google: moskeija",
+   1,
+   0,
+   "ok"
+  ],
+  [
+   "Google: maahanmuutto",
+   29,
+   17,
+   "ok"
+  ],
+  [
+   "Google: turvapaikanhakija",
+   2,
+   0,
+   "ok"
+  ],
+  [
+   "Google: pakolainen",
+   0,
+   0,
+   "ok"
+  ],
+  [
+   "Google: ulkomaalaislaki",
+   1,
+   0,
+   "ok"
+  ],
+  [
+   "Google: kotouttaminen",
+   1,
+   1,
+   "ok"
+  ],
+  [
+   "Google: kansalaisuuslaki",
+   0,
+   0,
+   "ok"
+  ]
+ ],
+ "uutiset": {
+  "https://www.hs.fi/politiikka/art-2000012348679.html": {
+   "otsikko": "Maahan­muutto | Orpo: Kiintiö­pakolaisen valinta sopeutumis­kyvyn perusteella ”ihan luonnollinen peruste”",
+   "linkki": "https://www.hs.fi/politiikka/art-2000012348679.html",
+   "kuvaus": "Kokoomuksen eduskuntaryhmän uusi maahan­muuttopoliittinen ohjelma on tulkittu merkittäväksi kiristykseksi aiempaan. Orpon mukaan se on ”pitkän linjan mukainen”.",
+   "lahde": "Helsingin Sanomat",
+   "aika": "2026-10-16T17:53:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "pakolai"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiYEFVX3lxTE85YXUtME1pWHBJdGxLOFpHSjFhaDhZR1R0azRSd3VWSTIway1EbW5qZTIxSzBIYjM0MFBmXzI3T1RwLXRWc1RCY1QyelNPYTVxMV85SEhmTnNfc2ZkcF85dA?oc=5": {
+   "otsikko": "Maahanmuutto | Orpo: Kiintiöpakolaisen valinta sopeutumiskyvyn perusteella ”ihan luonnollinen peruste”",
+   "linkki": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE85YXUtME1pWHBJdGxLOFpHSjFhaDhZR1R0azRSd3VWSTIway1EbW5qZTIxSzBIYjM0MFBmXzI3T1RwLXRWc1RCY1QyelNPYTVxMV85SEhmTnNfc2ZkcF85dA?oc=5",
+   "kuvaus": "Maahanmuutto | Orpo: Kiintiöpakolaisen valinta sopeutumiskyvyn perusteella ”ihan luonnollinen peruste”    HS.fi",
+   "lahde": "HS.fi",
+   "aika": "2026-10-16T17:40:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut",
+     "pakolai"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.iltalehti.fi/politiikka/a/b28c6bce-24c3-4071-b335-365d52252f05?utm_source=rss": {
+   "otsikko": "Tämä ratkaisu on selvä, jos Lindtmanista tulee pääministeri: ”Ilman muuta”",
+   "linkki": "https://www.iltalehti.fi/politiikka/a/b28c6bce-24c3-4071-b335-365d52252f05?utm_source=rss",
+   "kuvaus": "SDP:n puheenjohtaja Antti Lindtman sanoo, että Vladimir Putinille ei saa jättää painostusaseita. Pääministerinä hän olisi valmis jatkamaan rajaturvallisuuslain voimassaoloa. SDP:n puheenjohtaja Antti Lindtman kertoo Iltalehdelle, että jos hänestä tulee pääministeri, Suomen seuraava hallitus jatkaa r",
+   "lahde": "Iltalehti",
+   "aika": "2026-10-16T17:36:30+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "rajaturva"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.hs.fi/politiikka/art-2000012347981.html": {
+   "otsikko": "Maahanmuutto | Kokoomuksen ehdotukset saavat tiukkaa kritiikkiä oppositiosta",
+   "linkki": "https://www.hs.fi/politiikka/art-2000012347981.html",
+   "kuvaus": "Kokoomuksen uusi maahanmuuttopoliittinen ohjelma on herättänyt reaktioita muun muassa oppositiopuolue vihreiden keskuudessa.",
+   "lahde": "Helsingin Sanomat",
+   "aika": "2026-10-16T14:49:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9ZanBYVXE0dDNQdzBHYjg3N2JwZnI1M0stUkhuekhYdkp5OGpueXJnQ1hhNDhRTEJhTTFkNFFYTnBLSHdzODI0Y2trMWlpRjdEam1rdjBQQmVHTjNrZWhXYw?oc=5": {
+   "otsikko": "Maahanmuutto | Kokoomuksen ehdotukset saavat tiukkaa kritiikkiä oppositiosta",
+   "linkki": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9ZanBYVXE0dDNQdzBHYjg3N2JwZnI1M0stUkhuekhYdkp5OGpueXJnQ1hhNDhRTEJhTTFkNFFYTnBLSHdzODI0Y2trMWlpRjdEam1rdjBQQmVHTjNrZWhXYw?oc=5",
+   "kuvaus": "Maahanmuutto | Kokoomuksen ehdotukset saavat tiukkaa kritiikkiä oppositiosta    HS.fi",
+   "lahde": "HS.fi",
+   "aika": "2026-10-16T14:49:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.suomenuutiset.fi/teollisuusliiton-lehtonen-kutsuu-maahanmuuttajia-voimavaraksi-luvut-kertovat-toista/": {
+   "otsikko": "Teollisuusliiton Lehtonen kutsuu maahanmuuttajia voimavaraksi – luvut kertovat toista",
+   "linkki": "https://www.suomenuutiset.fi/teollisuusliiton-lehtonen-kutsuu-maahanmuuttajia-voimavaraksi-luvut-kertovat-toista/",
+   "kuvaus": "Teollisuusliiton varapuheenjohtaja Turja Lehtonen sanoo maahanmuuttajien olevan Suomelle voimavara. Samalla hän myöntää, että maahanmuuttajien työttömyys on korkeampi ja työsuhteet epävarmempia. Tilastokeskuksen luvut osoittavat, kuinka suuresta erosta on kyse.   The post  Teollisuusliiton Lehtonen ",
+   "lahde": "Suomen Uutiset",
+   "aika": "2026-10-16T14:11:45+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.suomenuutiset.fi/perustuslakivaliokunta-puoltaa-rajaturvallisuuslain-jatkoa-vihervasemmisto-asettui-poikkiteloin-itarajan-turvaamiselle/": {
+   "otsikko": "Perustuslakivaliokunta puoltaa rajaturvallisuuslain jatkoa – vihervasemmisto asettui poikkiteloin itärajan turvaamiselle",
+   "linkki": "https://www.suomenuutiset.fi/perustuslakivaliokunta-puoltaa-rajaturvallisuuslain-jatkoa-vihervasemmisto-asettui-poikkiteloin-itarajan-turvaamiselle/",
+   "kuvaus": "Perustuslakivaliokunta puoltaa niin sanotun itärajan käännytyslain voimassaolon jatkamista vuoden 2028 loppuun. Lain jatkamisen tavoitteena on varautua Venäjän harjoittamaan välineellistettyyn maahantuloon. Vasemmistoliiton Johannes Yrttiaho ja vihreiden Krista Mikkonen jättivät asiasta eriävän miel",
+   "lahde": "Suomen Uutiset",
+   "aika": "2026-10-16T14:00:02+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahantulo",
+     "rajaturva"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.suomenuutiset.fi/koponen-kokoomuksen-maahanmuuttopoliittisesta-ohjelmasta-voiko-aanestaja-edelleenkaan-tietaa-saako-kokoomusta-aanestamalla-kalevan-vai-keto-huovisen-linjaa/": {
+   "otsikko": "Koponen kokoomuksen maahanmuuttopoliittisesta ohjelmasta: ”Voiko äänestäjä edelleenkään tietää, saako kokoomusta äänestämällä Kalevan vai Keto-Huovisen linjaa?”",
+   "linkki": "https://www.suomenuutiset.fi/koponen-kokoomuksen-maahanmuuttopoliittisesta-ohjelmasta-voiko-aanestaja-edelleenkaan-tietaa-saako-kokoomusta-aanestamalla-kalevan-vai-keto-huovisen-linjaa/",
+   "kuvaus": "Perussuomalaisten kansanedustaja Ari Koponen pitää myönteisenä, että kokoomuksen eduskuntaryhmä on hyväksynyt aiempaa tiukemman maahanmuuttopoliittisen ohjelman. Samalla hän muistuttaa, että ohjelma ei saanut eduskuntaryhmässä yksimielisyyttä.   The post  Koponen kokoomuksen maahanmuuttopoliittisest",
+   "lahde": "Suomen Uutiset",
+   "aika": "2026-10-16T12:41:35+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.mtvuutiset.fi/artikkeli/vihreat-hermostui-kokoomuksen-maahanmuuttopolitiikasta-kisaa-ykkoskiristajan-paikasta/9407722": {
+   "otsikko": "Vihreät hermostui kokoomuksen maahanmuuttopolitiikasta: \"Kisaa ykköskiristäjän paikasta\"",
+   "linkki": "https://www.mtvuutiset.fi/artikkeli/vihreat-hermostui-kokoomuksen-maahanmuuttopolitiikasta-kisaa-ykkoskiristajan-paikasta/9407722",
+   "kuvaus": "Vihreiden Inka Hopsun mukaan kokoomuksen uusi maahanmuutto-ohjelma kääntää selkänsä Suomessa jo asuvillekin maahanmuuttajille.",
+   "lahde": "MTV Uutiset",
+   "aika": "2026-10-16T12:38:13+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQY1BpenJmTUFNbUNNb3NVM0FTa2puZ2tOMURNbDZnSlE1NklFc19WMzZMd09pcVNJcDFaejVJZkZJMGlkUEIwaFM5VzRnV1pvMzJIMUtybUtGVHlzUUp6Zm8wcWQ3NHlsNHRmVkRlMzlPQjFVMzRIWWNSVV8xWmI0d3BpMkE4SFU1YW5vSEpWbjJId1A0MTdZaWtYX0RVcXdGd2V6Y3FXbExtUFJjaXV5ZzZqaDZtN3VaX1BpX05na0N0amxlTlN1dg?oc=5": {
+   "otsikko": "Vihreät hermostui kokoomuksen maahanmuuttopolitiikasta: \"Kisaa ykköskiristäjän paikasta\"",
+   "linkki": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQY1BpenJmTUFNbUNNb3NVM0FTa2puZ2tOMURNbDZnSlE1NklFc19WMzZMd09pcVNJcDFaejVJZkZJMGlkUEIwaFM5VzRnV1pvMzJIMUtybUtGVHlzUUp6Zm8wcWQ3NHlsNHRmVkRlMzlPQjFVMzRIWWNSVV8xWmI0d3BpMkE4SFU1YW5vSEpWbjJId1A0MTdZaWtYX0RVcXdGd2V6Y3FXbExtUFJjaXV5ZzZqaDZtN3VaX1BpX05na0N0amxlTlN1dg?oc=5",
+   "kuvaus": "Vihreät hermostui kokoomuksen maahanmuuttopolitiikasta: \"Kisaa ykköskiristäjän paikasta\"    mtvuutiset.fi",
+   "lahde": "mtvuutiset.fi",
+   "aika": "2026-10-16T12:38:13+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.verkkouutiset.fi/a/fatim-diarra-kokoomuksen-erottaa-pssta-vain-paremmin-istuvat-puvut/": {
+   "otsikko": "Fatim Diarra: Kokoomuksen erottaa PS:sta vain paremmin istuvat puvut",
+   "linkki": "https://www.verkkouutiset.fi/a/fatim-diarra-kokoomuksen-erottaa-pssta-vain-paremmin-istuvat-puvut/",
+   "kuvaus": "Kansanedustaja arvostelee tuoreita maahanmuuttolinjauksia. \n The post  Fatim Diarra: Kokoomuksen erottaa PS:sta vain paremmin istuvat puvut  appeared first on  Verkkouutiset .",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-16T11:38:19+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.is.fi/politiikka/art-2000012346642.html": {
+   "otsikko": "Kokoomukselta tiukka linjaus maahanmuuttoon – yksi kansanedustaja jätti eriävän mielipiteen",
+   "linkki": "https://www.is.fi/politiikka/art-2000012346642.html",
+   "kuvaus": "Kokoomus ei halua Suomeen maahanmuuttajia, jotka elävät pysyvästi veronmaksajien varassa tai tekevät rikoksia.",
+   "lahde": "Ilta-Sanomat",
+   "aika": "2026-10-16T11:35:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMijgJBVV95cUxNMWVkY3pTdWR1YUE3RTRBWUNDd1BxdDM4X3phZ1NhY1JvOU9oaW9hWVptWGRYMnlKTEVyOVUyS3gtaU5yYTE0emdneUo3U0F5YnYtRldJWDhmckNQbU9jYzEwUUlqRFg1WnVXS2JJWEFIaGJtSHlGOUZkbkpieDRnOGJ0YkNnNGM0aXNxUVRKTkZscXZ2VTZkM1Vkbjk2MHQxVzVIQzN3LVhGZm9PZEJrNjRBTHVnWGdhQVFwQlBqNE5zUUxpR19SeE9YNU5HblhDUWloVVNmN1Nwbl82TFI0aktvTVE1M2lfOHQ5TTludzZnS0ZaSkE0c0Q4UTU0Y2IteElxZTV1QUd4VlpYSUE?oc=5": {
+   "otsikko": "Vihreiden Hopsu: Kokoomuksen uusi maahanmuutto-ohjelma kääntää selkänsä Suomessa jo asuvillekin maahanmuuttajille | Vihreät - De Gröna",
+   "linkki": "https://news.google.com/rss/articles/CBMijgJBVV95cUxNMWVkY3pTdWR1YUE3RTRBWUNDd1BxdDM4X3phZ1NhY1JvOU9oaW9hWVptWGRYMnlKTEVyOVUyS3gtaU5yYTE0emdneUo3U0F5YnYtRldJWDhmckNQbU9jYzEwUUlqRFg1WnVXS2JJWEFIaGJtSHlGOUZkbkpieDRnOGJ0YkNnNGM0aXNxUVRKTkZscXZ2VTZkM1Vkbjk2MHQxVzVIQzN3LVhGZm9PZEJrNjRBTHVnWGdhQVFwQlBqNE5zUUxpR19SeE9YNU5HblhDUWloVVNmN1Nwbl82TFI0aktvTVE1M2lfOHQ5TTludzZnS0ZaSkE0c0Q4UTU0Y2IteElxZTV1QUd4VlpYSUE?oc=5",
+   "kuvaus": "Vihreiden Hopsu: Kokoomuksen uusi maahanmuutto-ohjelma kääntää selkänsä Suomessa jo asuvillekin maahanmuuttajille | Vihreät - De Gröna    STT Info",
+   "lahde": "STT Info",
+   "aika": "2026-10-16T10:43:10+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQnppWjlranNUeThvNzlkMDRlTWtGekJjbnM0Q1BjSnVCQm9VZ2lFVlNqalVUWkNMRGhMREppQ2p5TmlJR3U0MGduWUpzSXFSZWhJODAwZUx1NXgxMWEzVVRjbWN2LUliUVdsYWVlUEZ1NWExNEhOUC1JaFR6VWZDM3pFODNvMFVyNHBSNnRR?oc=5": {
+   "otsikko": "”Maahanmuutto on tuhonnut Ruotsin” – Tanskan pääministeri",
+   "linkki": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQnppWjlranNUeThvNzlkMDRlTWtGekJjbnM0Q1BjSnVCQm9VZ2lFVlNqalVUWkNMRGhMREppQ2p5TmlJR3U0MGduWUpzSXFSZWhJODAwZUx1NXgxMWEzVVRjbWN2LUliUVdsYWVlUEZ1NWExNEhOUC1JaFR6VWZDM3pFODNvMFVyNHBSNnRR?oc=5",
+   "kuvaus": "”Maahanmuutto on tuhonnut Ruotsin” – Tanskan pääministeri    MV-lehti",
+   "lahde": "MV-lehti",
+   "aika": "2026-10-16T10:26:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.verkkouutiset.fi/a/valiokunta-laki-rajaturvallisuudesta-voidaan-saataa-poikkeuslakina/": {
+   "otsikko": "Valiokunta: Laki rajaturvallisuudesta voidaan säätää poikkeuslakina",
+   "linkki": "https://www.verkkouutiset.fi/a/valiokunta-laki-rajaturvallisuudesta-voidaan-saataa-poikkeuslakina/",
+   "kuvaus": "Lainsäädäntö astui voimaan heinäkuussa 2024, ja sen voimassaoloa on kerran aikaisemmin jatkettu.  \n The post  Valiokunta: Laki rajaturvallisuudesta voidaan säätää poikkeuslakina  appeared first on  Verkkouutiset .",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-16T09:30:59+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "rajaturva"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.mtvuutiset.fi/artikkeli/perustuslakivaliokunnalta-vihreaa-valoa-niin-sanotulle-kaannytyslaille/9407618": {
+   "otsikko": "Perustuslakivaliokunnalta vihreää valoa käännytyslaille",
+   "linkki": "https://www.mtvuutiset.fi/artikkeli/perustuslakivaliokunnalta-vihreaa-valoa-niin-sanotulle-kaannytyslaille/9407618",
+   "kuvaus": "Perustuslakivaliokunta puoltaa rajaturvallisuuslain jatkamista vuoden 2028 loppuun saakka.",
+   "lahde": "MTV Uutiset",
+   "aika": "2026-10-16T09:25:28+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "rajaturva"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.verkkouutiset.fi/a/kokoomus-sitoisi-sosiaaliturvaa-tyontekoon-suomessa-tehdyn-tyon-pitaa-nakya/": {
+   "otsikko": "Paula Risikko: Maahanmuuttajanaiset saatava työelämään",
+   "linkki": "https://www.verkkouutiset.fi/a/kokoomus-sitoisi-sosiaaliturvaa-tyontekoon-suomessa-tehdyn-tyon-pitaa-nakya/",
+   "kuvaus": "Varapuhemiehen mukaan kielen oppiminen ja työnteko ovat avaimia itsenäiseen elämään. \n The post  Paula Risikko: Maahanmuuttajanaiset saatava työelämään  appeared first on  Verkkouutiset .",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-16T09:13:15+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.verkkouutiset.fi/a/kokoomukselta-selkea-linjaus-turvapaikanhaku-eun-ulkopuolisiin-keskuksiin/": {
+   "otsikko": "Kokoomukselta selkeä linjaus: Turvapaikanhaku EU:n ulkopuolisiin keskuksiin",
+   "linkki": "https://www.verkkouutiset.fi/a/kokoomukselta-selkea-linjaus-turvapaikanhaku-eun-ulkopuolisiin-keskuksiin/",
+   "kuvaus": "Eduskuntaryhmän tuoreet maahanmuuttolinjaukset pohjautuvat EU:ssa hyväksyttyyn sopimukseen. \n The post  Kokoomukselta selkeä linjaus: Turvapaikanhaku EU:n ulkopuolisiin keskuksiin  appeared first on  Verkkouutiset .",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-16T09:13:01+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMi5wFBVV95cUxQa2NoS2dIN2ZVMDVpZXgydlozSHFkRktSdVFwX1VUQUFib3dLZFVwOUVsWXhRQ1pWdzBYaVBVVE40T0thdk1PTWlaX19rbUtyY0Vxa05jcTJBVllIS2I0VC1Fb0t2Y2ZhVjRFemhtOWVZUUdCUGNHdFRtQkw0MW1LT19LNjBOUkc4U05vT3hMR3pRX29ISXduNEFsNFVVM1JXWS1nb01TY0prZllrSmxwZEVneFVXRS1LS2ZDU2Z4M2ZNZDI3NVNBVGdaNjh3eWpOLWQ0dUV5M0VrVk5YLWc1aG9Ja0lYZVU?oc=5": {
+   "otsikko": "Kokoomuksen Vikman: Maahanmuuttajien sosiaaliturva sidottava Suomessa tehtyyn työhön",
+   "linkki": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxQa2NoS2dIN2ZVMDVpZXgydlozSHFkRktSdVFwX1VUQUFib3dLZFVwOUVsWXhRQ1pWdzBYaVBVVE40T0thdk1PTWlaX19rbUtyY0Vxa05jcTJBVllIS2I0VC1Fb0t2Y2ZhVjRFemhtOWVZUUdCUGNHdFRtQkw0MW1LT19LNjBOUkc4U05vT3hMR3pRX29ISXduNEFsNFVVM1JXWS1nb01TY0prZllrSmxwZEVneFVXRS1LS2ZDU2Z4M2ZNZDI3NVNBVGdaNjh3eWpOLWQ0dUV5M0VrVk5YLWc1aG9Ja0lYZVU?oc=5",
+   "kuvaus": "Kokoomuksen Vikman: Maahanmuuttajien sosiaaliturva sidottava Suomessa tehtyyn työhön    STT Info",
+   "lahde": "STT Info",
+   "aika": "2026-10-16T08:17:37+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.hs.fi/politiikka/art-2000012342612.html": {
+   "otsikko": "Kokoomuksen linja | Maahan­muuttajien oloihin esitetään tiukkoja kiristyksiä – Pihla Keto-Huovinen jätti eriävän kannan kokoomuksen ohjelmaan",
+   "linkki": "https://www.hs.fi/politiikka/art-2000012342612.html",
+   "kuvaus": "Kokoomuksen eduskuntaryhmä valmisteli eripuraisen maahanmuutto-ohjelman, jossa ajetaan tuntuvia kiristyksiä Suomen maahanmuuttopolitiikkaan.",
+   "lahde": "Helsingin Sanomat",
+   "aika": "2026-10-16T08:14:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiswFBVV95cUxOeGpyR3BDMERsUUktcTdFUDFDNy1wQ19yNEZJbWRiMnFHYTR6RGc2SzRwN3I4clotWDY4eVZtYTdoRHd0eTRDaUV5ajlrUldWdWpBeHpDLUtVNEF0bW16TVBZZXltOXhnVHFHOG9VMVFGZzZvNmlZdzh2RklIanBnRGFrNmNQbVBCZXBNYXBCY1Jua0d1Tl9LN1k5cU5nX3Z4eERQSlJud0kzUTc2YVpxRDAyRQ?oc=5": {
+   "otsikko": "Kokoomus haluaa valikoivaa maahanmuuttoa: Työnteko ja kotoutuminen ehtojen ytimeen",
+   "linkki": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOeGpyR3BDMERsUUktcTdFUDFDNy1wQ19yNEZJbWRiMnFHYTR6RGc2SzRwN3I4clotWDY4eVZtYTdoRHd0eTRDaUV5ajlrUldWdWpBeHpDLUtVNEF0bW16TVBZZXltOXhnVHFHOG9VMVFGZzZvNmlZdzh2RklIanBnRGFrNmNQbVBCZXBNYXBCY1Jua0d1Tl9LN1k5cU5nX3Z4eERQSlJud0kzUTc2YVpxRDAyRQ?oc=5",
+   "kuvaus": "Kokoomus haluaa valikoivaa maahanmuuttoa: Työnteko ja kotoutuminen ehtojen ytimeen    Verkkouutiset",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-16T07:01:43+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "kotoutu",
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1rdkNtOGNkRGFENmF2ZnNFbGVFaWxWdHJKRXFsMmJNMVFUZXNfQWdpYURDd0g3MC1yUjRmVmVxdXVaUk5VTXpQdEhERkJNdG1SXzlqQ0o0bENqU1ZtQlNZRA?oc=5": {
+   "otsikko": "Maahanmuuttajien oloihin esitetään tiukkoja kiristyksiä – Pihla Keto-Huovinen jätti eriävän kannan kokoomuksen ohjelmaan",
+   "linkki": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1rdkNtOGNkRGFENmF2ZnNFbGVFaWxWdHJKRXFsMmJNMVFUZXNfQWdpYURDd0g3MC1yUjRmVmVxdXVaUk5VTXpQdEhERkJNdG1SXzlqQ0o0bENqU1ZtQlNZRA?oc=5",
+   "kuvaus": "Maahanmuuttajien oloihin esitetään tiukkoja kiristyksiä – Pihla Keto-Huovinen jätti eriävän kannan kokoomuksen ohjelmaan    HS.fi",
+   "lahde": "HS.fi",
+   "aika": "2026-10-16T07:00:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiVEFVX3lxTE51RE82SEFLakhHb3BVN2dGdk5HaHJjcy14VHBqR0w0dTJRRmdFOElwNDlYV3dFLWlZLVZRVFRVVndUUjd2RmJXSi03U0dvdFdqNHJaOQ?oc=5": {
+   "otsikko": "Seitsemän uutta vakituista työntekijää Porvooseen? – painopisteenä varhaiskasvatus ja kotouttaminen",
+   "linkki": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE51RE82SEFLakhHb3BVN2dGdk5HaHJjcy14VHBqR0w0dTJRRmdFOElwNDlYV3dFLWlZLVZRVFRVVndUUjd2RmJXSi03U0dvdFdqNHJaOQ?oc=5",
+   "kuvaus": "Seitsemän uutta vakituista työntekijää Porvooseen? – painopisteenä varhaiskasvatus ja kotouttaminen    Uusimaa",
+   "lahde": "Uusimaa",
+   "aika": "2026-10-16T06:56:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "kotouttami"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMipwFBVV95cUxPc1ZCeWJtWGxmR3VVVE93bmRNem02ZjgyZDYyTVpGUmJpQl9faEtaQlFWQ2stYzRDN2tLUFVMczRCMEVha1h2WDZvWGprVzFXR2JJT3IzUHp0YkZxdmlQZVRPWXBsU001ZnczbWV5Zzl5NTVvak96Z0pRN1E5ZFl4SUJfVXJrR18zT0xjeldxVk9uNXVrcjlJV0NkRlRjOHJCdVozeGFPNA?oc=5": {
+   "otsikko": "Kokoomus haluaa valikoida Suomeen saapuvat maahanmuuttajat tarkemmin",
+   "linkki": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPc1ZCeWJtWGxmR3VVVE93bmRNem02ZjgyZDYyTVpGUmJpQl9faEtaQlFWQ2stYzRDN2tLUFVMczRCMEVha1h2WDZvWGprVzFXR2JJT3IzUHp0YkZxdmlQZVRPWXBsU001ZnczbWV5Zzl5NTVvak96Z0pRN1E5ZFl4SUJfVXJrR18zT0xjeldxVk9uNXVrcjlJV0NkRlRjOHJCdVozeGFPNA?oc=5",
+   "kuvaus": "Kokoomus haluaa valikoida Suomeen saapuvat maahanmuuttajat tarkemmin    mtvuutiset.fi",
+   "lahde": "mtvuutiset.fi",
+   "aika": "2026-10-16T06:48:48+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://www.verkkouutiset.fi/a/aloite-ulkomaalaisten-rikoksentekijoiden-karkottamisesta-on-etenemassa-eduskuntaan/": {
+   "otsikko": "Aloite ulkomaalaisten rikoksentekijöiden karkottamisesta on etenemässä eduskuntaan",
+   "linkki": "https://www.verkkouutiset.fi/a/aloite-ulkomaalaisten-rikoksentekijoiden-karkottamisesta-on-etenemassa-eduskuntaan/",
+   "kuvaus": "Automaattinen karkotus koskisi ehdottomaan vankeusrangaistukseen tuomittuja. \n The post  Aloite ulkomaalaisten rikoksentekijöiden karkottamisesta on etenemässä eduskuntaan  appeared first on  Verkkouutiset .",
+   "lahde": "Verkkouutiset",
+   "aika": "2026-10-15T08:25:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "karkotu"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPVWpfMHkxbFdhVTRPVkpTaDExaU51QW5mdWtWbmZtUFhXN085dlpVbkV4M0VjTGh2RWJtU0c1S2ZPR3NpakZUeHFQTXY1a29QdWJXMlhha2M5MkZoNWFkdjVEUDYyVmZrLUlLSjh3cWhNc3hhNDl4THlua1J4RTJpYnNvVmlLUGpFSEQ4Ukx3TWthZXVKTkJ2WjdfUnpoSlRlTFkyZG1QR1RsUmMzOFRHVF9YMGw2bklEUkJ3dDhFYTEtMlBpN0tkWg?oc=5": {
+   "otsikko": "Haasio ja Mattila kirjoittivat Suomen maahanmuuton historian",
+   "linkki": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPVWpfMHkxbFdhVTRPVkpTaDExaU51QW5mdWtWbmZtUFhXN085dlpVbkV4M0VjTGh2RWJtU0c1S2ZPR3NpakZUeHFQTXY1a29QdWJXMlhha2M5MkZoNWFkdjVEUDYyVmZrLUlLSjh3cWhNc3hhNDl4THlua1J4RTJpYnNvVmlLUGpFSEQ4Ukx3TWthZXVKTkJ2WjdfUnpoSlRlTFkyZG1QR1RsUmMzOFRHVF9YMGw2bklEUkJ3dDhFYTEtMlBpN0tkWg?oc=5",
+   "kuvaus": "Haasio ja Mattila kirjoittivat Suomen maahanmuuton historian    STT Info",
+   "lahde": "STT Info",
+   "aika": "2026-10-15T06:00:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMimgFBVV95cUxORzdRMEtrUFdJWEU2UFdoVWhxcnhOQ2F2ODE0VTk1RTNwOC1UV1VXZ2Z1QW94cVB5cjF2QUx4QVYwMUp3amlRMGNYNHlGaFpjNzN6ZjhMQXI2OURUdjZ2YkM2M0psdUZrTTVXVUtXeXExRUo2NkNFOXJhckNUMUIzbVVndGVxaHRHNGwtRDVGRHBUcS1rSXpPRjN3?oc=5": {
+   "otsikko": "Mikä on kirkon ja islamin suurin salaisuus?",
+   "linkki": "https://news.google.com/rss/articles/CBMimgFBVV95cUxORzdRMEtrUFdJWEU2UFdoVWhxcnhOQ2F2ODE0VTk1RTNwOC1UV1VXZ2Z1QW94cVB5cjF2QUx4QVYwMUp3amlRMGNYNHlGaFpjNzN6ZjhMQXI2OURUdjZ2YkM2M0psdUZrTTVXVUtXeXExRUo2NkNFOXJhckNUMUIzbVVndGVxaHRHNGwtRDVGRHBUcS1rSXpPRjN3?oc=5",
+   "kuvaus": "Mikä on kirkon ja islamin suurin salaisuus?    Uusi Suomi Puheenvuoro",
+   "lahde": "Uusi Suomi Puheenvuoro",
+   "aika": "2026-10-14T11:40:42+00:00",
+   "aiheet": {
+    "Islam": [
+     "islam"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZlo5Ql9fZ1JkbnI3Y2xRVjhGeEloQTNzWl9hNl9NMWtHdVQtZ2oyT3FRQnNmcmlYZkxzaHFYNnJhOGxrUmVMUERnWGxSaG03U2NMR05lQ3RkTVJ0alM3TzJOZzc1dHh6RGNYWHBRbTVDSGJ2emdNZDVYSkRQLWxjQ05uVWtzTnM?oc=5": {
+   "otsikko": "Turja Lehtonen: Maahanmuuttajat ovat voimavara",
+   "linkki": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZlo5Ql9fZ1JkbnI3Y2xRVjhGeEloQTNzWl9hNl9NMWtHdVQtZ2oyT3FRQnNmcmlYZkxzaHFYNnJhOGxrUmVMUERnWGxSaG03U2NMR05lQ3RkTVJ0alM3TzJOZzc1dHh6RGNYWHBRbTVDSGJ2emdNZDVYSkRQLWxjQ05uVWtzTnM?oc=5",
+   "kuvaus": "Turja Lehtonen: Maahanmuuttajat ovat voimavara    Tekijä-lehti",
+   "lahde": "Tekijä-lehti",
+   "aika": "2026-10-13T14:13:38+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBVOVV0N201aUVleFd5MTRyRzktV3hVX1BVRkZmYW9sVTV6UVczaEs3X2REUVZpUE1mVFlOSEdGZ2ZPMUtiYlpQaU9qRGVnV2ZCMzJLcW00RlZ4VXEySVE?oc=5": {
+   "otsikko": "Maahanmuutto | Maahanmuuttajat keskittyvät yhä selvemmin tietyille alueille Helsingissä",
+   "linkki": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBVOVV0N201aUVleFd5MTRyRzktV3hVX1BVRkZmYW9sVTV6UVczaEs3X2REUVZpUE1mVFlOSEdGZ2ZPMUtiYlpQaU9qRGVnV2ZCMzJLcW00RlZ4VXEySVE?oc=5",
+   "kuvaus": "Maahanmuutto | Maahanmuuttajat keskittyvät yhä selvemmin tietyille alueille Helsingissä    HS.fi",
+   "lahde": "HS.fi",
+   "aika": "2026-10-13T09:00:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMikgFBVV95cUxOYzB6Tzg2eGczVEIzU09VeDRkUXlZTEFuQnYtMFlHbXRRSDVJU3hmV213QXA5YTJZYTNNeVhzenNvTnI3Z1h1cEVJU01lUmZwVGJDbl9zZnpHVGplc2Qyel9pYmtaakY3V0xDZ21VeFA0UUZlR1RNRWNUWXBld053MVlmZGRuNXRibWV2TUY2VTBuZw?oc=5": {
+   "otsikko": "Maahanmuutto ajaa Ranskaa kohti taloudellista romahdusta",
+   "linkki": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOYzB6Tzg2eGczVEIzU09VeDRkUXlZTEFuQnYtMFlHbXRRSDVJU3hmV213QXA5YTJZYTNNeVhzenNvTnI3Z1h1cEVJU01lUmZwVGJDbl9zZnpHVGplc2Qyel9pYmtaakY3V0xDZ21VeFA0UUZlR1RNRWNUWXBld053MVlmZGRuNXRibWV2TUY2VTBuZw?oc=5",
+   "kuvaus": "Maahanmuutto ajaa Ranskaa kohti taloudellista romahdusta    MV-lehti",
+   "lahde": "MV-lehti",
+   "aika": "2026-10-13T08:02:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMif0FVX3lxTE1VNXhjVlFYSUlVRGRFMDROOUdKZjZya1pIUVVpTEJuMHgzRlRveWNHai04ZHJEQnlWb0p0S1BUMUZ0WURiZFVXYk5VOFRPNGppdEtqbGdNeW9aRXk0UFJwelFhNTQ5ZWh4ZzBxQkpKVGdQTUhjSWpwcUJXa3hjT0U?oc=5": {
+   "otsikko": "Kolumni: ”Tämä on meidän maamme. Ei teidän” – Petteri Orpo tapasi imaamin, raivo repesi",
+   "linkki": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1VNXhjVlFYSUlVRGRFMDROOUdKZjZya1pIUVVpTEJuMHgzRlRveWNHai04ZHJEQnlWb0p0S1BUMUZ0WURiZFVXYk5VOFRPNGppdEtqbGdNeW9aRXk0UFJwelFhNTQ5ZWh4ZzBxQkpKVGdQTUhjSWpwcUJXa3hjT0U?oc=5",
+   "kuvaus": "Kolumni: ”Tämä on meidän maamme. Ei teidän” – Petteri Orpo tapasi imaamin, raivo repesi    Iltalehti",
+   "lahde": "Iltalehti",
+   "aika": "2026-10-12T07:08:39+00:00",
+   "aiheet": {
+    "Islam": [
+     "imaami"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNUWZuSkJ4X0JkcDRqZTlPQmJmdXNCM2ZUZEJHWTcySDNCR2Zwd2x2UnlfYWV4ZS1pZXl2bER2c1ZQYjlYTDVHRnNUMmZFMDBkVGl3VnFoNEp6Y3JWanVuUHY5Y1B0STNQc0phRFB4UG1sYi1oN0JMeWFGakZvVkR5dUdQa2QyVnJ5dkNRMGpQaENaNkRSbVVUQTcxVHJoTU8tWW80cWE5UllyQ2loeU5SRzJUTmR0eXFQa1Awa1hBWkY3X1BLTkFfOThtN3QzZ2lGMVdz?oc=5": {
+   "otsikko": "MTV:n tiedot: Näin kokoomuksen maahanmuuttolinja kiristyy",
+   "linkki": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNUWZuSkJ4X0JkcDRqZTlPQmJmdXNCM2ZUZEJHWTcySDNCR2Zwd2x2UnlfYWV4ZS1pZXl2bER2c1ZQYjlYTDVHRnNUMmZFMDBkVGl3VnFoNEp6Y3JWanVuUHY5Y1B0STNQc0phRFB4UG1sYi1oN0JMeWFGakZvVkR5dUdQa2QyVnJ5dkNRMGpQaENaNkRSbVVUQTcxVHJoTU8tWW80cWE5UllyQ2loeU5SRzJUTmR0eXFQa1Awa1hBWkY3X1BLTkFfOThtN3QzZ2lGMVdz?oc=5",
+   "kuvaus": "MTV:n tiedot: Näin kokoomuksen maahanmuuttolinja kiristyy    mtvuutiset.fi",
+   "lahde": "mtvuutiset.fi",
+   "aika": "2026-10-12T04:54:57+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBwcElPdnU4elBTdXd4TVowRng3UXhFMEEyTGhHMU5FVjJYSjNXUmRrWkJ4ZGdvRjRNeWlWU3lLT2FtREdqSnBZTkJ1ajRZcDFDV3FTOGlyY1h3SmNDM25j?oc=5": {
+   "otsikko": "Puheenvuoro | Ilman maahanmuuttoa ei olisi suomalaisia, sanoo tietokirjailija Ari Haasio",
+   "linkki": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBwcElPdnU4elBTdXd4TVowRng3UXhFMEEyTGhHMU5FVjJYSjNXUmRrWkJ4ZGdvRjRNeWlWU3lLT2FtREdqSnBZTkJ1ajRZcDFDV3FTOGlyY1h3SmNDM25j?oc=5",
+   "kuvaus": "Puheenvuoro | Ilman maahanmuuttoa ei olisi suomalaisia, sanoo tietokirjailija Ari Haasio    HS.fi",
+   "lahde": "HS.fi",
+   "aika": "2026-10-11T18:00:00+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMid0FVX3lxTFBPdVd1RDVKbFZlTnd3VHBYYlVsVDAyWkdoRHBJMWZrOTF0R2FIQ2U5TGVGOEFjSEF6WHo3dzhFNzRvRHRaNlFmeWlZVzZvMndPU29rT2VhZDk2ZGVUVE9qOHlaSlExWTI4SXFOZXYtUkJ6eG5pMUxn?oc=5": {
+   "otsikko": "Sunni-salafistisen islamilaisen terrorismin kattojärjestö, Muslimiveljeskunta, kielletään EU:ssa - Suomi ainoita maita, joka äänesti vastaan!",
+   "linkki": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBPdVd1RDVKbFZlTnd3VHBYYlVsVDAyWkdoRHBJMWZrOTF0R2FIQ2U5TGVGOEFjSEF6WHo3dzhFNzRvRHRaNlFmeWlZVzZvMndPU29rT2VhZDk2ZGVUVE9qOHlaSlExWTI4SXFOZXYtUkJ6eG5pMUxn?oc=5",
+   "kuvaus": "Sunni-salafistisen islamilaisen terrorismin kattojärjestö, Muslimiveljeskunta, kielletään EU:ssa - Suomi ainoita maita, joka äänesti vastaan!    Anterilla on asiaa",
+   "lahde": "Anterilla on asiaa",
+   "aika": "2026-10-10T18:54:55+00:00",
+   "aiheet": {
+    "Islam": [
+     "islam",
+     "muslimi"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  },
+  "https://news.google.com/rss/articles/CBMiQkFVX3lxTE5TOVNhYXZkQTNfSXY4STNrczY3d1Ywd3BnQWFrTkFwdWlSNVlIUVVxSUktTm5kZi1qSWVObnFsOEpDZw?oc=5": {
+   "otsikko": "Shadia Raskin kolumni: Maahanmuutto ei ole ongelma eikä ratkaisu – se vain on",
+   "linkki": "https://news.google.com/rss/articles/CBMiQkFVX3lxTE5TOVNhYXZkQTNfSXY4STNrczY3d1Ywd3BnQWFrTkFwdWlSNVlIUVVxSUktTm5kZi1qSWVObnFsOEpDZw?oc=5",
+   "kuvaus": "Shadia Raskin kolumni: Maahanmuutto ei ole ongelma eikä ratkaisu – se vain on    Yle",
+   "lahde": "Yle",
+   "aika": "2026-10-10T03:45:35+00:00",
+   "aiheet": {
+    "Maahanmuutto": [
+     "maahanmuut"
+    ]
+   },
+   "haettu": "2026-10-17T01:45:22.133172+00:00"
+  }
+ }
+}
