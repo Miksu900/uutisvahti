@@ -227,6 +227,8 @@ a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .jako-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .jako-g a,.jako-g button{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--chip);color:var(--fg);border:0;border-radius:12px;padding:12px 6px;font:650 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}
 .jako-x{width:100%;margin-top:10px}
+.jako-g .j-x{background:#000;color:#fff;border:1px solid #333}.jako-g .j-fb{background:#1877f2;color:#fff}.jako-g .j-wa{background:#25d366;color:#06321a}.jako-g .j-tg{background:#2aabee;color:#fff}.jako-g .j-li{background:#0a66c2;color:#fff}
+.jako-g a,.jako-g button{font-weight:800}
 .jako-kop{display:block;width:100%;margin:0 0 8px;padding:14px;font-size:15.5px}
 .tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
 .oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
@@ -284,11 +286,11 @@ function jaa(u,o){
  var e=encodeURIComponent,uu=e(u),oo=e(o);
  J.innerHTML='<div class="jako-in" role="dialog" aria-label="Jaa uutinen"><p>'+esc(o)+'</p>'
   +'<button type="button" class="jako-kop" id="jakoKop">Kopioi linkki</button><div class="jako-g">'
-  +'<a target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
-  +'<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
-  +'<a target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
-  +'<a target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
-  +'<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
+  +'<a class="j-x" target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
+  +'<a class="j-fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
+  +'<a class="j-wa" target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
+  +'<a class="j-tg" target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
+  +'<a class="j-li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
   +(navigator.share?'<button type="button" id="jakoMuu">Muut sovellukset…</button>':'<a href="mailto:?subject='+oo+'&body='+e(o+"\n"+u)+'">Sähköposti</a>')
   +'</div><button type="button" class="sec jako-x">Sulje</button></div>';
  J.hidden=false;
