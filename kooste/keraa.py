@@ -226,6 +226,7 @@ a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .jako-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .jako-g a,.jako-g button{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--chip);color:var(--fg);border:0;border-radius:12px;padding:12px 6px;font:650 14px system-ui,sans-serif;text-decoration:none;cursor:pointer}
 .jako-x{width:100%;margin-top:10px}
+.jako-kop{display:block;width:100%;margin:0 0 8px;padding:14px;font-size:15.5px}
 .tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
 .oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
 .asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden]{display:none}
@@ -272,20 +273,26 @@ var H=document.getElementById("haku"),I=document.getElementById("hakuIn"),T=docu
 try{var OA=JSON.parse(localStorage.getItem("uv_alue")||"null");if(OA){var pt=document.getElementById("paikTile");if(pt){pt.href=pt.dataset.base+OA[0]+"/";document.getElementById("paikTc").textContent="Oma alueesi: "+OA[1]+" →"}
  var oa=document.getElementById("omaAlue");if(oa){oa.href=OA[0]+"/";oa.textContent="Oma alueesi: "+OA[1]+" →";oa.hidden=false}}}catch(e){}
 var CC=document.querySelector(".chips a[aria-current]");if(CC){var CP=CC.parentNode;CP.scrollLeft=CC.offsetLeft-CP.clientWidth/2+CC.clientWidth/2}
+function kopioi(u,b){function ok(){b.textContent="Linkki kopioitu ✓"}
+ function vara(){var t=document.createElement("textarea");t.value=u;t.setAttribute("readonly","");t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();t.setSelectionRange(0,u.length);var r=false;try{r=document.execCommand("copy")}catch(x){}document.body.removeChild(t);if(r)ok();else b.textContent=u}
+ try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(u).then(ok,vara);else vara()}catch(x){vara()}}
 function jaa(u,o){
- if(navigator.share){navigator.share({title:o,text:o,url:u}).catch(function(){});return}
+ u=String(u).replace(/[?&](origin|utm_[a-z]+)=[^&#]*/g,"").replace(/&$/,"");
  var J=document.getElementById("jako");
  if(!J){J=document.createElement("div");J.id="jako";J.hidden=true;document.body.appendChild(J);J.addEventListener("click",function(e){if(e.target===J||e.target.classList.contains("jako-x"))J.hidden=true})}
  var e=encodeURIComponent,uu=e(u),oo=e(o);
- J.innerHTML='<div class="jako-in" role="dialog" aria-label="Jaa uutinen"><p>'+esc(o)+'</p><div class="jako-g">'
+ J.innerHTML='<div class="jako-in" role="dialog" aria-label="Jaa uutinen"><p>'+esc(o)+'</p>'
+  +'<button type="button" class="jako-kop" id="jakoKop">Kopioi linkki</button><div class="jako-g">'
   +'<a target="_blank" rel="noopener" href="https://x.com/intent/post?text='+oo+'&url='+uu+'">X</a>'
   +'<a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+uu+'">Facebook</a>'
   +'<a target="_blank" rel="noopener" href="https://wa.me/?text='+e(o+" "+u)+'">WhatsApp</a>'
   +'<a target="_blank" rel="noopener" href="https://t.me/share/url?url='+uu+'&text='+oo+'">Telegram</a>'
   +'<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+uu+'">LinkedIn</a>'
-  +'<button type="button" id="jakoKop">Kopioi linkki</button></div><button type="button" class="sec jako-x">Sulje</button></div>';
+  +(navigator.share?'<button type="button" id="jakoMuu">Muut sovellukset…</button>':'<a href="mailto:?subject='+oo+'&body='+e(o+"\n"+u)+'">Sähköposti</a>')
+  +'</div><button type="button" class="sec jako-x">Sulje</button></div>';
  J.hidden=false;
- document.getElementById("jakoKop").onclick=function(){var b=this;try{navigator.clipboard.writeText(u).then(function(){b.textContent="Kopioitu ✓"},function(){b.textContent=u})}catch(x){b.textContent=u}};
+ document.getElementById("jakoKop").onclick=function(){kopioi(u,this)};
+ var m=document.getElementById("jakoMuu");if(m)m.onclick=function(){navigator.share({title:o,text:o,url:u}).then(function(){J.hidden=true}).catch(function(){})};
 }
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".jaa");if(b){e.preventDefault();jaa(b.dataset.u,b.dataset.o)}});
 document.addEventListener("keydown",function(e){var J=document.getElementById("jako");if(e.key==="Escape"&&J&&!J.hidden)J.hidden=true});
