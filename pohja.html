@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uutisvahti</title>
+<style>
+:root{--bg:#14161a;--fg:#e8e6e1;--mute:#9aa0a8;--line:#2a2e35;--card:#1b1e23;--acc:#e0b04a;--isl:#5aa98b;--maa:#6b93d6}
+@media (prefers-color-scheme:light){:root{--bg:#f6f4ef;--fg:#1d1f23;--mute:#6a707a;--line:#dedbd2;--card:#fff;--acc:#9a6b00;--isl:#1f7a5c;--maa:#2f5fb3}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 Georgia,"Times New Roman",serif}
+main{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 2px}
+.sub{color:var(--mute);font:13px/1.4 system-ui,sans-serif;margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;font-family:system-ui,sans-serif}
+input,select{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:16px;min-width:0}
+input{flex:1 1 100%}
+select{flex:1 1 45%}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
+.item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}
+.item a:visited{color:var(--mute)}
+.meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.tag{border:1px solid currentColor;border-radius:999px;padding:1px 8px}
+.t-Islam{color:var(--isl)}.t-Maahanmuutto{color:var(--maa)}
+.kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
+.paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
+footer{font:12px/1.5 system-ui,sans-serif;color:var(--mute);margin:24px 0 40px}
+details summary{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>Uutisvahti</h1>
+<p class="sub" id="sub"></p>
+<div class="bar">
+<input id="q" type="search" placeholder="Hae otsikoista" aria-label="Hae otsikoista">
+<select id="aihe" aria-label="Aihe"><option value="">Kaikki aiheet</option><option>Islam</option><option>Maahanmuutto</option></select>
+<select id="lahde" aria-label="Lähde"><option value="">Kaikki lähteet</option></select>
+</div>
+<div id="lista"></div>
+<footer>
+<p>Kooste kerää vain otsikot ja linkit suomalaisten medioiden julkisista uutisvirroista sekä Google Uutisten hakutuloksista. Aiheet tunnistetaan hakusanoista otsikossa tai ingressissä, joten osuma voi olla myös aiheeseen vain sivuava. Tarkista aina väitteet alkuperäisestä lähteestä.</p>
+<details><summary>Virtojen tila</summary><div id="tila"></div></details>
+</footer>
+</main>
+<script>
+const D=__DATA__;
+const $=id=>document.getElementById(id);
+const fmtP=d=>new Date(d).toLocaleDateString("fi-FI",{timeZone:"Europe/Helsinki",weekday:"long",day:"numeric",month:"numeric"});
+const fmtK=d=>new Date(d).toLocaleTimeString("fi-FI",{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"});
+const lahteet=[...new Set(D.uutiset.map(u=>u.lahde))].sort((a,b)=>a.localeCompare(b,"fi"));
+lahteet.forEach(l=>{const o=document.createElement("option");o.textContent=l;$("lahde").appendChild(o)});
+$("sub").textContent="Päivitetty "+new Date(D.paivitetty).toLocaleString("fi-FI",{timeZone:"Europe/Helsinki"})+" · "+D.uutiset.length+" uutista";
+$("tila").innerHTML=D.tila.map(t=>"<div>"+t[0]+": "+t[3]+(t[3]==="ok"?" ("+t[1]+" juttua, "+t[2]+" osumaa)":"")+"</div>").join("");
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function piirra(){
+ const q=$("q").value.trim().toLowerCase(),a=$("aihe").value,l=$("lahde").value;
+ let out="",pv="",n=0;
+ for(const u of D.uutiset){
+  if(a&&!(u.aiheet&&u.aiheet[a]))continue;
+  if(l&&u.lahde!==l)continue;
+  if(q&&!(u.otsikko+" "+u.kuvaus).toLowerCase().includes(q))continue;
+  if(++n>200)break;
+  const p=fmtP(u.aika);
+  if(p!==pv){out+='<div class="paiva">'+p+'</div>';pv=p}
+  const tags=Object.keys(u.aiheet||{}).map(k=>'<span class="tag t-'+k+'">'+k+'</span>').join("");
+  out+='<div class="item"><a href="'+esc(u.linkki)+'" rel="noopener" target="_blank">'+esc(u.otsikko)+'</a>'+(u.kuvaus&&u.kuvaus!==u.otsikko?'<div class="kuv">'+esc(u.kuvaus.slice(0,160))+(u.kuvaus.length>160?"…":"")+'</div>':"")+'<div class="meta"><span>'+esc(u.lahde)+'</span><span>'+fmtK(u.aika)+'</span>'+tags+'</div></div>';
+ }
+ $("lista").innerHTML=out||'<p class="sub">Ei osumia. Kokeile toista hakua tai aihetta.</p>';
+}
+["q","aihe","lahde"].forEach(i=>$(i).addEventListener("input",piirra));
+piirra();
+</script>
+</body>
+</html>
