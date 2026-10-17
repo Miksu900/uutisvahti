@@ -44,7 +44,7 @@ AIHEET = {
     "musiikki": {"nimi": "Musiikki", "sanat": ["musiikki", "keikka", "albumi", "bändi", "artisti", "festivaali", "laulaja", "single"], "haku": "musiikki OR keikka OR albumi"},
   }},
   "liikenne": {"nimi": "Liikenne ja autot", "kuvaus": "Autot, taksit, joukkoliikenne ja liikenneuutiset Suomesta.", "ala": {
-    "taksi": {"nimi": "Taksi", "sanat": ["taksi", "taksiyrittäjä", "kuljettaja", "uber", "bolt"], "haku": "taksi OR taksiala OR taksiyrittäjä"},
+    "taksi": {"nimi": "Taksi", "sanat": ["taksi", "taksiyrittäjä", "uber", "bolt", "yango"], "haku": "taksi OR taksiala OR taksiyrittäjä"},
     "autot": {"nimi": "Autot ja sähköautot", "sanat": ["auto", "sähköauto", "autovero", "katsastus", "tesla", "renkaat", "ajoneuvo"], "haku": "autot OR sähköauto OR autovero"},
     "joukkoliikenne": {"nimi": "Joukkoliikenne", "sanat": ["juna", "vr", "hsl", "raitiovaunu", "bussi", "metro", "lentokenttä", "joukkoliikenne"], "haku": "joukkoliikenne OR VR OR HSL"},
   }},

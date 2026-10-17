@@ -27,12 +27,8 @@ SUORAT = [
     ("MTV Uutiset", "https://www.mtvuutiset.fi/api/feed/rss/uutiset_uusimmat"),
     ("Verkkouutiset", "https://www.verkkouutiset.fi/feed/"),
     ("Suomen Uutiset", "https://www.suomenuutiset.fi/feed/"),
-    ("Kauppalehti", "https://www.kauppalehti.fi/rss/uutiset"),
-    ("Maaseudun Tulevaisuus", "https://www.mt.fi/rss/uusimmat"),
-    ("Kaleva", "https://www.kaleva.fi/rss/"),
-    ("Aamulehti", "https://www.aamulehti.fi/rss/"),
 ]
-NIMET = {"HS.fi": "Helsingin Sanomat", "Hs.fi": "Helsingin Sanomat", "Yle Uutiset": "Yle", "yle.fi": "Yle", "Is.fi": "Ilta-Sanomat", "IS.fi": "Ilta-Sanomat"}
+NIMET = {"HS.fi": "Helsingin Sanomat", "Hs.fi": "Helsingin Sanomat", "Yle Uutiset": "Yle", "yle.fi": "Yle", "Is.fi": "Ilta-Sanomat", "IS.fi": "Ilta-Sanomat", "mtvuutiset.fi": "MTV Uutiset", "Mtvuutiset.fi": "MTV Uutiset"}
 
 def hae(url):
     r = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/rss+xml, application/xml, text/xml, */*"})
@@ -282,7 +278,7 @@ def main():
         haut = [(n, u, None) for n, u in SUORAT]
         for p, pv in AIHEET.items():
             for a, av in pv["ala"].items():
-                url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(f"({av['haku']}) when:3d") + "&hl=fi&gl=FI&ceid=FI:fi"
+                url = "https://news.google.com/rss/search?q=" + urllib.parse.quote(f"({av['haku']}) when:7d") + "&hl=fi&gl=FI&ceid=FI:fi"
                 haut.append((f"Google: {p}/{a}", url, f"{p}/{a}"))
         for nimi, url, kiinteä in haut:
             try:
@@ -292,7 +288,12 @@ def main():
                     if kiinteä and not suomalainen(it):
                         continue
                     it["a"] = it["a"] or nyt.isoformat()
-                    t = [kiinteä] if kiinteä else luokittele(it)
+                    if kiinteä:
+                        # Googlen haku on löyhä: aiheen hakusanan on löydyttävä otsikosta
+                        t = [kiinteä] if LUOK[kiinteä].search(it["o"]) else []
+                        t = sorted(set(t) | set(luokittele(it)))
+                    else:
+                        t = luokittele(it)
                     if not t:
                         continue
                     vanha_it = uutiset.get(it["l"])
