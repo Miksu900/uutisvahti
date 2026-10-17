@@ -124,6 +124,10 @@ def main():
             tila.append([nimi, 0, 0, "VIRHE " + str(e)[:80]])
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
     uutiset = {k: v for k, v in uutiset.items() if (v["aika"] or "") >= raja}
+    for v in uutiset.values():   # julkaistaan vain hyvin lyhyt ote (lehtikustantajan oikeus)
+        kv = (v.get("kuvaus") or "").strip()
+        if len(kv) > 100:
+            v["kuvaus"] = kv[:100].rsplit(" ", 1)[0].rstrip(" ,.;:–-") + "…"
     jarj = sorted(uutiset.values(), key=lambda v: v["aika"] or "", reverse=True)[:MAX]
     # deduplikoi sama otsikko+lähde
     # sama uutinen eri virroista: pidä yksi, suosi median omaa virtaa Googlen sijaan
