@@ -108,3 +108,37 @@ def mediat(g):
         if u["s"] not in nahty:
             nahty.add(u["s"]); out.append(u["s"])
     return out
+
+def muissa_medioissa(items, ikkuna_h=36, kynnys=0.22):
+    """Tunnukset uutisille, joille löytyy edes löyhästi samankaltainen uutinen toisesta mediasta.
+    Käytetään 'Vain yksi media kertoi' -osiossa, jotta sinne päätyy vain aidosti yhden median uutisia."""
+    import math
+    n = len(items)
+    V = [vartalot(puhdas_otsikko(u["o"])) for u in items]
+    T = [_aika(u) for u in items]
+    df = {}
+    for v in V:
+        for x in v:
+            df[x] = df.get(x, 0) + 1
+    idf = {x: math.log((n + 1) / c) for x, c in df.items()}
+    W = [sum(idf[x] for x in v) for v in V]
+    ind = {}
+    for i, v in enumerate(V):
+        for x in v:
+            ind.setdefault(x, []).append(i)
+    out = set()
+    for i in range(n):
+        for x in V[i]:
+            if df[x] > 80:
+                continue
+            for j in ind[x]:
+                if j == i or items[j]["s"] == items[i]["s"] or abs(T[i] - T[j]) > ikkuna_h * 3600:
+                    continue
+                yht = V[i] & V[j]
+                if len(yht) >= 2 and sum(idf[y] for y in yht) / max(1e-9, min(W[i], W[j])) >= kynnys:
+                    out.add(items[i].get("i") or items[i]["l"])
+                    break
+            else:
+                continue
+            break
+    return out
