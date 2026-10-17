@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aiheet import AIHEET
+from ryhmat import ryhmittele, mediat, puhdas_otsikko
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get("BASE_URL", "https://miksu900.github.io/uutisvahti/kooste").rstrip("/")
@@ -139,75 +140,227 @@ def esc(s):
 def hki(iso, muoto):
     return datetime.fromisoformat(iso).astimezone(HKI).strftime(muoto)
 
-CSS = """:root{--bg:#14161a;--fg:#e8e6e1;--mute:#9aa0a8;--line:#2a2e35;--card:#1b1e23;--acc:#e0b04a;--chip:#232830}
-@media (prefers-color-scheme:light){:root{--bg:#f6f4ef;--fg:#1d1f23;--mute:#6a707a;--line:#dedbd2;--card:#fff;--acc:#9a6b00;--chip:#ece9e0}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Georgia,"Times New Roman",serif}
-main{max-width:760px;margin:0 auto;padding:16px}
-header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-.logo{font-size:1.4rem;font-weight:700;color:var(--fg);text-decoration:none}
-nav.paa{display:flex;flex-wrap:wrap;gap:6px 14px;font:14px/1.3 system-ui,sans-serif;margin:8px 0 14px}
-nav.paa a{color:var(--mute);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
-nav.paa a[aria-current],nav.paa a:hover{color:var(--fg);border-bottom-color:var(--acc)}
-h1{font-size:1.6rem;line-height:1.2;margin:10px 0 6px}h2{font-size:1.15rem;margin:26px 0 8px}
-.lead{color:var(--mute);font:14px/1.5 system-ui,sans-serif;margin:0 0 12px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;font:14px/1.2 system-ui,sans-serif}
-.chips a{background:var(--chip);color:var(--fg);text-decoration:none;border-radius:999px;padding:7px 12px}
-.chips a[aria-current]{background:var(--acc);color:#14161a}
-.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 10px}
-.item a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:600;display:block}.item a:visited{color:var(--mute)}
-.item a.kesk{display:inline;font:600 13px/1.3 system-ui,sans-serif;color:var(--acc);margin-left:8px}
-button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
-textarea,input[type=email]{font-family:inherit}
+CSS = """:root{--bg:#0d1117;--card:#151b24;--fg:#e8edf3;--mute:#8d99a8;--line:#232c38;--acc:#ffc93c;--acct:#ffc93c;--hot:#ff5d5d;--chip:#1d2531}
+@media (prefers-color-scheme:light){:root{--bg:#f3f4f6;--card:#fff;--fg:#11161d;--mute:#59636f;--line:#e0e4ea;--acc:#ffc93c;--acct:#8a5d00;--hot:#d63434;--chip:#eceff3}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+a{color:inherit}
+.hd{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+@supports (backdrop-filter:blur(8px)){.hd{background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.5) blur(14px);-webkit-backdrop-filter:saturate(1.5) blur(14px)}}
+.hd-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:10px 16px 4px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.15rem;letter-spacing:-.02em;text-decoration:none}
+.pulse{width:9px;height:9px;border-radius:50%;background:var(--hot);animation:pl 2.2s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(255,93,93,.55)}70%{box-shadow:0 0 0 9px rgba(255,93,93,0)}100%{box-shadow:0 0 0 0 rgba(255,93,93,0)}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+.upd{font-size:12px;color:var(--mute);margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ico{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:var(--chip);color:var(--fg);border:0;padding:0;cursor:pointer;text-decoration:none}
+.ico svg{width:19px;height:19px}
+.tabs{max-width:820px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:0 10px}
+.tabs::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
+.tabs,.chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.tabs a{flex:none;padding:9px 9px 10px;font-size:14px;font-weight:650;color:var(--mute);text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current]{color:var(--fg);border-bottom-color:var(--acc)}
+main{max-width:820px;margin:0 auto;padding:4px 16px 0}
+h1{font-size:1.45rem;line-height:1.15;letter-spacing:-.02em;margin:18px 0 4px}
+h2{font-size:1.05rem;letter-spacing:-.01em;margin:26px 0 10px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:28px 0 10px}
+.sec-h h2{margin:0;display:flex;align-items:center;gap:8px}
+.sec-h .sm{font-size:12.5px;color:var(--mute);text-align:right}
+.sec-h .sm a{color:var(--acct);font-weight:700;text-decoration:none}
+.lead{color:var(--mute);font-size:14px;margin:0 0 12px}
+.stats{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0;font-size:12.5px;color:var(--mute)}
+.stats b{color:var(--fg)}
+.stats span{background:var(--chip);border-radius:999px;padding:5px 10px}
+.chips{display:flex;gap:8px;margin:6px -16px 14px;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.chips a{flex:none;background:var(--chip);text-decoration:none;border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:650;white-space:nowrap}
+.chips a[aria-current]{background:var(--acc);color:#111}
+.story{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 2px;margin:0 0 12px}
+.story.iso{border-color:color-mix(in srgb,var(--hot) 45%,var(--line))}
+.st-top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);margin-bottom:7px}
+.hot{background:var(--hot);color:#fff;font-weight:800;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px}
+.story .ot{display:block;font-size:1.13rem;line-height:1.28;font-weight:750;text-decoration:none;letter-spacing:-.01em}
+.story.iso .ot{font-size:1.3rem}
+.srcs{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 4px}
+.src{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:650;white-space:nowrap}
+.src::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c,#888);flex:none}
+.srcs .src{background:var(--chip);padding:4px 9px;border-radius:999px}
+.srcs .plus{font-size:12px;color:var(--mute);padding:4px 2px;font-weight:650}
+details.vrt{border-top:1px solid var(--line);margin-top:9px}
+details.vrt summary{list-style:none;cursor:pointer;padding:11px 0;font-size:13.5px;font-weight:750;color:var(--acct);display:flex;justify-content:space-between;align-items:center}
+details.vrt summary::-webkit-details-marker{display:none}
+details.vrt summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:0 4px 4px 0;transition:transform .2s}
+details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
+.vrt ol{list-style:none;margin:0;padding:0 0 10px}
+.vrt li{padding:9px 0;border-top:1px dashed var(--line)}
+.vrt li .mt{margin:0 0 3px}
+.vrt li a{display:block;text-decoration:none;font-size:14.5px;line-height:1.35}
+.ensin{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#111;background:var(--acc);border-radius:5px;padding:2px 6px}
+.rows{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.row{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:11px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row>time{font-size:12.5px;font-weight:750;color:var(--mute);font-variant-numeric:tabular-nums;padding-top:2px;white-space:nowrap}
+.row.uusi>time{color:var(--acct)}
+.row.uusi>time::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--acc);margin-right:3px;vertical-align:2px}
+.row .ot{display:block;text-decoration:none;font-weight:650;line-height:1.32}
+.row .ot:visited,.story .ot:visited,.vrt a:visited{color:var(--mute)}
+.row .kuv{font-size:13.5px;color:var(--mute);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mt{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin-top:5px;font-size:12px;color:var(--mute)}
+.mm{font-weight:750;color:var(--acct)}
+a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
+.paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
+.more{display:block;text-align:center;padding:13px;font-weight:750;font-size:14px;color:var(--acct);text-decoration:none;border-top:1px solid var(--line)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-decoration:none;display:flex;flex-direction:column;gap:4px;min-height:120px}
+.tile b{font-size:15px;letter-spacing:-.01em}
+.tile .tc{font-size:12px;color:var(--acct);font-weight:750}
+.tile .th{font-size:13px;color:var(--mute);line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (min-width:700px){.tiles{grid-template-columns:repeat(4,1fr)}}
+#haku{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto}
+#haku[hidden]{display:none}
+.haku-in{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line)}
+.haku-in div{display:flex;gap:8px;padding:12px 16px;max-width:820px;margin:0 auto}
+.haku-in input{flex:1;min-width:0;font:16px system-ui,sans-serif;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+#hakuTulos{max-width:820px;margin:0 auto;padding:12px 16px 40px}
+footer{max-width:820px;margin:0 auto;padding:34px 16px 60px;font-size:12px;line-height:1.6;color:var(--mute)}
+footer a{color:var(--mute)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 10px}
+.item a{text-decoration:none;font-weight:650;display:block}
 .kuv{color:var(--mute);font-size:.93rem;margin-top:4px}
-.meta{font:12.5px/1.4 system-ui,sans-serif;color:var(--mute);margin-top:6px}
-.paiva{font:600 12.5px system-ui,sans-serif;color:var(--acc);margin:18px 0 8px}
-footer{font:12px/1.6 system-ui,sans-serif;color:var(--mute);margin:30px 0 40px}
-.btn,button{background:var(--acc);color:#14161a;border:0;border-radius:8px;padding:10px 14px;font:600 15px system-ui,sans-serif;cursor:pointer}
+.meta{font-size:12.5px;color:var(--mute);margin-top:6px}
+.btn,button{background:var(--acc);color:#111;border:0;border-radius:10px;padding:10px 14px;font:650 15px system-ui,sans-serif;cursor:pointer;text-decoration:none}
+button.pieni{padding:3px 9px;font-size:12px;margin-left:4px}
 .sec{background:var(--chip);color:var(--fg)}
-fieldset{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:8px 12px}
-legend{font:600 15px system-ui,sans-serif;padding:0 6px}
-label{display:flex;gap:8px;align-items:center;font:15px/1.3 system-ui,sans-serif;padding:6px 0}
+textarea,input[type=email]{font-family:inherit}
+fieldset{border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:8px 12px}
+legend{font-weight:700;font-size:15px;padding:0 6px}
+label{display:flex;gap:8px;align-items:center;font-size:15px;line-height:1.3;padding:6px 0}
 input[type=checkbox]{width:20px;height:20px;accent-color:var(--acc)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}"""
+
+# Sivun yhteinen skripti: suhteelliset ajat, UUSI-merkit (edellisestä käynnistä), haku. Ei f-merkkijono.
+JS = r"""<script>
+(function(){
+var K="uv_viime",nyt=Date.now(),viime=0;try{viime=+localStorage.getItem(K)||0}catch(e){}
+function rel(iso){var s=(nyt-Date.parse(iso))/1000;if(s<90)return"juuri nyt";if(s<3600)return Math.round(s/60)+" min sitten";if(s<86400)return Math.floor(s/3600)+" t sitten";var d=new Date(iso);return d.getDate()+"."+(d.getMonth()+1)+".";}
+document.querySelectorAll("[data-rel]").forEach(function(e){e.textContent=(e.dataset.pre||"")+rel(e.dataset.rel)});
+if(viime)document.querySelectorAll(".row[data-a]").forEach(function(e){if(Date.parse(e.dataset.a)>viime)e.classList.add("uusi")});
+setTimeout(function(){try{localStorage.setItem(K,String(nyt))}catch(e){}},5000);
+function vari(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return"hsl("+h+" 70% 55%)"}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var H=document.getElementById("haku"),I=document.getElementById("hakuIn"),T=document.getElementById("hakuTulos"),data=null;
+if(!H)return;
+function hae(){if(!data)return;var q=I.value.toLowerCase().trim();
+ if(q.length<2){T.innerHTML='<p class="lead">Hae kaikista uutisista kahden viikon ajalta. Esim. <b>kokoomus maahanmuutto</b> tai <b>sähkön hinta</b>.</p>';return}
+ var w=q.split(/\s+/),r=[];for(var i=0;i<data.length&&r.length<120;i++){var u=data[i],t=(u.o+" "+u.k+" "+u.s).toLowerCase();if(w.every(function(x){return t.indexOf(x)>=0}))r.push(u)}
+ T.innerHTML='<p class="lead">'+(r.length>=120?"Yli 120":r.length)+' osumaa</p>'+(r.length?'<div class="rows">'+r.map(function(u){var d=new Date(u.a);return'<article class="row"><time>'+d.getDate()+"."+(d.getMonth()+1)+'.</time><div><a class="ot" href="'+esc(u.l)+'" target="_blank" rel="noopener">'+esc(u.o)+'</a><div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span></div></div></article>'}).join("")+'</div>':"")}
+function avaa(){H.hidden=false;document.body.style.overflow="hidden";setTimeout(function(){I.focus()},30);
+ if(!data){T.innerHTML='<p class="lead">Ladataan…</p>';fetch(H.dataset.feed).then(function(r){return r.json()}).then(function(d){data=d.u;hae()}).catch(function(){T.innerHTML='<p class="lead">Haku ei juuri nyt toimi. Yritä hetken päästä uudelleen.</p>'})}}
+function sulje(){H.hidden=true;document.body.style.overflow=""}
+document.getElementById("hakuBtn").onclick=avaa;document.getElementById("hakuX").onclick=sulje;
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!H.hidden)sulje();if(e.key==="/"&&H.hidden&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();avaa()}});
+var tm;I.addEventListener("input",function(){clearTimeout(tm);tm=setTimeout(hae,120)});
+})();
+</script>"""
+
+IKONI_HAKU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+IKONI_OMA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>'
+PAIVITETTY = ""
+
+def vari(s):
+    h = 0
+    for c in s:
+        h = (h * 31 + ord(c)) % 360
+    return f"hsl({h} 70% 55%)"
+
+def lahde(s):
+    return f'<span class="src" style="--c:{vari(s)}">{esc(s)}</span>'
 
 def rel(d):
     return "../" * d if d else "./"
 
 def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, noindex=False):
     r = rel(syvyys)
-    nav = "".join(f'<a href="{r}{p}/"{" aria-current=page" if p == aktiivinen else ""}>{esc(v["nimi"])}</a>' for p, v in AIHEET.items())
+    nav = f'<a href="{r}"{" aria-current=page" if aktiivinen == "etusivu" else ""}>Etusivu</a>'
+    nav += "".join(f'<a href="{r}{p}/"{" aria-current=page" if p == aktiivinen else ""}>{esc(v["nimi"])}</a>' for p, v in AIHEET.items())
+    nav += f'<a href="{r}oma/"{" aria-current=page" if aktiivinen == "oma" else ""}>Oma syöte</a>'
     kanon = f"{BASE}/{polku}" if polku else f"{BASE}/"
     ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False).replace("</", "<\\/")}</script>' if jsonld else ""
+    upd = f'<span class="upd" data-rel="{PAIVITETTY}" data-pre="Päivitetty ">Päivitetty {hki(PAIVITETTY, "klo %H.%M")}</span>' if PAIVITETTY else '<span class="upd"></span>'
     return f"""<!doctype html>
-<html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{esc(otsikko)}</title>
 <meta name="description" content="{esc(kuvaus)}">
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="{kanon}">
 <meta property="og:title" content="{esc(otsikko)}"><meta property="og:description" content="{esc(kuvaus)}"><meta property="og:type" content="website"><meta property="og:locale" content="fi_FI"><meta property="og:url" content="{kanon}">
 <meta name="robots" content="{"noindex,nofollow" if noindex else "index,follow,max-snippet:-1"}">
-{ld}<style>{CSS}</style><script src="{r}config.js"></script><script src="{r}tuki.js"></script></head><body><main>
-<header class="top"><a class="logo" href="{r}">{esc(SITE)}</a><a class="btn sec" href="{r}oma/">Oma syöte</a></header>
-<nav class="paa" aria-label="Pääaiheet">{nav}</nav>
+{ld}<style>{CSS}</style><script src="{r}config.js"></script><script src="{r}tuki.js"></script></head><body>
+<header class="hd"><div class="hd-in"><a class="logo" href="{r}"><span class="pulse" aria-hidden="true"></span>{esc(SITE)}</a>{upd}<button class="ico" id="hakuBtn" type="button" aria-label="Hae uutisia">{IKONI_HAKU}</button><a class="ico" href="{r}oma/" aria-label="Oma syöte">{IKONI_OMA}</a></div>
+<nav class="tabs" aria-label="Aiheet">{nav}</nav></header>
+<div id="haku" hidden data-feed="{r}feed.json"><div class="haku-in"><div><input id="hakuIn" type="search" placeholder="Hae uutisia…" aria-label="Hakusana" autocomplete="off"><button class="sec" id="hakuX" type="button">Sulje</button></div></div><div id="hakuTulos"></div></div>
+<main>
 {runko}
-<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot ja linkit yhteen paikkaan aiheittain. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen. Jutut luetaan lähteen omalla sivulla. Aiheet tunnistetaan automaattisesti hakusanoista, joten osuma voi joskus olla epätarkka. Päivitetään tunnin välein.</p><p><a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
-</main></body></html>"""
+</main>
+<footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot yhteen paikkaan noin 10 minuutin välein. Saman tapahtuman uutiset eri medioista ryhmitellään automaattisesti, jotta näet yhdellä silmäyksellä, mistä puhutaan ja miten eri mediat asian otsikoivat. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen; jutut luetaan lähteen omalla sivulla. Aiheet ja ryhmät tunnistetaan automaattisesti, joten ne voivat joskus olla epätarkkoja.</p><p><a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
+{JS}
+</body></html>"""
 
 def kesk(u, r):
     if not KESKUSTELU:
         return ""
-    return f' · <a class="kesk" data-id="{u["i"]}" href="{r}keskustelu/?i={u["i"]}">Keskustele</a>'
+    return f'<a class="kesk" data-id="{u["i"]}" href="{r}keskustelu/?i={u["i"]}">Keskustele</a>'
 
-def lista_html(items, ryhmittele=True, r="./"):
-    out, pv = [], ""
+RYHMA_N = {}     # uutisen tunnus -> montako mediaa samassa ryhmässä
+TANAAN = ""
+
+def rivi(u, r, kuv=True):
+    t = hki(u["a"], "%H.%M") if hki(u["a"], "%Y-%m-%d") == TANAAN else hki(u["a"], "%-d.%-m.")
+    k = f'<div class="kuv">{esc(u["k"][:220])}</div>' if kuv and u["k"] and u["k"] != u["o"] else ""
+    n = RYHMA_N.get(u.get("i"), 1)
+    mm = f'<span class="mm">{n} mediaa</span>' if n > 1 else ""
+    return (f'<article class="row" data-a="{u["a"]}"><time datetime="{u["a"]}">{t}</time><div>'
+            f'<a class="ot" href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a>{k}'
+            f'<div class="mt">{lahde(u["s"])}{mm}{kesk(u, r)}</div></div></article>')
+
+def lista_html(items, ryhmittele=True, r="./", kuv=True):
+    if not items:
+        return '<p class="lead">Ei uutisia juuri nyt. Sivu päivittyy noin 10 minuutin välein.</p>'
+    if not ryhmittele:
+        return '<div class="rows">' + "".join(rivi(u, r, kuv) for u in items) + '</div>'
+    out, pv, auki = [], "", False
     for u in items:
-        if ryhmittele:
-            p = hki(u["a"], "%-d.%-m.%Y")
-            if p != pv:
-                out.append(f'<div class="paiva">{p}</div>')
-                pv = p
-        k = f'<div class="kuv">{esc(u["k"][:170])}{"…" if len(u["k"]) > 170 else ""}</div>' if u["k"] and u["k"] != u["o"] else ""
-        out.append(f'<article class="item"><a href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a>{k}<div class="meta">{esc(u["s"])} · {hki(u["a"], "%-d.%-m. klo %H.%M")}{kesk(u, r)}</div></article>')
-    return "\n".join(out) or '<p class="lead">Ei uutisia vielä. Sivu päivittyy tunnin välein.</p>'
+        p = hki(u["a"], "%Y-%m-%d")
+        if p != pv:
+            if auki:
+                out.append("</div>")
+            nimi = "Tänään" if p == TANAAN else hki(u["a"], "%A %-d.%-m.").replace("Monday", "Maanantai").replace("Tuesday", "Tiistai").replace("Wednesday", "Keskiviikko").replace("Thursday", "Torstai").replace("Friday", "Perjantai").replace("Saturday", "Lauantai").replace("Sunday", "Sunnuntai")
+            out.append(f'<div class="paiva">{nimi}</div><div class="rows">')
+            pv, auki = p, True
+        out.append(rivi(u, r, kuv))
+    if auki:
+        out.append("</div>")
+    return "\n".join(out)
+
+ENSISIJAISET = ["Yle", "STT Info", "Helsingin Sanomat", "MTV Uutiset", "Ilta-Sanomat", "Iltalehti"]
+
+def tarina_html(g, r, iso=False):
+    """Yksi 'Nyt puhutaan' -kortti: sama tapahtuma monesta mediasta + vertailu otsikoista."""
+    md = mediat(g)
+    paa = next((u for s_ in ENSISIJAISET for u in sorted(g, key=lambda x: x["a"]) if u["s"] == s_), sorted(g, key=lambda x: x["a"])[0])
+    uusin = max(u["a"] for u in g)
+    chips = "".join(lahde(x) for x in md[:6]) + (f'<span class="plus">+{len(md) - 6}</span>' if len(md) > 6 else "")
+    nahty, rivit = set(), []
+    for i, u in enumerate(sorted(g, key=lambda x: x["a"])):
+        if u["l"] in nahty:
+            continue
+        nahty.add(u["l"])
+        ens = '<span class="ensin">Ensin</span>' if not rivit else ""
+        rivit.append(f'<li><div class="mt">{lahde(u["s"])}<span>{hki(u["a"], "%-d.%-m. klo %H.%M")}</span>{ens}</div><a href="{esc(u["l"])}" rel="noopener" target="_blank">{esc(u["o"])}</a></li>')
+    return (f'<article class="story{" iso" if iso else ""}"><div class="st-top"><span class="hot">{len(md)} mediaa</span>'
+            f'<span data-rel="{uusin}">{hki(uusin, "klo %H.%M")}</span></div>'
+            f'<a class="ot" href="{esc(paa["l"])}" rel="noopener" target="_blank">{esc(puhdas_otsikko(paa["o"]))}</a>'
+            f'<div class="srcs">{chips}</div>'
+            f'<details class="vrt"><summary>Näin mediat otsikoivat ({len(rivit)})</summary><ol>{"".join(rivit)}</ol></details></article>')
 
 def itemlist_ld(nimi, items, polku):
     return {"@context": "https://schema.org", "@type": "CollectionPage", "name": nimi, "url": f"{BASE}/{polku}", "inLanguage": "fi",
@@ -226,24 +379,84 @@ def rakenna(items, paivitetty):
         for t in u["t"]:
             por.setdefault(t, []).append(u)
     urls = [("", paivitetty)]
-    # etusivu
-    runko = f'<h1>Suomen uutiset aiheittain</h1><p class="lead">Valitse aihe tai rakenna oma syöte: <a href="oma/">Oma syöte</a>.</p>'
+    global PAIVITETTY, TANAAN
+    PAIVITETTY = paivitetty
+    TANAAN = hki(paivitetty, "%Y-%m-%d")
+    nyt = datetime.fromisoformat(paivitetty)
+    def ika_h(iso):
+        return (nyt - datetime.fromisoformat(iso)).total_seconds() / 3600
+    # saman tapahtuman ryhmät (vain viimeiset 3 vrk, nopeus)
+    tuore = [u for u in items if ika_h(u["a"]) <= 72]
+    ryhmat = ryhmittele(tuore)
+    RYHMA_N.clear()
+    for g in ryhmat:
+        n = len(mediat(g))
+        for u in g:
+            RYHMA_N[u["i"]] = n
+    ryhma_of = {u["i"]: g for g in ryhmat for u in g}
+    def kuumat(ehto=lambda g: True, max_h=24, kpl=7):
+        ehd = [g for g in ryhmat if len(mediat(g)) >= 2 and ika_h(max(u["a"] for u in g)) <= max_h and ehto(g)]
+        ehd.sort(key=lambda g: -len(mediat(g)) / (1 + ika_h(max(u["a"] for u in g)) / 8))
+        return ehd[:kpl]
+    def tuoreimmat(lista, kpl):
+        out, nahty = [], set()
+        for u in lista:
+            g = ryhma_of.get(u["i"])
+            gid = id(g) if g else u["i"]
+            if gid in nahty:
+                continue
+            nahty.add(gid)
+            out.append(u)
+            if len(out) >= kpl:
+                break
+        return out
+
+    # ---- etusivu ----
+    vrk = [u for u in items if ika_h(u["a"]) <= 24]
+    hot = kuumat()
+    runko = (f'<h1>Suomen uutiset yhdessä paikassa</h1>'
+             f'<div class="stats"><span><b>{len(vrk)}</b> uutista vuorokaudessa</span><span><b>{len({u["s"] for u in vrk})}</b> mediaa</span><span>päivittyy <b>10 min</b> välein</span></div>')
+    if hot:
+        runko += '<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2><span class="sm">Sama uutinen monessa mediassa</span></div>'
+        runko += "".join(tarina_html(g, "./", iso=(i == 0)) for i, g in enumerate(hot))
+    runko += '<div class="sec-h"><h2>Tuoreimmat</h2><span class="sm"><a href="#aiheet">Aiheittain ↓</a></span></div>'
+    runko += lista_html(tuoreimmat(items, 30), False, "./", kuv=False)
+    yksi = [u for u in vrk if RYHMA_N.get(u["i"], 1) == 1 and any(t.startswith(("politiikka/", "yhteiskunta/")) for t in u["t"])][:8]
+    if yksi:
+        runko += '<div class="sec-h"><h2>Vain yksi media kertoi</h2><span class="sm">Politiikka ja yhteiskunta, 24 h</span></div>'
+        runko += '<p class="lead">Uutisia, joista vain yksi media on kirjoittanut viimeisen vuorokauden aikana. Täältä löytyy se, mikä muualla jää huomaamatta.</p>'
+        runko += lista_html(yksi, False, "./")
+    tiles = ""
     for p, pv in AIHEET.items():
-        yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])][:5]
-        chips = "".join(f'<a href="{p}/{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
-        runko += f'<h2><a href="{p}/" style="color:inherit">{esc(pv["nimi"])}</a></h2><div class="chips">{chips}</div>{lista_html(yl, False, "./")}'
-    kirjoita("index.html", sivu(f"{SITE}: Suomen uutiset aiheittain", "Suomalaisten medioiden uutiset aiheittain: politiikka, talous, yhteiskunta, lifestyle, teknologia, urheilu, viihde ja liikenne. Valitse omat aiheesi.", "", 0, runko, {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": BASE + "/", "inLanguage": "fi"}))
+        yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])]
+        n24 = sum(1 for u in yl if ika_h(u["a"]) <= 24)
+        th = esc(yl[0]["o"]) if yl else ""
+        tiles += f'<a class="tile" href="{p}/"><b>{esc(pv["nimi"])}</b><span class="tc">{n24} uutista tänään</span><span class="th">{th}</span></a>'
+    runko += f'<div class="sec-h" id="aiheet"><h2>Aiheet</h2><span class="sm"><a href="oma/">Rakenna oma syöte →</a></span></div><div class="tiles">{tiles}</div>'
+    kirjoita("index.html", sivu(f"{SITE}: Suomen uutiset yhdessä paikassa", "Suomalaisten medioiden uutiset yhdessä paikassa: näe mistä nyt puhutaan, miten eri mediat otsikoivat saman uutisen ja mitkä uutiset vain yksi media kertoi. Päivittyy 10 minuutin välein.", "", 0, runko, {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": BASE + "/", "inLanguage": "fi"}, "etusivu"))
+
+    # ---- aihe- ja alaaihesivut ----
     for p, pv in AIHEET.items():
-        yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])][:80]
+        yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])][:120]
         chips = "".join(f'<a href="{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
-        runko = f'<h1>{esc(pv["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>{lista_html(yl, True, "../")}'
+        h = kuumat(lambda g: any(t.startswith(p + "/") for u in g for t in u["t"]), 48, 3)
+        runko = f'<h1>{esc(pv["nimi"])}</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>'
+        if h:
+            runko += f'<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2><span class="sm">{esc(pv["nimi"])}</span></div>' + "".join(tarina_html(g, "../") for g in h)
+            runko += '<div class="sec-h"><h2>Kaikki uutiset</h2></div>'
+        runko += lista_html(yl, True, "../")
         kirjoita(f"{p}/index.html", sivu(f"{pv['nimi']}: uusimmat uutiset | {SITE}", pv["kuvaus"], f"{p}/", 1, runko, itemlist_ld(pv["nimi"], yl, f"{p}/"), p))
         urls.append((f"{p}/", paivitetty))
         for a, av in pv["ala"].items():
-            yl = por.get(f"{p}/{a}", [])[:80]
+            yl = por.get(f"{p}/{a}", [])[:120]
             chips = "".join(f'<a href="../{b}/"{" aria-current=page" if b == a else ""}>{esc(bv["nimi"])}</a>' for b, bv in pv["ala"].items())
             kuv = f'{av["nimi"]}: uusimmat suomalaiset uutiset yhdessä paikassa. {pv["nimi"]}.'
-            runko = f'<h1>{esc(av["nimi"])}: uusimmat uutiset</h1><p class="lead">{esc(pv["nimi"])} · {len(yl)} uutista viimeisen {SAILYTYS_PV} päivän ajalta.</p><div class="chips">{chips}</div>{lista_html(yl, True, "../../")}'
+            h = kuumat(lambda g: any(t == f"{p}/{a}" for u in g for t in u["t"]), 48, 3)
+            runko = f'<h1>{esc(av["nimi"])}</h1><p class="lead">{esc(pv["nimi"])} · {len(yl)} uutista viimeisen {SAILYTYS_PV} päivän ajalta</p><div class="chips">{chips}</div>'
+            if h:
+                runko += '<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2></div>' + "".join(tarina_html(g, "../../") for g in h)
+                runko += '<div class="sec-h"><h2>Kaikki uutiset</h2></div>'
+            runko += lista_html(yl, True, "../../")
             kirjoita(f"{p}/{a}/index.html", sivu(f"{av['nimi']}: uusimmat uutiset | {SITE}", kuv, f"{p}/{a}/", 2, runko, itemlist_ld(av["nimi"], yl, f"{p}/{a}/"), p))
             urls.append((f"{p}/{a}/", paivitetty))
     # Oma syöte
@@ -258,6 +471,7 @@ def rakenna(items, paivitetty):
 const PUU={json.dumps(puu, ensure_ascii=False)};
 const KEY="uutiskooste_valinnat";
 const $=i=>document.getElementById(i);
+const vari=s=>{{let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return "hsl("+h+" 70% 55%)"}};
 const esc=s=>s.replace(/[&<>"]/g,c=>({{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}}[c]));
 function lue(){{
  const h=location.hash.replace(/^#a=/,"");if(location.hash.startsWith("#a=")&&h)return h.split(",").filter(Boolean);
@@ -282,18 +496,18 @@ function piirraSyote(){{
  let out="",pv="";
  for(const u of lista){{
   const p=new Date(u.a).toLocaleDateString("fi-FI",{{timeZone:"Europe/Helsinki",day:"numeric",month:"numeric",year:"numeric"}});
-  if(p!==pv){{out+='<div class="paiva">'+p+'</div>';pv=p}}
-  const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,170))+(u.k.length>170?"…":"")+'</div>':"";
+  if(p!==pv){{out+=(pv?'</div>':'')+'<div class="paiva">'+p+'</div><div class="rows">';pv=p}}
+  const k=u.k&&u.k!==u.o?'<div class="kuv">'+esc(u.k.slice(0,220))+'</div>':"";
   const t=new Date(u.a).toLocaleTimeString("fi-FI",{{timeZone:"Europe/Helsinki",hour:"2-digit",minute:"2-digit"}});
-  out+='<article class="item"><a href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="meta">'+esc(u.s)+' · '+t+(window.KOOSTE&&KOOSTE.on&&u.i?' · <a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'</div></article>';}}
- $("syote").innerHTML=out;if(window.KOOSTE)KOOSTE.maarat();}}
+  out+='<article class="row" data-a="'+u.a+'"><time>'+t+'</time><div><a class="ot" href="'+esc(u.l)+'" rel="noopener" target="_blank">'+esc(u.o)+'</a>'+k+'<div class="mt"><span class="src" style="--c:'+vari(u.s)+'">'+esc(u.s)+'</span>'+(window.KOOSTE&&KOOSTE.on&&u.i?'<a class="kesk" data-id="'+u.i+'" href="../keskustelu/?i='+u.i+'">Keskustele</a>':'')+'</div></div></article>';}}
+ $("syote").innerHTML=out+(pv?'</div>':'');if(window.KOOSTE)KOOSTE.maarat();}}
 $("kaikki").onclick=()=>{{Object.entries(PUU).forEach(([p,v])=>Object.keys(v.ala).forEach(a=>valitut.add(p+"/"+a)));muutos()}};
 $("tyhjenna").onclick=()=>{{valitut.clear();muutos()}};
 $("jaa").onclick=()=>{{const u=location.href.split("#")[0]+"#a="+[...valitut].join(",");try{{navigator.clipboard.writeText(u);$("tila").textContent="Linkki kopioitu."}}catch(e){{$("tila").textContent=u}}}};
 piirraValinta();
 fetch("../feed.json").then(r=>r.json()).then(d=>{{data=d.u;piirraSyote()}}).catch(()=>{{$("tila").textContent="Uutisten lataus epäonnistui. Yritä hetken kuluttua uudelleen."}});
 </script>"""
-    kirjoita("oma/index.html", sivu(f"Oma syöte: valitse itse aiheet | {SITE}", "Rakenna oma uutissyöte: valitse politiikka-, talous-, lifestyle- ja muista aiheista ne alaaiheet, jotka kiinnostavat sinua.", "oma/", 1, oma))
+    kirjoita("oma/index.html", sivu(f"Oma syöte: valitse itse aiheet | {SITE}", "Rakenna oma uutissyöte: valitse politiikka-, talous-, lifestyle- ja muista aiheista ne alaaiheet, jotka kiinnostavat sinua.", "oma/", 1, oma, None, "oma"))
     urls.append(("oma/", paivitetty))
     # Keskustelu: config, keskustelu- ja moderointisivu, säännöt, tietosuoja
     kirjoita("config.js", "window.KOOSTE_CONF=" + (json.dumps({"url": SB_URL, "key": SB_KEY}) if KESKUSTELU else "{}") + ";\n")
