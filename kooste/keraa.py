@@ -105,6 +105,7 @@ def parse(data, oletus):
 def sana_re(sanat):
     return re.compile(r"(?<![a-zäöå0-9])(" + "|".join(re.escape(s) for s in sanat) + ")", re.I)
 LUOK = {f"{p}/{a}": sana_re(v["sanat"]) for p, pv in AIHEET.items() for a, v in pv["ala"].items()}
+LEHDET = {f"{p}/{a}": set(v.get("lehdet", ())) for p, pv in AIHEET.items() for a, v in pv["ala"].items()}
 
 # Sanat, jotka alkavat hakusanalla mutta tarkoittavat muuta (esim. "tilanne sähköistyy" ei ole energiauutinen)
 POIS = ("sähköist", "sähköinen", "sähköise", "sähköpost", "automaat", "autoritaar", "autenti", "matkalla", "matkaan",
@@ -127,9 +128,15 @@ def luokittele(it):
             t.append(k)
     return t
 
+def maakuntalehden_oma(it):
+    """Maakuntalehti julkaisee myös valtakunnallisia STT-/Uutissuomalainen-juttuja: ne eivät ole paikallisia."""
+    if "Uutissuomalainen" in it["o"] or "STT" in it.get("k", "")[:40]:
+        return False
+    return not any(x.startswith(("politiikka/", "talous/", "teknologia/")) for x in luokittele(it))
+
 def suomalainen(it):
     h = it.get("h", "")
-    return h.endswith(".fi") if h else False
+    return h.endswith((".fi", ".ax")) if h else False
 
 def avain(v):
     return re.sub(r"[^a-z0-9äöå]+", "", v["o"].lower())
@@ -208,6 +215,8 @@ details.vrt[open] summary::after{transform:rotate(225deg);margin-bottom:-2px}
 .mm{font-weight:750;color:var(--acct)}
 a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .paiva{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin:22px 0 8px}
+.tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
+.oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
 .asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden]{display:none}
 .more{display:block;text-align:center;padding:13px;font-weight:750;font-size:14px;color:var(--acct);text-decoration:none;border-top:1px solid var(--line)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -249,6 +258,9 @@ setTimeout(function(){try{localStorage.setItem(K,String(nyt))}catch(e){}},5000);
 function vari(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return"hsl("+h+" 70% 55%)"}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var H=document.getElementById("haku"),I=document.getElementById("hakuIn"),T=document.getElementById("hakuTulos"),data=null;
+try{var OA=JSON.parse(localStorage.getItem("uv_alue")||"null");if(OA){var pt=document.getElementById("paikTile");if(pt){pt.href=pt.dataset.base+OA[0]+"/";document.getElementById("paikTc").textContent="Oma alueesi: "+OA[1]+" →"}
+ var oa=document.getElementById("omaAlue");if(oa){oa.href=OA[0]+"/";oa.textContent="Oma alueesi: "+OA[1]+" →";oa.hidden=false}}}catch(e){}
+var CC=document.querySelector(".chips a[aria-current]");if(CC){var CP=CC.parentNode;CP.scrollLeft=CC.offsetLeft-CP.clientWidth/2+CC.clientWidth/2}
 var M=document.querySelector('link[rel=manifest]');
 if(M&&"serviceWorker" in navigator){try{navigator.serviceWorker.register(M.href.replace("manifest.webmanifest","sw.js"))}catch(e){}}
 var A=document.getElementById("asenna"),ip=null;
@@ -440,6 +452,10 @@ def rakenna(items, paivitetty):
         yl = [u for u in items if any(t.startswith(p + "/") for t in u["t"])]
         n24 = sum(1 for u in yl if ika_h(u["a"]) <= 24)
         th = esc(yl[0]["o"]) if yl else ""
+        if p == "paikalliset":
+            tiles = (f'<a class="tile laaja" id="paikTile" href="{p}/" data-base="{p}/"><b>Paikalliset uutiset</b>'
+                     f'<span class="tc" id="paikTc">{len(pv["ala"])} maakuntaa · valitse oma alueesi</span><span class="th">{th}</span></a>') + tiles
+            continue
         tiles += f'<a class="tile" href="{p}/"><b>{esc(pv["nimi"])}</b><span class="tc">{n24} uutista tänään</span><span class="th">{th}</span></a>'
     runko += f'<div class="sec-h" id="aiheet"><h2>Aiheet</h2><span class="sm"><a href="oma/">Rakenna oma syöte →</a></span></div><div class="tiles">{tiles}</div>'
     kirjoita("index.html", sivu(f"{SITE}: Suomen uutiset yhdessä paikassa", "Suomalaisten medioiden uutiset yhdessä paikassa: näe mistä nyt puhutaan, miten eri mediat otsikoivat saman uutisen ja mitkä uutiset vain yksi media kertoi. Päivittyy 10 minuutin välein.", "", 0, runko, {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": BASE + "/", "inLanguage": "fi"}, "etusivu"))
@@ -450,6 +466,8 @@ def rakenna(items, paivitetty):
         chips = "".join(f'<a href="{a}/">{esc(av["nimi"])}</a>' for a, av in pv["ala"].items())
         h = kuumat(lambda g: any(t.startswith(p + "/") for u in g for t in u["t"]), 48, 3)
         runko = f'<h1>{esc(pv["nimi"])}</h1><p class="lead">{esc(pv["kuvaus"])}</p><div class="chips">{chips}</div>'
+        if p == "paikalliset":
+            runko += '<a class="btn oma-alue" id="omaAlue" data-base="" href="#" hidden></a>'
         if h:
             runko += f'<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2><span class="sm">{esc(pv["nimi"])}</span></div>' + "".join(tarina_html(g, "../") for g in h)
             runko += '<div class="sec-h"><h2>Kaikki uutiset</h2></div>'
@@ -462,6 +480,8 @@ def rakenna(items, paivitetty):
             kuv = f'{av["nimi"]}: uusimmat suomalaiset uutiset yhdessä paikassa. {pv["nimi"]}.'
             h = kuumat(lambda g: any(t == f"{p}/{a}" for u in g for t in u["t"]), 48, 3)
             runko = f'<h1>{esc(av["nimi"])}</h1><p class="lead">{esc(pv["nimi"])} · {len(yl)} uutista viimeisen {SAILYTYS_PV} päivän ajalta</p><div class="chips">{chips}</div>'
+            if p == "paikalliset":
+                runko += f'<script>try{{localStorage.setItem("uv_alue",JSON.stringify(["{a}",{json.dumps(av["nimi"], ensure_ascii=False)}]))}}catch(e){{}}</script>'
             if h:
                 runko += '<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2></div>' + "".join(tarina_html(g, "../../") for g in h)
                 runko += '<div class="sec-h"><h2>Kaikki uutiset</h2></div>'
@@ -568,6 +588,8 @@ def main():
     uutiset = {u["l"]: u for u in (vanha.values() if isinstance(vanha, dict) else vanha)}
     for u in uutiset.values():
         u["k"] = siivoa(u.get("k", ""))
+        # uudet aiheet (esim. Paikalliset) myös jo kerätyille uutisille
+        u["t"] = sorted(set(u.get("t", [])) | set(luokittele(u)) | ({f"paikalliset/{a}" for a in AIHEET["paikalliset"]["ala"] if u["s"] in LEHDET[f"paikalliset/{a}"] and maakuntalehden_oma(u)}))
     tila = []
     if TESTI:
         for i in range(30):
@@ -591,7 +613,8 @@ def main():
                     it["a"] = it["a"] or nyt.isoformat()
                     if kiinteä:
                         # Googlen haku on löyhä: aiheen hakusanan on löydyttävä otsikosta
-                        t = [kiinteä] if LUOK[kiinteä].search(it["o"]) else []
+                        oma_lehti = it["s"] in LEHDET.get(kiinteä, ()) and maakuntalehden_oma(it)
+                        t = [kiinteä] if (LUOK[kiinteä].search(it["o"]) or oma_lehti) else []
                         t = sorted(set(t) | set(luokittele(it)))
                     else:
                         t = luokittele(it)
