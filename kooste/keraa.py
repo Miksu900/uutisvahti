@@ -132,6 +132,9 @@ def luokittele(it):
         kuv_osumat = osumat(rx, it["k"])
         if otsikko_osumat or len(kuv_osumat) >= 2:
             t.append(k)
+    # Viihde ei ole oikea paikka kovalle uutiselle: jos juttu on myös politiikkaa, taloutta tai rikosuutinen, viihdetunniste pois.
+    if any(x.startswith(("politiikka/", "talous/", "yhteiskunta/rikokset")) for x in t):
+        t = [x for x in t if not x.startswith("viihde/")]
     return t
 
 def maakuntalehden_oma(it):
@@ -653,7 +656,10 @@ def main():
     for u in uutiset.values():
         u["k"] = siivoa(u.get("k", ""))
         # uudet aiheet (esim. Paikalliset) myös jo kerätyille uutisille
-        u["t"] = sorted(set(u.get("t", [])) | set(luokittele(u)) | ({f"paikalliset/{a}" for a in AIHEET["paikalliset"]["ala"] if u["s"] in LEHDET[f"paikalliset/{a}"] and maakuntalehden_oma(u)}))
+        # Aiheet lasketaan joka ajolla uudelleen nykyisillä säännöillä, jotta vanhat virheluokitukset korjautuvat.
+        # Paikallislehden oma juttu säilyttää paikallistunnisteensa (se ei aina näy otsikon sanoista).
+        vanhat_paik = {x for x in u.get("t", []) if x.startswith("paikalliset/")}
+        u["t"] = sorted(set(luokittele(u)) | vanhat_paik | ({f"paikalliset/{a}" for a in AIHEET["paikalliset"]["ala"] if u["s"] in LEHDET[f"paikalliset/{a}"] and maakuntalehden_oma(u)}))
     tila = []
     if TESTI:
         for i in range(30):
