@@ -246,7 +246,7 @@ a.kesk{font-weight:750;color:var(--acct);text-decoration:none}
 .jako-kop{display:block;width:100%;margin:0 0 8px;padding:14px;font-size:15.5px}
 .tile.laaja{grid-column:1/-1;min-height:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line))}
 .oma-alue{display:block;text-align:center;margin:4px 0 6px}.oma-alue[hidden]{display:none}
-.asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden]{display:none}
+.asenna{display:block;width:100%;margin:14px 0 0}.asenna[hidden],.asenna-ios[hidden]{display:none}.asenna-ios{margin:12px 0 0}
 .more{display:block;text-align:center;padding:13px;font-weight:750;font-size:14px;color:var(--acct);text-decoration:none;border-top:1px solid var(--line)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-decoration:none;display:flex;flex-direction:column;gap:4px;min-height:120px}
@@ -317,7 +317,7 @@ var M=document.querySelector('link[rel=manifest]');
 if(M&&"serviceWorker" in navigator){try{navigator.serviceWorker.register(M.href.replace("manifest.webmanifest","sw.js"))}catch(e){}}
 var A=document.getElementById("asenna"),ip=null;
 window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;if(A)A.hidden=false});
-if(A)A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){A.hidden=true;ip=null})};
+if(A)A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){A.hidden=true;ip=null})};var AI=document.getElementById("asennaIos");if(AI&&/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone)AI.hidden=false;
 if(!H)return;
 function hae(){if(!data)return;var q=I.value.toLowerCase().trim();
  if(q.length<2){T.innerHTML='<p class="lead">Hae kaikista uutisista kahden viikon ajalta. Esim. <b>kokoomus maahanmuutto</b> tai <b>sähkön hinta</b>.</p>';return}
@@ -494,7 +494,8 @@ def rakenna(items, paivitetty):
     hot = kuumat()
     runko = (f'<h1>Suomen uutiset yhdessä paikassa</h1>'
              f'<div class="stats"><span><b>{len(vrk)}</b> uutista vuorokaudessa</span><span><b>{len({u["s"] for u in vrk})}</b> mediaa</span><span>päivittyy <b>10 min</b> välein</span></div>'
-             '<button class="btn asenna" id="asenna" type="button" hidden>Asenna sovellukseksi puhelimeen</button>')
+             '<button class="btn asenna" id="asenna" type="button" hidden>Asenna sovellukseksi puhelimeen</button>'
+             '<p class="sm asenna-ios" id="asennaIos" hidden>📱 Sovellukseksi iPhoneen: paina Safarin <b>Jaa</b>-painiketta ja valitse <b>Lisää Koti-valikkoon</b>.</p>')
     if hot:
         runko += '<div class="sec-h"><h2><span class="pulse" aria-hidden="true"></span>Nyt puhutaan</h2><span class="sm">Sama uutinen monessa mediassa</span></div>'
         runko += "".join(tarina_html(g, "./", iso=(i == 0)) for i, g in enumerate(hot))
