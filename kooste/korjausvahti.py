@@ -51,13 +51,13 @@ def tarkista(vanha_it, uusi_otsikko, nyt):
 # Arkistokopio tallentaa sivun sellaisena kuin se on tallennushetkellä. Siksi kopio otetaan
 # 1) heti kun uutinen nähdään ensimmäistä kertaa (todiste alkuperäisestä otsikosta) ja
 # 2) kun muutos havaitaan (todiste uudesta otsikosta). Ajoa kohden tehdään vain muutama tallennus.
-ARK_MAX = int(os.environ.get("KORJAUSVAHTI_ARK_MAX", "4"))
+ARK_MAX = int(os.environ.get("KORJAUSVAHTI_ARK_MAX", "2"))
 ARK_TAUKO = 6
 
 def _arkistoi(url):
     try:
         req = urllib.request.Request("https://web.archive.org/save/" + url, headers={"User-Agent": "Mozilla/5.0 (nytpuhutaan.fi korjausvahti)"})
-        with urllib.request.urlopen(req, timeout=45) as r:
+        with urllib.request.urlopen(req, timeout=120) as r:
             loppu = r.geturl()
             sijainti = r.headers.get("Content-Location") or ""
         for ehdokas in (loppu, "https://web.archive.org" + sijainti if sijainti.startswith("/web/") else ""):
