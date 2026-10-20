@@ -74,22 +74,19 @@ def arkistoi(uutiset, nyt, painotus=("politiikka/", "yhteiskunta/")):
     jono = []
     raja2 = (nyt - timedelta(hours=2)).isoformat()
     for m in reversed(_m):            # 1) uusimmat muutokset: kopio nykyisestä versiosta
-        if m["t"] >= raja2 and not m.get("ark_nyt") and not m.get("ark_yritetty"):
+        if m["t"] >= raja2 and not m.get("ark_nyt") and int(m.get("ark_yritetty") or 0) < 3:
             jono.append(("muutos", m))
     raja1 = (nyt - timedelta(hours=1)).isoformat()
-    tuoreet = [u for u in uutiset.values() if u.get("d") and not u.get("ark") and not u.get("ark_yritetty") and (u.get("a") or "") >= raja1]
+    tuoreet = [u for u in uutiset.values() if u.get("d") and not u.get("ark") and int(u.get("ark_yritetty") or 0) < 2 and (u.get("a") or "") >= raja1]
     tuoreet = sorted(tuoreet, key=lambda u: u.get("a") or "", reverse=True)
     tuoreet.sort(key=lambda u: not any(t.startswith(painotus) for t in u.get("t", [])))
     jono += [("uusi", u) for u in tuoreet]   # 2) uudet uutiset: kopio alkuperäisestä otsikosta
     tehty = 0
     for laji, x in jono[:ARK_MAX]:
         osoite = _arkistoi(x["l"])
-        if laji == "muutos":
-            x["ark_yritetty"] = 1
-            if osoite: x["ark_nyt"] = osoite
-        else:
-            x["ark_yritetty"] = 1
-            if osoite: x["ark"] = osoite
+        x["ark_yritetty"] = int(x.get("ark_yritetty") or 0) + 1
+        if osoite:
+            x["ark_nyt" if laji == "muutos" else "ark"] = osoite
         tehty += 1 if osoite else 0
         time.sleep(ARK_TAUKO)
     print(f"korjausvahti: arkistokopioita {tehty}/{min(len(jono), ARK_MAX)} (jonossa {len(jono)})")
