@@ -711,6 +711,8 @@ def main():
                         vanha_it["t"] = sorted(set(vanha_it["t"]) | set(t))
                         continue
                     it["t"] = sorted(t)
+                    if not kiinteä:
+                        it["d"] = 1   # median oma syöte: korjausvahdin seurannassa
                     uutiset[it["l"]] = it
                     lisatty += 1
                 tila.append([nimi, len(lista), lisatty, "ok"])
@@ -719,6 +721,7 @@ def main():
                 if kiinteä and ("503" in str(e) or "429" in str(e)):
                     google_esto = True   # Google rajoittaa: ei jatketa tällä ajolla
             time.sleep(1.5 if kiinteä else 0.3)
+    korjausvahti.arkistoi(uutiset, nyt)
     raja = (nyt - timedelta(days=SAILYTYS_PV)).isoformat()
     uutiset = {k: u for k, u in uutiset.items() if not estetty(u)}
     for u in uutiset.values():   # luokittelu tehty koko ingressillä, julkaistaan vain lyhyt ote
