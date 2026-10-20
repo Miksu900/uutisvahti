@@ -10,7 +10,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 TIEDOSTO = os.path.join(DIR, "muutokset.json")
 HKI = ZoneInfo("Europe/Helsinki")
 SAILYTYS_PV, MAX_KPL, SEURANTA_H = 60, 5000, 72
-SOPIMUS = os.environ.get("KORJAUSVAHTI_SOPIMUS", "").strip() or "0x21d667A0dDC3376764c2a0884EE44dCb7728e30B"
+SOPIMUS = os.environ.get("KORJAUSVAHTI_SOPIMUS", "").strip() or "0x7108BC5a24faBD5fB0f67dAFA4CBeAF06C50f7e5"
 
 _m = []
 
@@ -144,7 +144,7 @@ def rakenna_sivu(sivu, kirjoita, esc, lahde_html, tiivisteet, site):
                          + (f'<div class="kv-ark">{ark}</div>' if ark else "") + '</li>')
         t = tiivisteet.get(p, {})
         sinetti = (f'<p class="kv-sha">Päivän sormenjälki (SHA-256): <code>{t.get("sha256", "")}</code>'
-                   + (" · sinetöidään lohkoketjuun seuraavana yönä" if t.get("valmis") else " · päivä on kesken") + "</p>")
+                   + (" · sinetöidään lohkoketjuun päivän päätyttyä" if t.get("valmis") else " · päivä on kesken") + "</p>")
         osat.append(f'<section><h2>{d.day}.{d.month}.{d.year} · {len(lista)} muutettua otsikkoa</h2>{sinetti}<ul class="rows">{"".join(rivit)}</ul></section>')
     tyhja = '<p class="lead">Muutoksia ei ole vielä havaittu. Seuranta on käynnissä: jokainen median oma syöte tarkistetaan noin 10 minuutin välein.</p>'
     sop = (f' Sinetit voi tarkistaa <a href="https://sepolia.etherscan.io/address/{SOPIMUS}#readContract" rel="noopener" target="_blank">sopimuksesta</a> '
@@ -155,7 +155,7 @@ def rakenna_sivu(sivu, kirjoita, esc, lahde_html, tiivisteet, site):
              f'<details class="kv-info"><summary>Miten muutokset on todistettu?</summary><p>Jokaisen päivän muutoslistasta lasketaan sormenjälki '
              f'(SHA-256), joka tallennetaan lohkoketjuun. Sen jälkeen kenenkään, myöskään {esc(site)}:n, ei ole mahdollista muuttaa listaa '
              f'jälkikäteen huomaamatta. Laskutapa: päivän muutokset muodossa [linkki, ennen, nyt, havaintoaika] aikajärjestyksessä, '
-             f'tiiviinä JSON-taulukkona, SHA-256. Lisäksi tuoreimmista muutoksista sinetöidään tilannekuva muutaman minuutin välein '
+             f'tiiviinä JSON-taulukkona, SHA-256. Lisäksi tuoreimmista muutoksista sinetöidään tilannekuva 5 minuutin välein aina, kun uusia muutoksia on tullut '
              f'(muutokset, jotka on havaittu 48 tunnin sisällä ennen sinetöintiä; rajat näkyvät sinetin selitteessä). Data: <a href="../muutokset.json">muutokset.json</a>.{sop}</p>'
              f'<p>Arkistokopiot: osasta uutisista tallennetaan kopio <a href="https://web.archive.org" rel="noopener">Internet Archiveen</a> heti kun ne julkaistaan, '
              f'ja muuttuneesta uutisesta myös muutoksen jälkeen. Kopio on riippumattoman kolmannen osapuolen tallenne siitä, mitä sivulla luki.</p></details>'
