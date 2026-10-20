@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aiheet import AIHEET
 from ryhmat import ryhmittele, mediat, puhdas_otsikko, muissa_medioissa
+import korjausvahti
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get("BASE_URL", "https://nytpuhutaan.fi").rstrip("/")
@@ -662,6 +663,8 @@ def main():
         vanhat_paik = {x for x in u.get("t", []) if x.startswith("paikalliset/")}
         u["t"] = sorted(set(luokittele(u)) | vanhat_paik | ({f"paikalliset/{a}" for a in AIHEET["paikalliset"]["ala"] if u["s"] in LEHDET[f"paikalliset/{a}"] and maakuntalehden_oma(u)}))
     tila = []
+    korjausvahti.lataa()
+    muutoksia = 0
     if TESTI:
         for i in range(30):
             k = list(LUOK)[i % len(LUOK)]
@@ -692,6 +695,8 @@ def main():
                     if kiinteä and not suomalainen(it):
                         continue
                     it["a"] = it["a"] or nyt.isoformat()
+                    if not kiinteä and it["l"] in uutiset and korjausvahti.tarkista(uutiset[it["l"]], it["o"], nyt):
+                        muutoksia += 1
                     if kiinteä:
                         # Googlen haku on löyhä: aiheen hakusanan on löydyttävä otsikosta
                         oma_lehti = it["s"] in LEHDET.get(kiinteä, ()) and maakuntalehden_oma(it)
@@ -741,6 +746,9 @@ def main():
         f'<div class="rows" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">'
         f'<tr style="text-align:left;color:var(--mute)"><th>Lähde</th><th>Haettu</th><th>Uusia</th><th>Tila</th></tr>{rivit}</table></div>', noindex=True))
     json.dump({"p": pv, "tila": tila, "u": uniq}, open(os.path.join(DIR, "data.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+    tiivisteet = korjausvahti.tallenna(nyt)
+    korjausvahti.rakenna_sivu(sivu, kirjoita, esc, lahde, tiivisteet, SITE)
+    print("korjausvahti: uusia otsikkomuutoksia", muutoksia)
     for t in tila:
         print(t)
     print("uutisia yhteensä:", len(uniq))
