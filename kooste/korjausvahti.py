@@ -10,7 +10,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 TIEDOSTO = os.path.join(DIR, "muutokset.json")
 HKI = ZoneInfo("Europe/Helsinki")
 SAILYTYS_PV, MAX_KPL, SEURANTA_H = 60, 5000, 72
-SOPIMUS = os.environ.get("KORJAUSVAHTI_SOPIMUS", "").strip()
+SOPIMUS = os.environ.get("KORJAUSVAHTI_SOPIMUS", "").strip() or "0x21d667A0dDC3376764c2a0884EE44dCb7728e30B"
 
 _m = []
 
