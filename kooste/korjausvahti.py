@@ -184,9 +184,12 @@ def _lyhenna(s, n):
 def x_teksti(m, pois=None, lis=None):
     """Neutraali jakoteksti X:ään. Linkki lasketaan X:ssä 23 merkiksi, joten tekstille jää noin 250 merkkiä."""
     vanha, uusi = _norm(m["vanha"]), _norm(m["uusi"])
-    for n in (200, 110, 95, 80):
-        t = f'{m["s"]} muutti otsikkoa julkaisun jälkeen.\n\nEnnen: ”{_lyhenna(vanha, n)}”\nNyt: ”{_lyhenna(uusi, n)}”'
-        if len(t) <= 250:
+    t = f'{m["s"]} muutti otsikkoa julkaisun jälkeen.\n\nEnnen: ”{vanha}”\nNyt: ”{uusi}”'
+    if len(t) <= 255:
+        return t
+    for n in range(130, 50, -5):
+        t = f'{m["s"]} muutti otsikkoa:\n\nEnnen: ”{_lyhenna(vanha, n)}”\nNyt: ”{_lyhenna(uusi, n)}”'
+        if len(t) <= 255:
             return t
     return t
 
