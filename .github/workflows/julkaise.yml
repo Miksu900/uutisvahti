@@ -46,10 +46,14 @@ jobs:
           ota oma.json "$OMA_URL/data.json" data.json
           ota kooste.json "$KOOSTE_URL/data.json" kooste/data.json
           ota muutokset.json "$KOOSTE_URL/muutokset.json" kooste/muutokset.json
+          # korjausvahdin jakokuvat edellisestä ajosta (tehdään vain uusille muutoksille)
+          if [ -d .tila/k ]; then mkdir -p kooste/muutokset && cp -r .tila/k kooste/muutokset/k; fi
       - name: Oma uutisvahti
         run: |
           if [ $(( 10#$(date -u +%M) )) -lt 10 ]; then export OMA_GOOGLE=1; else export OMA_GOOGLE=0; fi
           python3 keraa.py
+      - name: Kuvakirjasto jakokuvia varten
+        run: python3 -c "import PIL" 2>/dev/null || python3 -m pip install -q --break-system-packages pillow==11.0.0 || true
       - name: Laaja kooste
         run: |
           # Googlen aihehaut jaetaan kuuteen osaan: tämä ajo tekee osan (minuutti / 10), median omat virrat joka kerta
@@ -64,7 +68,7 @@ jobs:
           KOOSTE_YHTEYS: ${{ vars.KOOSTE_YHTEYS }}
       - name: Tallenna tila seuraavaa ajoa varten
         run: |
-          mkdir -p .tila && cp data.json .tila/oma.json && cp kooste/data.json .tila/kooste.json && (cp kooste/muutokset.json .tila/muutokset.json || true)
+          mkdir -p .tila && cp data.json .tila/oma.json && cp kooste/data.json .tila/kooste.json && (cp kooste/muutokset.json .tila/muutokset.json || true) && (rm -rf .tila/k; cp -r kooste/muutokset/k .tila/k 2>/dev/null || true)
       - uses: actions/cache/save@v4
         with:
           path: .tila

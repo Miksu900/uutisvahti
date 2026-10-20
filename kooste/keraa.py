@@ -349,11 +349,12 @@ def lahde(s):
 def rel(d):
     return "../" * d if d else "./"
 
-def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, noindex=False):
+def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, noindex=False, og_kuva=None):
     r = rel(syvyys)
     nav = f'<a href="{r}"{" aria-current=page" if aktiivinen == "etusivu" else ""}>Etusivu</a>'
     nav += "".join(f'<a href="{r}{p}/"{" aria-current=page" if p == aktiivinen else ""}>{esc(v["nimi"])}</a>' for p, v in AIHEET.items())
     nav += f'<a href="{r}oma/"{" aria-current=page" if aktiivinen == "oma" else ""}>Oma syöte</a>'
+    nav += f'<a href="{r}muutokset/"{" aria-current=page" if polku.startswith("muutokset") else ""}>Muutetut otsikot</a>'
     kanon = f"{BASE}/{polku}" if polku else f"{BASE}/"
     ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False).replace("</", "<\\/")}</script>' if jsonld else ""
     upd = f'<span class="upd" data-rel="{PAIVITETTY}" data-pre="Päivitetty ">Päivitetty {hki(PAIVITETTY, "klo %H.%M")}</span>' if PAIVITETTY else '<span class="upd"></span>'
@@ -364,6 +365,7 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, no
 <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="{kanon}">
 <link rel="manifest" href="{r}manifest.webmanifest"><link rel="icon" type="image/png" href="{r}favicon.png"><link rel="apple-touch-icon" href="{r}apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="{esc(SITE)}">
+{f'<meta property="og:image" content="{esc(og_kuva)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{esc(og_kuva)}">' if og_kuva else '<meta name="twitter:card" content="summary">'}<meta name="twitter:title" content="{esc(otsikko)}"><meta name="twitter:description" content="{esc(kuvaus)}">
 <meta property="og:title" content="{esc(otsikko)}"><meta property="og:description" content="{esc(kuvaus)}"><meta property="og:type" content="website"><meta property="og:locale" content="fi_FI"><meta property="og:url" content="{kanon}">
 <meta name="robots" content="{"noindex,nofollow" if noindex else "index,follow,max-snippet:-1"}">
 {ld}<style>{CSS}</style><script src="{r}config.js"></script><script src="{r}tuki.js"></script></head><body>
@@ -750,7 +752,14 @@ def main():
         f'<tr style="text-align:left;color:var(--mute)"><th>Lähde</th><th>Haettu</th><th>Uusia</th><th>Tila</th></tr>{rivit}</table></div>', noindex=True))
     json.dump({"p": pv, "tila": tila, "u": uniq}, open(os.path.join(DIR, "data.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     tiivisteet = korjausvahti.tallenna(nyt)
-    korjausvahti.rakenna_sivu(sivu, kirjoita, esc, lahde, tiivisteet, SITE)
+    kv_urls = korjausvahti.rakenna_sivu(sivu, kirjoita, esc, lahde, tiivisteet, SITE, uniq, BASE)
+    try:
+        smp = os.path.join(DIR, "sitemap.xml")
+        sm = open(smp, encoding="utf-8").read()
+        lisa = "".join(f"<url><loc>{BASE}/{u}</loc><lastmod>{pv[:10]}</lastmod></url>\n" for u in kv_urls)
+        open(smp, "w", encoding="utf-8").write(sm.replace("</urlset>", lisa + "</urlset>"))
+    except Exception as e:
+        print("sivukartta: korjausvahti-osoitteet jäivät pois:", e)
     print("korjausvahti: uusia otsikkomuutoksia", muutoksia)
     for t in tila:
         print(t)
