@@ -377,6 +377,9 @@ def sivu(otsikko, kuvaus, polku, syvyys, runko, jsonld=None, aktiivinen=None, no
 </main>
 <footer><p>{esc(SITE)} kokoaa suomalaisten medioiden uutisotsikot yhteen paikkaan noin 10 minuutin välein. Saman tapahtuman uutiset eri medioista ryhmitellään automaattisesti, jotta näet yhdellä silmäyksellä, mistä puhutaan ja miten eri mediat asian otsikoivat. Sivusto näyttää vain otsikon, lyhyen ingressin ja lähteen; jutut luetaan lähteen omalla sivulla. Aiheet ja ryhmät tunnistetaan automaattisesti, joten ne voivat joskus olla epätarkkoja.</p><p>Osa <a href="https://faktapiste.fi/" rel="noopener">Faktapistettä</a> · <a href="https://eduskuntaseuranta.fi/" rel="noopener">Eduskuntaseuranta</a> · <a href="https://keraysvahti.fi/" rel="noopener">Keräysvahti</a> · <a href="https://pykalavahti.fi/" rel="noopener">Pykälävahti</a> · <a href="{r}saannot/">Keskustelusäännöt</a> · <a href="{r}tietosuoja/">Tietosuoja</a></p></footer>
 {JS}
+<script>(function(){{try{{var r=document.referrer||"";if(/faktapiste\.fi/.test(r)||/[?&]fp=1/.test(location.search))sessionStorage.setItem("fp","1");if(sessionStorage.getItem("fp")!=="1")return;
+document.addEventListener("click",function(e){{var a=e.target.closest&&e.target.closest('a[target="_blank"]');if(a&&!/x\.com|facebook\.com|wa\.me|t\.me|linkedin\.com/.test(a.href))a.removeAttribute("target")}},true);
+var b=document.createElement("a");b.href="https://faktapiste.fi/";b.textContent="\u2190 Faktapiste";b.setAttribute("style","position:fixed;left:12px;bottom:14px;z-index:99;background:#0d1b3e;color:#fff;border:2px solid #f5c542;border-radius:99px;padding:10px 16px;font:700 15px system-ui,sans-serif;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.3)");document.body.appendChild(b)}}catch(x){{}}}})()</script>
 <!-- Cloudflare Web Analytics (evästeetön) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "6b71f4e21fa24282bc0932cdcb3c1b51"}}'></script>
 </body></html>"""
 
